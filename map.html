@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte interactive - SmartAgroMap</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        :root {
+            --agro-green: #27ae60;
+            --agro-light: #2ecc71;
+            --agro-dark: #16a085;
+            --agro-sand: #f1c40f;
+            --agro-earth: #8b4513;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            color: #2c3e50;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* HEADER */
+        .header {
+            background: linear-gradient(90deg, var(--agro-green), var(--agro-dark));
+            padding: 25px;
+            border-radius: 20px;
+            color: white;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(39, 174, 96, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 3rem;
+            background: white;
+            color: var(--agro-green);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo-text h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+        }
+        
+        .logo-text p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        /* NAV */
+        .nav-bar {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            padding: 12px 25px;
+            border-radius: 15px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .nav-btn.active {
+            background: white;
+            color: var(--agro-green);
+        }
+        
+        .nav-btn.inactive {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .nav-btn.inactive:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        
+        /* MAIN LAYOUT */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 30px;
+            height: calc(100vh - 200px);
+        }
+        
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+        }
+        
+        /* SIDEBAR */
+        .sidebar {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+        
+        .sidebar-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .sidebar-title {
+            font-size: 1.3rem;
+            color: var(--agro-dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* FILTERS */
+        .filter-group {
+            margin-bottom: 20px;
+        }
+        
+        .filter-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--agro-dark);
+            font-weight: 500;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: #f8f9fa;
+        }
+        
+        /* PARCELLES LIST */
+        .parcel-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .parcel-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 15px;
+            border-left: 5px solid var(--agro-green);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .parcel-item:hover {
+            transform: translateX(5px);
+            background: #e8f5e9;
+        }
+        
+        .parcel-item.critical {
+            border-left-color: #e74c3c;
+            background: #ffebee;
+        }
+        
+        .parcel-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .parcel-name {
+            font-weight: 600;
+            color: var(--agro-dark);
+        }
+        
+        .parcel-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .status-good { background: #e8f5e9; color: var(--agro-green); }
+        .status-medium { background: #fff3e0; color: #f39c12; }
+        .status-critical { background: #ffebee; color: #e74c3c; }
+        
+        /* MAP CONTAINER */
+        .map-container {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        #map {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+        }
+        
+        .map-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .map-btn {
+            background: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--agro-dark);
+            transition: all 0.3s;
+        }
+        
+        .map-btn:hover {
+            background: var(--agro-green);
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        /* LEGEND */
+        .legend {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            width: 250px;
+        }
+        
+        .legend-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--agro-dark);
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .color-good { background: var(--agro-green); }
+        .color-medium { background: #f1c40f; }
+        .color-poor { background: #e74c3c; }
+        
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #7f8c8d;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header class="header">
+            <div class="logo-container">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>SmartAgroMap</h1>
+                        <p>Carte interactive des parcelles</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="nav-bar">
+                <a href="index.html" class="nav-btn inactive">
+                    <i class="fas fa-home"></i>
+                    Dashboard
+                </a>
+                <a href="map.html" class="nav-btn active">
+                    <i class="fas fa-map"></i>
+                    Carte
+                </a>
+                <a href="analytics.html" class="nav-btn inactive">
+                    <i class="fas fa-chart-bar"></i>
+                    Analytics
+                </a>
+                <a href="add.html" class="nav-btn inactive">
+                    <i class="fas fa-plus-circle"></i>
+                    Ajouter
+                </a>
+            </div>
+        </header>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-layout">
+            <!-- SIDEBAR -->
+            <div class="sidebar">
+                <!-- FILTRES -->
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">
+                        <i class="fas fa-filter"></i>
+                        Filtres
+                    </h3>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Culture</label>
+                        <select id="filterCrop">
+                            <option value="all">Toutes les cultures</option>
+                            <option value="arachide">Arachide</option>
+                            <option value="mil">Mil</option>
+                            <option value="mais">Maïs</option>
+                            <option value="riz">Riz</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">État de santé</label>
+                        <select id="filterHealth">
+                            <option value="all">Tous les états</option>
+                            <option value="good">Bon</option>
+                            <option value="medium">Moyen</option>
+                            <option value="poor">Critique</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Superficie (min)</label>
+                        <input type="range" id="filterSize" min="1" max="10" value="1">
+                        <span id="sizeValue">1 ha</span>
+                    </div>
+                </div>
+                
+                <!-- LISTE DES PARCELLES -->
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">
+                        <i class="fas fa-list"></i>
+                        Parcelles (4)
+                    </h3>
+                    
+                    <div class="parcel-list">
+                        <div class="parcel-item" data-id="1">
+                            <div class="parcel-info">
+                                <div class="parcel-name">Ndioum Nord</div>
+                                <div class="parcel-status status-good">Bon</div>
+                            </div>
+                            <div style="font-size: 0.9rem; color: #7f8c8d; margin-top: 5px;">
+                                🥜 Arachide • 2.5 ha
+                            </div>
+                        </div>
+                        
+                        <div class="parcel-item" data-id="2">
+                            <div class="parcel-info">
+                                <div class="parcel-name">Familial Est</div>
+                                <div class="parcel-status status-medium">Moyen</div>
+                            </div>
+                            <div style="font-size: 0.9rem; color: #7f8c8d; margin-top: 5px;">
+                                🌾 Mil • 1.8 ha
+                            </div>
+                        </div>
+                        
+                        <div class="parcel-item" data-id="3">
+                            <div class="parcel-info">
+                                <div class="parcel-name">Parcelle Irriguée</div>
+                                <div class="parcel-status status-good">Excellent</div>
+                            </div>
+                            <div style="font-size: 0.9rem; color: #7f8c8d; margin-top: 5px;">
+                                🌾 Riz • 3.2 ha
+                            </div>
+                        </div>
+                        
+                        <div class="parcel-item critical" data-id="4">
+                            <div class="parcel-info">
+                                <div class="parcel-name">Champ du Sud</div>
+                                <div class="parcel-status status-critical">Critique</div>
+                            </div>
+                            <div style="font-size: 0.9rem; color: #7f8c8d; margin-top: 5px;">
+                                🌽 Maïs • 4 ha
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- STATISTIQUES -->
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">
+                        <i class="fas fa-chart-pie"></i>
+                        Vue d'ensemble
+                    </h3>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.8rem; font-weight: 800; color: var(--agro-green);">11.5</div>
+                            <div style="font-size: 0.9rem; color: #7f8c8d;">Hectares totaux</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.8rem; font-weight: 800; color: #3498db;">4</div>
+                            <div style="font-size: 0.9rem; color: #7f8c8d;">Parcelles</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.8rem; font-weight: 800; color: #f1c40f;">63%</div>
+                            <div style="font-size: 0.9rem; color: #7f8c8d;">Santé moyenne</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.8rem; font-weight: 800; color: #e74c3c;">1</div>
+                            <div style="font-size: 0.9rem; color: #7f8c8d;">Alerte</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CARTE -->
+            <div class="map-container">
+                <div id="map"></div>
+                
+                <!-- CONTRÔLES -->
+                <div class="map-controls">
+                    <button class="map-btn" id="btnZoomIn" title="Zoomer">
+                        <i class="fas fa-search-plus"></i>
+                    </button>
+                    <button class="map-btn" id="btnZoomOut" title="Dézoomer">
+                        <i class="fas fa-search-minus"></i>
+                    </button>
+                    <button class="map-btn" id="btnLocate" title="Ma position">
+                        <i class="fas fa-location-arrow"></i>
+                    </button>
+                    <button class="map-btn" id="btnSatellite" title="Vue satellite">
+                        <i class="fas fa-satellite"></i>
+                    </button>
+                </div>
+                
+                <!-- LÉGENDE -->
+                <div class="legend">
+                    <div class="legend-title">Légende NDVI</div>
+                    <div class="legend-item">
+                        <div class="legend-color color-good"></div>
+                        <div>Bon (70-100%)</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color color-medium"></div>
+                        <div>Moyen (40-69%)</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color color-poor"></div>
+                        <div>Faible (0-39%)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- FOOTER -->
+        <div class="footer">
+            <p>© 2024 SmartAgroMap | Carte interactive en temps réel</p>
+            <p>Dernière mise à jour des données: Aujourd'hui, 16:30</p>
+        </div>
+    </div>
+
+    <!-- LEAFLET JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🗺️ Carte SmartAgroMap initialisée');
+            
+            // Initialiser la carte
+            const map = L.map('map').setView([14.6928, -17.4467], 12);
+            
+            // Ajouter les tuiles OpenStreetMap
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(map);
+            
+            // Ajouter vue satellite
+            const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: '© Esri',
+                maxZoom: 19
+            });
+            
+            // Données des parcelles
+            const parcelles = [
+                {
+                    id: 1,
+                    name: "Ndioum Nord",
+                    lat: 14.7028,
+                    lng: -17.4367,
+                    crop: "arachide",
+                    size: 2.5,
+                    ndvi: 72,
+                    status: "good",
+                    icon: "🥜"
+                },
+                {
+                    id: 2,
+                    name: "Familial Est",
+                    lat: 14.7128,
+                    lng: -17.4567,
+                    crop: "mil",
+                    size: 1.8,
+                    ndvi: 58,
+                    status: "medium",
+                    icon: "🌾"
+                },
+                {
+                    id: 3,
+                    name: "Parcelle Irriguée",
+                    lat: 14.6828,
+                    lng: -17.4267,
+                    crop: "riz",
+                    size: 3.2,
+                    ndvi: 85,
+                    status: "good",
+                    icon: "🌾"
+                },
+                {
+                    id: 4,
+                    name: "Champ du Sud",
+                    lat: 14.6728,
+                    lng: -17.4667,
+                    crop: "mais",
+                    size: 4,
+                    ndvi: 38,
+                    status: "poor",
+                    icon: "🌽"
+                }
+            ];
+            
+            // Marqueurs
+            const markers = [];
+            const markersLayer = L.layerGroup().addTo(map);
+            
+            // Fonction pour obtenir la couleur selon le statut
+            function getColor(status) {
+                switch(status) {
+                    case 'good': return '#27ae60';
+                    case 'medium': return '#f1c40f';
+                    case 'poor': return '#e74c3c';
+                    default: return '#3498db';
+                }
+            }
+            
+            // Ajouter les marqueurs
+            parcelles.forEach(parcelle => {
+                const marker = L.circleMarker([parcelle.lat, parcelle.lng], {
+                    radius: 15 + parcelle.size * 2,
+                    fillColor: getColor(parcelle.status),
+                    color: '#fff',
+                    weight: 3,
+                    opacity: 1,
+                    fillOpacity: 0.7
+                }).addTo(markersLayer);
+                
+                // Popup
+                marker.bindPopup(`
+                    <div style="font-weight: bold; font-size: 1.2rem;">${parcelle.icon} ${parcelle.name}</div>
+                    <div>📍 ${parcelle.crop} • ${parcelle.size} ha</div>
+                    <div>📊 NDVI: ${parcelle.ndvi}%</div>
+                    <div>💧 Humidité: ${parcelle.status === 'poor' ? '18% ⚠️' : '45%'}</div>
+                    <div>${parcelle.status === 'poor' ? '🔴 Besoin d\'irrigation' : '🟢 Bon état'}</div>
+                `);
+                
+                marker.parcelleId = parcelle.id;
+                markers.push(marker);
+            });
+            
+            // Contrôles de la carte
+            document.getElementById('btnZoomIn').addEventListener('click', () => {
+                map.zoomIn();
+            });
+            
+            document.getElementById('btnZoomOut').addEventListener('click', () => {
+                map.zoomOut();
+            });
+            
+            document.getElementById('btnLocate').addEventListener('click', () => {
+                map.setView([14.6928, -17.4467], 12);
+            });
+            
+            let isSatellite = false;
+            document.getElementById('btnSatellite').addEventListener('click', () => {
+                isSatellite = !isSatellite;
+                if (isSatellite) {
+                    map.remove();
+                    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}').addTo(map);
+                    document.getElementById('btnSatellite').style.background = var('--agro-green');
+                } else {
+                    map.remove();
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+                    document.getElementById('btnSatellite').style.background = 'white';
+                }
+                markersLayer.addTo(map);
+            });
+            
+            // Filtres
+            document.getElementById('filterCrop').addEventListener('change', filterParcelles);
+            document.getElementById('filterHealth').addEventListener('change', filterParcelles);
+            document.getElementById('filterSize').addEventListener('input', function() {
+                document.getElementById('sizeValue').textContent = this.value + ' ha';
+                filterParcelles();
+            });
+            
+            function filterParcelles() {
+                const cropFilter = document.getElementById('filterCrop').value;
+                const healthFilter = document.getElementById('filterHealth').value;
+                const sizeFilter = document.getElementById('filterSize').value;
+                
+                markers.forEach(marker => {
+                    const parcelle = parcelles.find(p => p.id === marker.parcelleId);
+                    let show = true;
+                    
+                    if (cropFilter !== 'all' && parcelle.crop !== cropFilter) {
+                        show = false;
+                    }
+                    
+                    if (healthFilter !== 'all' && parcelle.status !== healthFilter) {
+                        show = false;
+                    }
+                    
+                    if (parcelle.size < parseFloat(sizeFilter)) {
+                        show = false;
+                    }
+                    
+                    if (show) {
+                        markersLayer.addLayer(marker);
+                    } else {
+                        markersLayer.removeLayer(marker);
+                    }
+                });
+            }
+            
+            // Clic sur les éléments de la liste
+            document.querySelectorAll('.parcel-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const id = parseInt(this.getAttribute('data-id'));
+                    const parcelle = parcelles.find(p => p.id === id);
+                    
+                    if (parcelle) {
+                        map.setView([parcelle.lat, parcelle.lng], 15);
+                        
+                        // Ouvrir le popup du marqueur correspondant
+                        const marker = markers.find(m => m.parcelleId === id);
+                        if (marker) {
+                            marker.openPopup();
+                        }
+                    }
+                });
+            });
+            
+            // Simulation de données en temps réel
+            setInterval(() => {
+                const randomMarker = markers[Math.floor(Math.random() * markers.length)];
+                if (randomMarker) {
+                    randomMarker.setStyle({
+                        fillColor: getColor(['good', 'medium', 'poor'][Math.floor(Math.random() * 3)])
+                    });
+                }
+            }, 10000);
+        });
+    </script>
+</body>
+</html>

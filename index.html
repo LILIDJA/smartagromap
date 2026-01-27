@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartAgroMap 🛰️</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        :root {
+            --agro-green: #27ae60;
+            --agro-light: #2ecc71;
+            --agro-dark: #16a085;
+            --agro-sand: #f1c40f;
+            --agro-earth: #8b4513;
+            --agro-sky: #3498db;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            color: #2c3e50;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* HEADER */
+        .header {
+            background: linear-gradient(90deg, var(--agro-green), var(--agro-dark));
+            padding: 30px;
+            border-radius: 25px;
+            color: white;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 35px rgba(39, 174, 96, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.1"><path fill="white" d="M50,0 C77.614,0 100,22.386 100,50 C100,77.614 77.614,100 50,100 C22.386,100 0,77.614 0,50 C0,22.386 22.386,0 50,0 Z M50,20 C63.254,20 74,30.746 74,44 C74,57.254 63.254,68 50,68 C36.746,68 26,57.254 26,44 C26,30.746 36.746,20 50,20 Z"></path></svg>');
+            background-size: 200px;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .logo-icon {
+            font-size: 4rem;
+            background: white;
+            color: var(--agro-green);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .logo-text h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .logo-text .tagline {
+            font-size: 1.3rem;
+            opacity: 0.9;
+        }
+        
+        .user-info {
+            text-align: right;
+        }
+        
+        .user-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .user-role {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        /* NAV */
+        .nav-bar {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            position: relative;
+            z-index: 1;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            padding: 15px 30px;
+            border-radius: 15px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .nav-btn.active {
+            background: white;
+            color: var(--agro-green);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .nav-btn.inactive {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .nav-btn.inactive:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        
+        /* QUICK STATS */
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-box {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border-left: 8px solid var(--agro-green);
+            transition: transform 0.3s;
+        }
+        
+        .stat-box:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-box.alert {
+            border-left-color: #e74c3c;
+            animation: pulse-alert 2s infinite;
+        }
+        
+        @keyframes pulse-alert {
+            0% { box-shadow: 0 10px 30px rgba(231, 76, 60, 0.1); }
+            50% { box-shadow: 0 10px 30px rgba(231, 76, 60, 0.3); }
+            100% { box-shadow: 0 10px 30px rgba(231, 76, 60, 0.1); }
+        }
+        
+        .stat-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            color: var(--agro-green);
+            background: #e8f5e9;
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .stat-box.alert .stat-icon {
+            color: #e74c3c;
+            background: #ffebee;
+        }
+        
+        .stat-title {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--agro-dark);
+            margin-bottom: 10px;
+        }
+        
+        .stat-box.alert .stat-value {
+            color: #e74c3c;
+        }
+        
+        .stat-desc {
+            color: #7f8c8d;
+            font-size: 1rem;
+        }
+        
+        /* SECTION CARTE NDVI */
+        .map-section {
+            background: white;
+            border-radius: 25px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            font-size: 2.2rem;
+            color: var(--agro-dark);
+            margin: 0 0 30px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .section-title i {
+            color: var(--agro-green);
+        }
+        
+        .map-container {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .map-sidebar {
+            width: 350px;
+            flex-shrink: 0;
+        }
+        
+        .map-main {
+            flex: 1;
+        }
+        
+        #ndvi-map {
+            height: 500px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* STATISTIQUES NDVI */
+        .ndvi-stats {
+            margin-bottom: 25px;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border-left: 5px solid var(--agro-green);
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        
+        .stat-item:hover {
+            transform: translateX(5px);
+            background: #e8f5e9;
+        }
+        
+        .stat-item.critical {
+            border-left-color: #e74c3c;
+            background: #ffebee;
+        }
+        
+        .stat-item.critical:hover {
+            background: #ffcdd2;
+        }
+        
+        .stat-info h4 {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .stat-info p {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        
+        .ndvi-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+        
+        .ndvi-excellent { color: var(--agro-green); }
+        .ndvi-good { color: var(--agro-light); }
+        .ndvi-medium { color: var(--agro-sand); }
+        .ndvi-poor { color: #e74c3c; }
+        
+        /* LÉGENDE */
+        .legend {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 25px 0;
+        }
+        
+        .legend-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--agro-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .color-box {
+            width: 25px;
+            height: 25px;
+            border-radius: 5px;
+            margin-right: 15px;
+            border: 1px solid rgba(0,0,0,0.2);
+        }
+        
+        /* PARCELLES */
+        .parcels-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .parcel-card {
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: all 0.4s;
+            border: 2px solid #e8f5e9;
+        }
+        
+        .parcel-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-color: var(--agro-light);
+        }
+        
+        .parcel-header {
+            padding: 30px;
+            background: linear-gradient(90deg, #f8f9fa, white);
+            border-bottom: 3px solid #e8f5e9;
+        }
+        
+        .parcel-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .parcel-icon-big {
+            font-size: 3rem;
+            width: 70px;
+            height: 70px;
+            background: #e8f5e9;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--agro-green);
+        }
+        
+        .parcel-name {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--agro-dark);
+            flex-grow: 1;
+            margin-left: 20px;
+        }
+        
+        .parcel-health {
+            background: #e8f5e9;
+            color: var(--agro-green);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .parcel-location {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .parcel-details {
+            padding: 30px;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            color: #7f8c8d;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .detail-value {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: var(--agro-dark);
+        }
+        
+        .detail-value.ndvi-excellent { color: var(--agro-green); }
+        .detail-value.ndvi-good { color: var(--agro-light); }
+        .detail-value.ndvi-medium { color: var(--agro-sand); }
+        .detail-value.ndvi-poor { color: #e74c3c; }
+        
+        .parcel-actions {
+            padding: 0 30px 30px;
+            display: flex;
+            gap: 15px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .action-btn.primary {
+            background: linear-gradient(90deg, var(--agro-green), var(--agro-light));
+            color: white;
+        }
+        
+        .action-btn.secondary {
+            background: #f8f9fa;
+            color: var(--agro-dark);
+            border: 2px solid #e8f5e9;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* FOOTER */
+        .footer {
+            margin-top: 60px;
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+        
+        .footer-logo {
+            font-size: 3rem;
+            color: var(--agro-green);
+            margin-bottom: 20px;
+        }
+        
+        .footer-text {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        
+        .footer-contact {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--agro-dark);
+            font-weight: 500;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .map-container {
+                flex-direction: column;
+            }
+            
+            .map-sidebar {
+                width: 100%;
+            }
+            
+            #ndvi-map {
+                height: 400px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .logo-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            .logo {
+                flex-direction: column;
+            }
+            
+            .logo-text h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-bar {
+                justify-content: center;
+            }
+            
+            .parcels-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-contact {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        /* ANIMATIONS */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header class="header">
+            <div class="logo-container">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>SmartAgroMap</h1>
+                        <p class="tagline">Cartographie satellite pour l'agriculture moderne</p>
+                    </div>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">👨‍🌾 Mamadou Diallo</div>
+                    <div class="user-role">Agriculteur | Coopérative de la Vallée</div>
+                </div>
+            </div>
+            
+            <!-- NAVIGATION AVEC LIENS FONCTIONNELS -->
+            <div class="nav-bar">
+                <a href="#" class="nav-btn active" onclick="return false;">
+                    <i class="fas fa-home"></i>
+                    Dashboard
+                </a>
+                <a href="#carte-ndvi" class="nav-btn inactive">
+                    <i class="fas fa-satellite"></i>
+                    Carte Satellite
+                </a>
+                <a href="analytics.html" class="nav-btn inactive" target="_blank">
+                    <i class="fas fa-chart-bar"></i>
+                    Analytics
+                </a>
+                <a href="add.html" class="nav-btn inactive" target="_blank">
+                    <i class="fas fa-plus-circle"></i>
+                    Ajouter
+                </a>
+            </div>
+        </header>
+
+        <!-- STATISTIQUES RAPIDES -->
+        <div class="quick-stats">
+            <div class="stat-box animate-in">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <i class="fas fa-tractor"></i>
+                    </div>
+                    <div class="stat-title">Parcelles actives</div>
+                </div>
+                <div class="stat-value">4</div>
+                <div class="stat-desc">Total des terres cultivées</div>
+            </div>
+            
+            <div class="stat-box animate-in delay-1">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <i class="fas fa-ruler-combined"></i>
+                    </div>
+                    <div class="stat-title">Superficie totale</div>
+                </div>
+                <div class="stat-value">11.5 ha</div>
+                <div class="stat-desc">Répartis sur 4 parcelles</div>
+            </div>
+            
+            <div class="stat-box alert animate-in delay-2">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="stat-title">Attention requise</div>
+                </div>
+                <div class="stat-value">1</div>
+                <div class="stat-desc">Parcelle en état critique</div>
+            </div>
+            
+            <div class="stat-box animate-in delay-3">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <div class="stat-title">Santé moyenne</div>
+                </div>
+                <div class="stat-value">63%</div>
+                <div class="stat-desc">Basé sur l'index NDVI</div>
+            </div>
+        </div>
+
+        <!-- SECTION CARTE NDVI -->
+        <section id="carte-ndvi" class="map-section animate-in">
+            <h2 class="section-title">
+                <i class="fas fa-satellite"></i>
+                Carte Satellite NDVI
+            </h2>
+            
+            <div class="map-container">
+                <!-- Sidebar avec statistiques -->
+                <div class="map-sidebar">
+                    <div class="ndvi-stats">
+                        <div class="stat-item" data-champ="1">
+                            <div class="stat-info">
+                                <h4>Ndioum Nord</h4>
+                                <p>Arachide • 2.5 ha • 158×158m</p>
+                            </div>
+                            <div class="ndvi-value ndvi-good">0.135</div>
+                        </div>
+                        
+                        <div class="stat-item critical" data-champ="2">
+                            <div class="stat-info">
+                                <h4>Familial Est</h4>
+                                <p>Mil • 1.8 ha • 134×134m</p>
+                            </div>
+                            <div class="ndvi-value ndvi-poor">0.075</div>
+                        </div>
+                        
+                        <div class="stat-item" data-champ="3">
+                            <div class="stat-info">
+                                <h4>Parcelle Irriguée</h4>
+                                <p>Riz • 3.2 ha • 179×179m</p>
+                            </div>
+                            <div class="ndvi-value ndvi-good">0.135</div>
+                        </div>
+                        
+                        <div class="stat-item" data-champ="4">
+                            <div class="stat-info">
+                                <h4>Champ du Sud</h4>
+                                <p>Maïs • 4.0 ha • 200×200m</p>
+                            </div>
+                            <div class="ndvi-value ndvi-medium">0.119</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Légende -->
+                    <div class="legend">
+                        <h4 class="legend-title">
+                            <i class="fas fa-palette"></i>
+                            Légende NDVI
+                        </h4>
+                        
+                        <div class="legend-item">
+                            <div class="color-box" style="background-color: #FF4500;"></div>
+                            <span>0.0 - 0.1 : Sol nu / Stressé</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="color-box" style="background-color: #FF8C00;"></div>
+                            <span>0.1 - 0.2 : Végétation faible</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="color-box" style="background-color: #FFD700;"></div>
+                            <span>0.2 - 0.4 : Végétation moyenne</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="color-box" style="background-color: #9ACD32;"></div>
+                            <span>0.4 - 0.6 : Végétation bonne</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="color-box" style="background-color: #32CD32;"></div>
+                            <span>> 0.6 : Végétation excellente</span>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 25px; padding: 15px; background: #e8f5e9; border-radius: 12px;">
+                        <h5 style="color: var(--agro-dark); margin-bottom: 10px;">
+                            <i class="fas fa-satellite"></i> Données satellite
+                        </h5>
+                        <p style="font-size: 0.9rem; color: #555;">
+                            <strong>Fond de carte :</strong> Imagerie satellite Esri<br>
+                            <strong>Données NDVI :</strong> Sentinel-2 (Août 2024)<br>
+                            <strong>Superficies :</strong> Exactes (carrés à l'échelle)
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Carte principale -->
+                <div class="map-main">
+                    <div id="ndvi-map"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PARCELLES -->
+        <h2 class="section-title animate-in">
+            <i class="fas fa-tractor"></i>
+            Mes parcelles cartographiées
+        </h2>
+        
+        <div class="parcels-container">
+            <!-- Parcelle 1 -->
+            <div class="parcel-card animate-in">
+                <div class="parcel-header">
+                    <div class="parcel-title-row">
+                        <div class="parcel-icon-big">
+                            🥜
+                        </div>
+                        <div class="parcel-name">Ndioum Nord</div>
+                        <div class="parcel-health">NDVI: 72%</div>
+                    </div>
+                    <div class="parcel-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Ndioum • 2.5 hectares • Arachide
+                    </div>
+                </div>
+                
+                <div class="parcel-details">
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-ruler"></i>
+                            Dimensions réelles
+                        </div>
+                        <div class="detail-value">158×158 m</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-tint"></i>
+                            Humidité sol
+                        </div>
+                        <div class="detail-value">45%</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-calendar-alt"></i>
+                            Date semis
+                        </div>
+                        <div class="detail-value">15 juin 2024</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-heartbeat"></i>
+                            Santé végétale
+                        </div>
+                        <div class="detail-value ndvi-excellent">Excellente</div>
+                    </div>
+                </div>
+                
+                <div class="parcel-actions">
+                    <button class="action-btn secondary" onclick="voirDetails(1)">
+                        <i class="fas fa-eye"></i>
+                        Détails
+                    </button>
+                    <button class="action-btn primary" onclick="zoomSurChamp(1)">
+                        <i class="fas fa-satellite"></i>
+                        Vue satellite
+                    </button>
+                </div>
+            </div>
+
+            <!-- Parcelle 2 -->
+            <div class="parcel-card animate-in delay-1">
+                <div class="parcel-header">
+                    <div class="parcel-title-row">
+                        <div class="parcel-icon-big">
+                            🌾
+                        </div>
+                        <div class="parcel-name">Familial Est</div>
+                        <div class="parcel-health">NDVI: 58%</div>
+                    </div>
+                    <div class="parcel-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Podor • 1.8 hectares • Mil
+                    </div>
+                </div>
+                
+                <div class="parcel-details">
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-ruler"></i>
+                            Dimensions réelles
+                        </div>
+                        <div class="detail-value">134×134 m</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-tint"></i>
+                            Humidité sol
+                        </div>
+                        <div class="detail-value">32%</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-calendar-alt"></i>
+                            Date semis
+                        </div>
+                        <div class="detail-value">20 juin 2024</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-heartbeat"></i>
+                            Santé végétale
+                        </div>
+                        <div class="detail-value ndvi-medium">Moyenne</div>
+                    </div>
+                </div>
+                
+                <div class="parcel-actions">
+                    <button class="action-btn secondary" onclick="voirDetails(2)">
+                        <i class="fas fa-eye"></i>
+                        Détails
+                    </button>
+                    <button class="action-btn primary" onclick="zoomSurChamp(2)">
+                        <i class="fas fa-satellite"></i>
+                        Vue satellite
+                    </button>
+                </div>
+            </div>
+
+            <!-- Parcelle 3 -->
+            <div class="parcel-card animate-in delay-2">
+                <div class="parcel-header">
+                    <div class="parcel-title-row">
+                        <div class="parcel-icon-big">
+                            🌾
+                        </div>
+                        <div class="parcel-name">Parcelle Irriguée</div>
+                        <div class="parcel-health">NDVI: 85%</div>
+                    </div>
+                    <div class="parcel-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Matam • 3.2 hectares • Riz
+                    </div>
+                </div>
+                
+                <div class="parcel-details">
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-ruler"></i>
+                            Dimensions réelles
+                        </div>
+                        <div class="detail-value">179×179 m</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-tint"></i>
+                            Humidité sol
+                        </div>
+                        <div class="detail-value">68%</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-calendar-alt"></i>
+                            Date semis
+                        </div>
+                        <div class="detail-value">1 mai 2024</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-heartbeat"></i>
+                            Santé végétale
+                        </div>
+                        <div class="detail-value ndvi-excellent">Excellente</div>
+                    </div>
+                </div>
+                
+                <div class="parcel-actions">
+                    <button class="action-btn secondary" onclick="voirDetails(3)">
+                        <i class="fas fa-eye"></i>
+                        Détails
+                    </button>
+                    <button class="action-btn primary" onclick="zoomSurChamp(3)">
+                        <i class="fas fa-satellite"></i>
+                        Vue satellite
+                    </button>
+                </div>
+            </div>
+
+            <!-- Parcelle 4 -->
+            <div class="parcel-card animate-in delay-3">
+                <div class="parcel-header">
+                    <div class="parcel-title-row">
+                        <div class="parcel-icon-big">
+                            🌽
+                        </div>
+                        <div class="parcel-name">Champ du Sud</div>
+                        <div class="parcel-health">NDVI: 38%</div>
+                    </div>
+                    <div class="parcel-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Tambacounda • 4 hectares • Maïs
+                    </div>
+                </div>
+                
+                <div class="parcel-details">
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-ruler"></i>
+                            Dimensions réelles
+                        </div>
+                        <div class="detail-value">200×200 m</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-tint"></i>
+                            Humidité sol
+                        </div>
+                        <div class="detail-value">18% ⚠️</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-calendar-alt"></i>
+                            Date semis
+                        </div>
+                        <div class="detail-value">10 mai 2024</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">
+                            <i class="fas fa-heartbeat"></i>
+                            Santé végétale
+                        </div>
+                        <div class="detail-value ndvi-poor">Critique</div>
+                    </div>
+                </div>
+                
+                <div class="parcel-actions">
+                    <button class="action-btn secondary" onclick="voirDetails(4)">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Alerte
+                    </button>
+                    <button class="action-btn primary" onclick="zoomSurChamp(4)">
+                        <i class="fas fa-satellite"></i>
+                        Vue satellite
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="footer animate-in">
+            <div class="footer-logo">
+                <i class="fas fa-satellite"></i>
+            </div>
+            <h3>SmartAgroMap</h3>
+            <p class="footer-text">Solution de cartographie satellite pour l'agriculture de précision</p>
+            <p class="footer-text">Surveillance par imagerie Sentinel-2 • Données NDVI en temps réel</p>
+            
+            <div class="footer-contact">
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    +221 77 166 16 06
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    smartmap25@gmail.com
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Dakar, Sénégal
+                </div>
+            </div>
+            
+            <p style="margin-top: 30px; color: #95a5a6; font-size: 0.9rem;">
+                © 2024 SmartAgroMap | Agriculture 4.0 | Imagerie Esri • Données Sentinel-2 • Mise à jour: Août 2024
+            </p>
+        </footer>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <script>
+        // Données NDVI de vos 4 champs
+        const champsNDVI = [
+            { 
+                id: 1,
+                nom: "Ndioum Nord", 
+                culture: "Arachide", 
+                superficie: 2.5,
+                ndvi: 0.135, 
+                lat: 16.495056, 
+                lon: -14.644444,
+                region: "Saint-Louis",
+                icone: "🥜",
+                couleur: "#FF8C00",
+                sante: "Bonne",
+                description: "Parcelle d'arachide avec croissance satisfaisante."
+            },
+            { 
+                id: 2,
+                nom: "Familial Est", 
+                culture: "Mil", 
+                superficie: 1.8,
+                ndvi: 0.075, 
+                lat: 16.657639, 
+                lon: -14.983417,
+                region: "Saint-Louis",
+                icone: "🌾",
+                couleur: "#FF4500",
+                sante: "Critique",
+                description: "Stress hydrique détecté - nécessite irrigation urgente."
+            },
+            { 
+                id: 3,
+                nom: "Parcelle Irriguée", 
+                culture: "Riz", 
+                superficie: 3.2,
+                ndvi: 0.135, 
+                lat: 15.669472, 
+                lon: -13.274861,
+                region: "Matam",
+                icone: "🌾",
+                couleur: "#FF8C00",
+                sante: "Bonne",
+                description: "Riz irrigué avec croissance régulière."
+            },
+            { 
+                id: 4,
+                nom: "Champ du Sud", 
+                culture: "Maïs", 
+                superficie: 4.0,
+                ndvi: 0.119, 
+                lat: 13.7335, 
+                lon: -13.649694,
+                region: "Tambacounda",
+                icone: "🌽",
+                couleur: "#FFD700",
+                sante: "Moyenne",
+                description: "Maïs avec croissance légèrement retardée."
+            }
+        ];
+        
+        let map;
+        let markers = [];
+        
+        // Calculer les dimensions d'un carré
+        function calculerDimensionsCarre(superficieHa) {
+            const superficieM2 = superficieHa * 10000;
+            const coteMetres = Math.sqrt(superficieM2);
+            const demiCoteDeg = (coteMetres / 111320) / 2;
+            
+            return {
+                coteMetres: Math.round(coteMetres),
+                demiCoteDeg: demiCoteDeg
+            };
+        }
+        
+        // Initialiser la carte Leaflet avec fond satellite
+        function initialiserCarte() {
+            // Créer la carte centrée sur le Sénégal
+            map = L.map('ndvi-map').setView([14.5, -14.5], 6);
+            
+            // FOND SATELLITE ESRI (World Imagery) - Alternative si problème
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: '© Esri, Maxar, Earthstar Geographics',
+                maxZoom: 19
+            }).addTo(map);
+            
+            // Ajouter les polygones
+            ajouterPolygones();
+            
+            // Ajouter une légende
+            ajouterLegende();
+        }
+        
+        // Ajouter les polygones carrés
+        function ajouterPolygones() {
+            markers.forEach(marker => map.removeLayer(marker));
+            markers = [];
+            
+            champsNDVI.forEach(champ => {
+                const dimensions = calculerDimensionsCarre(champ.superficie);
+                const demiCoteDeg = dimensions.demiCoteDeg;
+                
+                // Créer les 4 coins du carré
+                const coins = [
+                    [champ.lat - demiCoteDeg, champ.lon - demiCoteDeg],
+                    [champ.lat - demiCoteDeg, champ.lon + demiCoteDeg],
+                    [champ.lat + demiCoteDeg, champ.lon + demiCoteDeg],
+                    [champ.lat + demiCoteDeg, champ.lon - demiCoteDeg]
+                ];
+                
+                // Créer le polygone avec bordure épaisse pour mieux voir sur fond satellite
+                const polygone = L.polygon(coins, {
+                    color: champ.couleur,
+                    fillColor: champ.couleur,
+                    fillOpacity: 0.6,
+                    weight: 4,
+                    opacity: 0.9,
+                    dashArray: champ.sante === "Critique" ? "10, 5" : null
+                }).addTo(map);
+                
+                // Ajouter un label
+                const label = L.marker([champ.lat, champ.lon], {
+                    icon: L.divIcon({
+                        html: `<div style="background: white; padding: 4px 10px; border-radius: 4px; border: 2px solid ${champ.couleur}; font-weight: bold; color: ${champ.couleur}; font-size: 13px; white-space: nowrap; text-shadow: 1px 1px 2px white;">${champ.superficie} ha</div>`,
+                        iconSize: [60, 25],
+                        className: 'superficie-label'
+                    })
+                }).addTo(map);
+                
+                // Popup
+                const popupContent = `
+                    <div style="min-width: 280px; font-family: 'Poppins', sans-serif;">
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                            <div style="font-size: 2.5rem;">${champ.icone}</div>
+                            <div>
+                                <h3 style="margin: 0; color: #2c3e50; font-size: 1.3rem;">${champ.nom}</h3>
+                                <p style="margin: 5px 0 0; color: #7f8c8d;">${champ.culture}</p>
+                            </div>
+                        </div>
+                        
+                        <div style="background: rgba(248, 249, 250, 0.9); padding: 15px; border-radius: 10px; margin: 10px 0; backdrop-filter: blur(5px);">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div>
+                                    <div style="font-size: 0.9rem; color: #555;">Superficie</div>
+                                    <div style="font-weight: bold; color: ${champ.couleur}; font-size: 1.1rem;">${champ.superficie} ha</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 0.9rem; color: #555;">Dimensions</div>
+                                    <div style="font-weight: bold; color: #2c3e50;">${dimensions.coteMetres}m</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 0.9rem; color: #555;">NDVI</div>
+                                    <div style="font-weight: bold; color: ${champ.couleur}; font-size: 1.1rem;">${champ.ndvi.toFixed(3)}</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 0.9rem; color: #555;">État</div>
+                                    <div style="font-weight: bold; color: ${champ.couleur};">${champ.sante}</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <p style="color: #555; font-size: 0.9rem; margin: 10px 0;">${champ.description}</p>
+                        
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <button onclick="zoomSurChamp(${champ.id})" 
+                                    style="flex: 1; padding: 10px; background: #27ae60; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                                <i class="fas fa-search-plus"></i> Zoomer
+                            </button>
+                            <button onclick="voirDetails(${champ.id})" 
+                                    style="flex: 1; padding: 10px; background: #3498db; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                                <i class="fas fa-chart-line"></i> Détails
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                polygone.bindPopup(popupContent);
+                markers.push(polygone, label);
+                
+                polygone.on('click', function(e) {
+                    highlightChamp(champ.id);
+                });
+            });
+        }
+        
+        // Ajouter une légende
+        function ajouterLegende() {
+            const legende = L.control({ position: 'bottomright' });
+            
+            legende.onAdd = function() {
+                const div = L.DomUtil.create('div', 'info legend');
+                div.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+                div.style.padding = '12px';
+                div.style.borderRadius = '8px';
+                div.style.boxShadow = '0 3px 10px rgba(0,0,0,0.3)';
+                div.style.fontSize = '13px';
+                div.style.backdropFilter = 'blur(5px)';
+                
+                div.innerHTML = `
+                    <h4 style="margin: 0 0 10px 0; color: #2c3e50;"><i class="fas fa-key"></i> Légende NDVI</h4>
+                    <div style="display: flex; align-items: center; margin-bottom: 5px;">
+                        <div style="background: #FF4500; width: 20px; height: 20px; border-radius: 4px; margin-right: 8px; border: 2px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.3);"></div>
+                        <span>0.0 - 0.1 (Critique)</span>
+                    </div>
+                    <div style="display: flex; align-items: center; margin-bottom: 5px;">
+                        <div style="background: #FF8C00; width: 20px; height: 20px; border-radius: 4px; margin-right: 8px; border: 2px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.3);"></div>
+                        <span>0.1 - 0.2 (Faible)</span>
+                    </div>
+                    <div style="display: flex; align-items: center; margin-bottom: 5px;">
+                        <div style="background: #FFD700; width: 20px; height: 20px; border-radius: 4px; margin-right: 8px; border: 2px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.3);"></div>
+                        <span>0.2 - 0.4 (Moyen)</span>
+                    </div>
+                    <div style="display: flex; align-items: center; margin-bottom: 5px;">
+                        <div style="background: #9ACD32; width: 20px; height: 20px; border-radius: 4px; margin-right: 8px; border: 2px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.3);"></div>
+                        <span>0.4 - 0.6 (Bon)</span>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <div style="background: #32CD32; width: 20px; height: 20px; border-radius: 4px; margin-right: 8px; border: 2px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.3);"></div>
+                        <span>> 0.6 (Excellent)</span>
+                    </div>
+                `;
+                
+                return div;
+            };
+            
+            legende.addTo(map);
+        }
+        
+        // Zoomer sur un champ
+        function zoomSurChamp(idChamp) {
+            const champ = champsNDVI.find(c => c.id === idChamp);
+            if (!champ) return;
+            
+            const dimensions = calculerDimensionsCarre(champ.superficie);
+            const demiCoteDeg = dimensions.demiCoteDeg;
+            
+            const bounds = [
+                [champ.lat - demiCoteDeg, champ.lon - demiCoteDeg],
+                [champ.lat + demiCoteDeg, champ.lon + demiCoteDeg]
+            ];
+            
+            map.fitBounds(bounds, { padding: [50, 50] });
+            highlightChamp(idChamp);
+        }
+        
+        // Mettre en surbrillance
+        function highlightChamp(idChamp) {
+            document.querySelectorAll('.stat-item').forEach(item => {
+                item.style.background = '#f8f9fa';
+                if (item.classList.contains('critical')) {
+                    item.style.background = '#ffebee';
+                }
+            });
+            
+            const statItem = document.querySelector(`.stat-item[data-champ="${idChamp}"]`);
+            if (statItem) {
+                statItem.style.background = '#e3f2fd';
+                statItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+        
+        // Voir les détails
+        function voirDetails(idChamp) {
+            const champ = champsNDVI.find(c => c.id === idChamp);
+            if (!champ) return;
+            
+            const dimensions = calculerDimensionsCarre(champ.superficie);
+            
+            const message = `
+                📊 DÉTAILS DE LA PARCELLE
+                -------------------------
+                Nom: ${champ.nom}
+                Culture: ${champ.culture}
+                Superficie: ${champ.superficie} hectares
+                Dimensions: ${dimensions.coteMetres}m × ${dimensions.coteMetres}m
+                NDVI: ${champ.ndvi.toFixed(3)}
+                État: ${champ.sante}
+                Région: ${champ.region}
+                -------------------------
+                ${champ.description}
+            `;
+            
+            alert(message);
+        }
+        
+        // Initialiser
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🛰️ SmartAgroMap Satellite initialisé');
+            
+            initialiserCarte();
+            
+            const cards = document.querySelectorAll('.parcel-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-15px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+            
+            document.querySelectorAll('.stat-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const champId = parseInt(this.getAttribute('data-champ'));
+                    zoomSurChamp(champId);
+                });
+            });
+            
+            document.querySelector('a[href="#carte-ndvi"]').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('carte-ndvi').scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+            });
+            
+            console.log('✅ Carte satellite avec polygones réels intégrée !');
+        });
+    </script>
+</body>
+</html>

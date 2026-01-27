@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - SmartAgroMap</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --agro-green: #27ae60;
+            --agro-light: #2ecc71;
+            --agro-dark: #16a085;
+            --agro-blue: #3498db;
+            --agro-orange: #e67e22;
+            --agro-red: #e74c3c;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e8f5e9 100%);
+            color: #2c3e50;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* HEADER */
+        .header {
+            background: linear-gradient(90deg, var(--agro-green), var(--agro-dark));
+            padding: 25px;
+            border-radius: 20px;
+            color: white;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(39, 174, 96, 0.3);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 3rem;
+            background: white;
+            color: var(--agro-green);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo-text h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+        }
+        
+        .logo-text p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        /* NAV */
+        .nav-bar {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            padding: 12px 25px;
+            border-radius: 15px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .nav-btn.active {
+            background: white;
+            color: var(--agro-green);
+        }
+        
+        .nav-btn.inactive {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .nav-btn.inactive:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        
+        /* PERIOD SELECTOR */
+        .period-selector {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .period-title {
+            font-size: 1.3rem;
+            color: var(--agro-dark);
+            font-weight: 600;
+        }
+        
+        .period-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .period-btn {
+            padding: 10px 20px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .period-btn.active {
+            background: var(--agro-green);
+            color: white;
+            border-color: var(--agro-green);
+        }
+        
+        .period-btn:hover:not(.active) {
+            background: #f8f9fa;
+        }
+        
+        /* STATS GRID */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+        }
+        
+        .icon-green { background: linear-gradient(135deg, var(--agro-green), var(--agro-light)); }
+        .icon-blue { background: linear-gradient(135deg, #3498db, #2980b9); }
+        .icon-orange { background: linear-gradient(135deg, #e67e22, #d35400); }
+        .icon-red { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        
+        .stat-trend {
+            font-size: 0.9rem;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .trend-up { background: #e8f5e9; color: var(--agro-green); }
+        .trend-down { background: #ffebee; color: #e74c3c; }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--agro-dark);
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 1rem;
+        }
+        
+        /* CHARTS GRID */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 1024px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .chart-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .chart-title {
+            font-size: 1.3rem;
+            color: var(--agro-dark);
+            font-weight: 600;
+        }
+        
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+        
+        /* TABLE */
+        .table-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+        
+        .table-title {
+            font-size: 1.3rem;
+            color: var(--agro-dark);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            color: var(--agro-dark);
+            font-weight: 600;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .status-badge {
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .status-excellent { background: #e3f2fd; color: #3498db; }
+        .status-good { background: #e8f5e9; color: var(--agro-green); }
+        .status-medium { background: #fff3e0; color: #f39c12; }
+        .status-poor { background: #ffebee; color: #e74c3c; }
+        
+        /* INSIGHTS */
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .insight-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+        
+        .insight-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .insight-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .insight-title {
+            font-size: 1.2rem;
+            color: var(--agro-dark);
+            font-weight: 600;
+        }
+        
+        .insight-text {
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+        
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #7f8c8d;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header class="header">
+            <div class="logo-container">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>SmartAgroMap</h1>
+                        <p>Analytics et données agricoles</p>
+                    </div>
+                </div>
+                
+                <div class="nav-bar">
+                    <a href="index.html" class="nav-btn inactive">
+                        <i class="fas fa-home"></i>
+                        Dashboard
+                    </a>
+                    <a href="map.html" class="nav-btn inactive">
+                        <i class="fas fa-map"></i>
+                        Carte
+                    </a>
+                    <a href="analytics.html" class="nav-btn active">
+                        <i class="fas fa-chart-bar"></i>
+                        Analytics
+                    </a>
+                    <a href="add.html" class="nav-btn inactive">
+                        <i class="fas fa-plus-circle"></i>
+                        Ajouter
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- PERIOD SELECTOR -->
+        <div class="period-selector">
+            <div class="period-title">
+                <i class="fas fa-calendar-alt"></i>
+                Période d'analyse
+            </div>
+            <div class="period-buttons">
+                <button class="period-btn active">7 jours</button>
+                <button class="period-btn">30 jours</button>
+                <button class="period-btn">3 mois</button>
+                <button class="period-btn">1 an</button>
+                <button class="period-btn">Personnalisé</button>
+            </div>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon icon-green">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> 12%
+                    </div>
+                </div>
+                <div class="stat-value">63.5%</div>
+                <div class="stat-label">Santé végétale moyenne (NDVI)</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon icon-blue">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <div class="stat-trend trend-down">
+                        <i class="fas fa-arrow-down"></i> 8%
+                    </div>
+                </div>
+                <div class="stat-value">41%</div>
+                <div class="stat-label">Humidité sol moyenne</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon icon-orange">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> 5%
+                    </div>
+                </div>
+                <div class="stat-value">34.5°C</div>
+                <div class="stat-label">Température moyenne</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon icon-red">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="stat-trend trend-down">
+                        <i class="fas fa-arrow-down"></i> 15%
+                    </div>
+                </div>
+                <div class="stat-value">1</div>
+                <div class="stat-label">Alertes actives</div>
+            </div>
+        </div>
+
+        <!-- CHARTS -->
+        <div class="charts-grid">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div class="chart-title">Évolution NDVI par parcelle</div>
+                    <select style="padding: 8px 15px; border-radius: 10px; border: 2px solid #e0e0e0;">
+                        <option>30 derniers jours</option>
+                        <option>7 derniers jours</option>
+                        <option>3 derniers mois</option>
+                    </select>
+                </div>
+                <div class="chart-container">
+                    <canvas id="ndviChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div class="chart-title">Répartition par type de culture</div>
+                    <div style="color: #7f8c8d; font-size: 0.9rem;">Total: 11.5 ha</div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="cropsChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- TABLE -->
+        <div class="table-card">
+            <div class="table-title">
+                <i class="fas fa-table"></i>
+                Performances détaillées des parcelles
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parcelle</th>
+                        <th>Culture</th>
+                        <th>Superficie</th>
+                        <th>NDVI</th>
+                        <th>Humidité</th>
+                        <th>Rendement estimé</th>
+                        <th>État</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Ndioum Nord</strong></td>
+                        <td>🥜 Arachide</td>
+                        <td>2.5 ha</td>
+                        <td>72%</td>
+                        <td>45%</td>
+                        <td>3.2 t/ha</td>
+                        <td><span class="status-badge status-excellent">Excellent</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Familial Est</strong></td>
+                        <td>🌾 Mil</td>
+                        <td>1.8 ha</td>
+                        <td>58%</td>
+                        <td>32%</td>
+                        <td>1.8 t/ha</td>
+                        <td><span class="status-badge status-medium">Moyen</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Parcelle Irriguée</strong></td>
+                        <td>🌾 Riz</td>
+                        <td>3.2 ha</td>
+                        <td>85%</td>
+                        <td>68%</td>
+                        <td>4.5 t/ha</td>
+                        <td><span class="status-badge status-good">Très bon</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Champ du Sud</strong></td>
+                        <td>🌽 Maïs</td>
+                        <td>4 ha</td>
+                        <td>38%</td>
+                        <td>18%</td>
+                        <td>1.2 t/ha</td>
+                        <td><span class="status-badge status-poor">Critique</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- INSIGHTS -->
+        <div class="insights-grid">
+            <div class="insight-card">
+                <div class="insight-header">
+                    <div class="insight-icon icon-green">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="insight-title">Recommandation</div>
+                </div>
+                <div class="insight-text">
+                    <strong>Champ du Sud</strong> nécessite une irrigation urgente. L'humidité à 18% est critique pour la culture du maïs. Recommandation: 50mm d'eau dans les 48h.
+                </div>
+            </div>
+            
+            <div class="insight-card">
+                <div class="insight-header">
+                    <div class="insight-icon icon-blue">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="insight-title">Tendance positive</div>
+                </div>
+                <div class="insight-text">
+                    La santé végétale s'améliore de 12% cette semaine. La parcelle irriguée montre une croissance exceptionnelle avec 85% NDVI.
+                </div>
+            </div>
+            
+            <div class="insight-card">
+                <div class="insight-header">
+                    <div class="insight-icon icon-orange">
+                        <i class="fas fa-cloud-sun-rain"></i>
+                    </div>
+                    <div class="insight-title">Météo</div>
+                </div>
+                <div class="insight-text">
+                    Prévisions: Pluies légères attendues dans 3 jours. Températures stables autour de 34°C. Humidité relative: 42%.
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <p>© 2024 SmartAgroMap | Analytics agricoles intelligentes</p>
+            <p>Données mises à jour en temps réel | Prochaine analyse: 18:00</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📊 Analytics SmartAgroMap initialisé');
+            
+            // Chart 1: Évolution NDVI
+            const ndviCtx = document.getElementById('ndviChart').getContext('2d');
+            const ndviChart = new Chart(ndviCtx, {
+                type: 'line',
+                data: {
+                    labels: ['J-30', 'J-25', 'J-20', 'J-15', 'J-10', 'J-5', 'Aujourd\'hui'],
+                    datasets: [
+                        {
+                            label: 'Ndioum Nord (Arachide)',
+                            data: [65, 68, 70, 69, 71, 72, 72],
+                            borderColor: '#27ae60',
+                            backgroundColor: 'rgba(39, 174, 96, 0.1)',
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Familial Est (Mil)',
+                            data: [55, 57, 56, 58, 57, 58, 58],
+                            borderColor: '#f1c40f',
+                            backgroundColor: 'rgba(241, 196, 15, 0.1)',
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Parcelle Irriguée (Riz)',
+                            data: [78, 80, 82, 83, 84, 85, 85],
+                            borderColor: '#3498db',
+                            backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Champ du Sud (Maïs)',
+                            data: [45, 42, 40, 39, 38, 38, 38],
+                            borderColor: '#e74c3c',
+                            backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 30,
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: 'NDVI (%)'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Chart 2: Répartition cultures
+            const cropsCtx = document.getElementById('cropsChart').getContext('2d');
+            const cropsChart = new Chart(cropsCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Arachide', 'Mil', 'Riz', 'Maïs'],
+                    datasets: [{
+                        data: [2.5, 1.8, 3.2, 4],
+                        backgroundColor: [
+                            '#27ae60',
+                            '#f1c40f',
+                            '#3498db',
+                            '#e74c3c'
+                        ],
+                        borderWidth: 2,
+                        borderColor: 'white'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = 11.5;
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} ha (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Boutons période
+            document.querySelectorAll('.period-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Simuler changement de données
+                    const period = this.textContent;
+                    alert(`Chargement des données pour: ${period}`);
+                });
+            });
+            
+            // Mise à jour en temps réel simulée
+            setInterval(() => {
+                // Mettre à jour les tendences aléatoirement
+                const trends = document.querySelectorAll('.stat-trend');
+                trends.forEach(trend => {
+                    if (Math.random() > 0.5) {
+                        trend.innerHTML = '<i class="fas fa-arrow-up"></i> ' + Math.floor(Math.random() * 20) + '%';
+                        trend.className = 'stat-trend trend-up';
+                    } else {
+                        trend.innerHTML = '<i class="fas fa-arrow-down"></i> ' + Math.floor(Math.random() * 15) + '%';
+                        trend.className = 'stat-trend trend-down';
+                    }
+                });
+            }, 15000);
+        });
+    </script>
+</body>
+</html>
