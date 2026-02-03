@@ -38,6 +38,370 @@
             overflow-x: hidden;
         }
         
+        /* PAGE DE CONNEXION */
+        .login-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 450px;
+            overflow: hidden;
+        }
+
+        .login-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 40px 30px 30px;
+            text-align: center;
+        }
+
+        .login-form {
+            padding: 40px 30px 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: #f8f9fa;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--primary);
+            background: white;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+
+        .checkbox-group label {
+            margin-bottom: 0;
+            font-weight: normal;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(46, 125, 50, 0.3);
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .login-footer a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .login-footer a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .login-footer span {
+            color: #ccc;
+        }
+
+        .login-info {
+            background: #f8f9fa;
+            padding: 25px 30px;
+            border-top: 1px solid #eee;
+        }
+
+        .info-box {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .info-box i {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-top: 3px;
+        }
+
+        .info-box h4 {
+            color: var(--primary-dark);
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        .info-box p {
+            color: var(--gray);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* MODALE CENTRÉE */
+        .modal-center {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2002;
+            min-width: 400px;
+            max-width: 90%;
+        }
+
+        .modal-center .modal-content {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .modal-center .modal-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-center .modal-body {
+            padding: 25px;
+            color: var(--dark);
+        }
+
+        .contact-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .contact-info p {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .contact-info i {
+            color: var(--primary);
+            width: 20px;
+        }
+
+        /* ESPACE UTILISATEUR DANS SIDEBAR */
+        .user-profile {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            border: 3px solid rgba(255,255,255,0.3);
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .profile-role {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            background: rgba(255,255,255,0.1);
+            padding: 3px 10px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .profile-stat {
+            text-align: center;
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+        }
+
+        .profile-stat-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .profile-stat-label {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        /* PAGE PROFIL UTILISATEUR */
+        .profile-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+
+        .profile-section-title {
+            font-size: 1.4rem;
+            color: var(--primary-dark);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .profile-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .info-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-value {
+            font-size: 1.1rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        /* RESPONSIVE LOGIN */
+        @media (max-width: 768px) {
+            .login-container {
+                max-width: 100%;
+            }
+            
+            .modal-center {
+                min-width: 90%;
+            }
+            
+            .profile-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
         /* SIDEBAR */
         .sidebar {
             width: var(--sidebar-width);
@@ -84,25 +448,6 @@
         }
         
         .logo-text .tagline {
-            font-size: 0.8rem;
-            opacity: 0.9;
-        }
-        
-        .user-info {
-            padding: 15px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-            margin-top: 20px;
-            backdrop-filter: blur(5px);
-        }
-        
-        .user-name {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-        
-        .user-role {
             font-size: 0.8rem;
             opacity: 0.9;
         }
@@ -309,7 +654,7 @@
             line-height: 1.4;
         }
         
-        /* CARTE */
+        /* CARTE - MODIFICATIONS POUR AGRANDIR */
         .map-section {
             background: white;
             padding: 25px;
@@ -318,11 +663,20 @@
             margin-bottom: 30px;
         }
         
-        #ndvi-map, #mini-map {
+        #ndvi-map, #mini-map, #admin-map {
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 3px 10px rgba(0,0,0,0.1);
             border: 1px solid #e0e0e0;
+        }
+        
+        /* Agrandissement des cartes */
+        #ndvi-map {
+            height: 650px !important;
+        }
+        
+        #admin-map {
+            height: 700px !important;
         }
         
         .map-controls {
@@ -447,7 +801,7 @@
             transform: scale(1.05);
         }
         
-        /* ANALYTICS - NOUVEAUX STYLES */
+        /* ANALYTICS */
         .analytics-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -512,7 +866,7 @@
         .indicator-warning { color: var(--warning); }
         .indicator-danger { color: var(--danger); }
         
-        /* MODALES - NOUVEAU DESIGN */
+        /* MODALES */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -759,6 +1113,11 @@
             .chart-card.large {
                 grid-column: span 1;
             }
+            
+            /* Ajustement des cartes sur mobile */
+            #ndvi-map, #admin-map {
+                height: 500px !important;
+            }
         }
         
         @media (max-width: 768px) {
@@ -800,6 +1159,11 @@
                 width: 50px;
                 height: 50px;
                 font-size: 1.2rem;
+            }
+            
+            /* Ajustement des cartes sur petit mobile */
+            #ndvi-map, #admin-map {
+                height: 400px !important;
             }
         }
         
@@ -961,9 +1325,225 @@
             border-radius: 10px;
             min-width: 80px;
         }
+        
+        /* LÉGENDE REDUITE */
+        .legend-compact {
+            background: white !important;
+            padding: 8px !important;
+            border-radius: 8px !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+            min-width: 150px !important;
+            max-width: 180px !important;
+            border: 1px solid #ddd !important;
+            font-family: 'Segoe UI', sans-serif !important;
+        }
+        
+        .legend-compact h4 {
+            margin: 0 0 8px 0 !important;
+            color: var(--primary-dark) !important;
+            font-size: 0.9rem !important;
+            font-weight: 700 !important;
+            border-bottom: 1px solid #eee !important;
+            padding-bottom: 6px !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+        }
+        
+        .legend-compact-item {
+            display: flex !important;
+            align-items: center !important;
+            margin-bottom: 6px !important;
+            padding: 4px !important;
+            background: #f8f9fa !important;
+            border-radius: 4px !important;
+            font-size: 0.8rem !important;
+        }
+        
+        .legend-compact-color {
+            width: 16px !important;
+            height: 16px !important;
+            margin-right: 8px !important;
+            border-radius: 3px !important;
+            border: 1px solid white !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+        }
+        
+        /* PAGE ADMIN */
+        .admin-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .admin-stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--secondary);
+            transition: all 0.3s ease;
+        }
+        
+        .admin-stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        
+        .admin-stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin: 10px 0;
+        }
+        
+        .admin-table-container {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+        
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .admin-table th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            color: var(--primary-dark);
+            font-weight: 600;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .admin-table td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .admin-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .user-role-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .role-admin { background: #4CAF50; color: white; }
+        .role-gestionnaire { background: #2196F3; color: white; }
+        .role-technicien { background: #FF9800; color: white; }
     </style>
 </head>
 <body>
+    <!-- PAGE DE CONNEXION -->
+    <div class="login-page" id="loginPage">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>SmartAgroMap</h1>
+                        <p class="tagline">Connexion Gestionnaire</p>
+                    </div>
+                </div>
+            </div>
+            
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="username">
+                        <i class="fas fa-user"></i>
+                        Identifiant
+                    </label>
+                    <input type="text" id="username" placeholder="Votre identifiant" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i>
+                        Mot de passe
+                    </label>
+                    <input type="password" id="password" placeholder="Votre mot de passe" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="role">
+                        <i class="fas fa-user-tag"></i>
+                        Rôle
+                    </label>
+                    <select id="role" required>
+                        <option value="">Sélectionnez votre rôle</option>
+                        <option value="gestionnaire">Gestionnaire Coopérative</option>
+                        <option value="technicien">Technicien Agricole</option>
+                        <option value="admin">Administrateur</option>
+                    </select>
+                </div>
+                
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="remember">
+                    <label for="remember">Se souvenir de moi</label>
+                </div>
+                
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Se connecter
+                </button>
+                
+                <div class="login-footer">
+                    <a href="#" onclick="showForgotPassword()">Mot de passe oublié ?</a>
+                    <span>•</span>
+                    <a href="#" onclick="showContactAdmin()">Contacter l'administrateur</a>
+                </div>
+            </form>
+            
+            <div class="login-info">
+                <div class="info-box">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <h4>Accès sécurisé</h4>
+                        <p>Réservé aux membres autorisés de la Coopérative Barone</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALE MOT DE PASSE OUBLIÉ -->
+    <div class="modal-overlay" id="forgotPasswordModal">
+        <div class="modal-center">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">
+                        <i class="fas fa-key"></i>
+                        Réinitialisation du mot de passe
+                    </h3>
+                    <button class="close-modal" onclick="closeForgotPassword()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Contactez l'administrateur de la coopérative pour réinitialiser votre mot de passe.</p>
+                    <div class="contact-info">
+                        <p><i class="fas fa-phone"></i> <strong>+221 77 123 45 67</strong></p>
+                        <p><i class="fas fa-envelope"></i> <strong>admin@cooperative-barone.sn</strong></p>
+                        <p><i class="fas fa-user"></i> <strong>M. Saliou Ndiaye</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- BOUTON MENU MOBILE -->
     <button class="mobile-menu-btn" id="mobileMenuBtn">
         <i class="fas fa-bars"></i>
@@ -985,9 +1565,27 @@
                 </div>
             </div>
             
-            <div class="user-info">
-                <div class="user-name">Coopérative Barone</div>
-                <div class="user-role">6 parcelles • Kaffrine, Sénégal</div>
+            <div class="user-profile">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="profile-info">
+                        <div class="profile-name" id="userFullName">Ndiaye Aliou</div>
+                        <div class="profile-role" id="userRole">Gestionnaire Principal</div>
+                    </div>
+                </div>
+                
+                <div class="profile-stats">
+                    <div class="profile-stat">
+                        <div class="profile-stat-value" id="userParcelles">6</div>
+                        <div class="profile-stat-label">Parcelles</div>
+                    </div>
+                    <div class="profile-stat">
+                        <div class="profile-stat-value" id="userSuperficie">8.5 ha</div>
+                        <div class="profile-stat-label">Superficie</div>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -1011,6 +1609,15 @@
             <a href="#export" class="nav-item" onclick="showPage('export')">
                 <i class="fas fa-download"></i>
                 Exporter
+            </a>
+            <a href="#profil" class="nav-item" onclick="showPage('profil')">
+                <i class="fas fa-user-circle"></i>
+                Mon Profil
+            </a>
+            <!-- Lien Admin - visible uniquement pour les administrateurs -->
+            <a href="#admin" class="nav-item" onclick="showPage('admin')" id="adminNavItem" style="display: none;">
+                <i class="fas fa-cogs"></i>
+                Administration
             </a>
         </nav>
     </div>
@@ -1121,7 +1728,7 @@
                         </div>
                     </div>
                     
-                    <div id="ndvi-map" style="height: 500px;"></div>
+                    <div id="ndvi-map"></div>
                     
                     <div class="map-controls">
                         <button class="map-btn" onclick="recentrerCarte()">
@@ -1196,6 +1803,104 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- PAGE ADMIN -->
+        <div class="page-container" id="admin">
+            <div class="page-header">
+                <h1 class="page-title">
+                    <i class="fas fa-cogs"></i>
+                    Administration
+                </h1>
+                <p class="page-subtitle">Gestion globale de la plateforme - Coopérative Barone</p>
+            </div>
+            
+            <div class="admin-stats-grid">
+                <div class="admin-stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-title">Utilisateurs Actifs</div>
+                    </div>
+                    <div class="admin-stat-value" id="admin-total-users">12</div>
+                    <div class="stat-desc">3 gestionnaires, 8 techniciens, 1 admin</div>
+                </div>
+                
+                <div class="admin-stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon">
+                            <i class="fas fa-tractor"></i>
+                        </div>
+                        <div class="stat-title">Parcelles Totales</div>
+                    </div>
+                    <div class="admin-stat-value" id="admin-total-parcelles">24</div>
+                    <div class="stat-desc">36.5 ha total • 100% arachide</div>
+                </div>
+                
+                <div class="admin-stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-title">Alertes Actives</div>
+                    </div>
+                    <div class="admin-stat-value" id="admin-alertes">5</div>
+                    <div class="stat-desc">2 critiques, 3 avertissements</div>
+                </div>
+                
+                <div class="admin-stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-title">Performance Moy.</div>
+                    </div>
+                    <div class="admin-stat-value" id="admin-performance">68%</div>
+                    <div class="stat-desc">+3% vs mois dernier</div>
+                </div>
+            </div>
+            
+            <div class="map-section">
+                <h2 style="font-size: 1.3rem; color: var(--primary-dark); margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-map"></i>
+                    Vue d'ensemble des parcelles (Admin)
+                </h2>
+                <div id="admin-map"></div>
+            </div>
+            
+            <div class="admin-table-container">
+                <h3 class="chart-title">
+                    <i class="fas fa-users-cog"></i>
+                    Gestion des Utilisateurs
+                </h3>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom</th>
+                            <th>Rôle</th>
+                            <th>Email</th>
+                            <th>Téléphone</th>
+                            <th>Parcelles</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-users-table">
+                        <!-- Rempli par JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="chart-card">
+                <h3 class="chart-title">
+                    <i class="fas fa-chart-pie"></i>
+                    Répartition des Rôles
+                </h3>
+                <div class="chart-container">
+                    <canvas id="admin-roles-chart"></canvas>
                 </div>
             </div>
         </div>
@@ -1552,8 +2257,174 @@
                 </button>
             </div>
         </div>
+        
+        <!-- PAGE PROFIL UTILISATEUR -->
+        <div class="page-container" id="profil">
+            <div class="page-header">
+                <h1 class="page-title">
+                    <i class="fas fa-user-circle"></i>
+                    Mon Profil Gestionnaire
+                </h1>
+                <p class="page-subtitle">Informations personnelles et coordonnées</p>
+            </div>
+            
+            <div class="profile-grid">
+                <div class="profile-section">
+                    <h2 class="profile-section-title">
+                        <i class="fas fa-id-card"></i>
+                        Informations Personnelles
+                    </h2>
+                    
+                    <div class="profile-card">
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-user"></i>
+                                Nom Complet
+                            </div>
+                            <div class="info-value" id="profileName">Ndiaye Aliou</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-envelope"></i>
+                                Email
+                            </div>
+                            <div class="info-value" id="profileEmail">aliou.ndiaye@cooperative-barone.sn</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-phone"></i>
+                                Téléphone
+                            </div>
+                            <div class="info-value" id="profilePhone">+221 77 123 45 67</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Adresse
+                            </div>
+                            <div class="info-value" id="profileAddress">Coopérative Barone, Kaffrine, Sénégal</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="profile-section">
+                    <h2 class="profile-section-title">
+                        <i class="fas fa-briefcase"></i>
+                        Informations Professionnelles
+                    </h2>
+                    
+                    <div class="profile-card">
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-user-tag"></i>
+                                Rôle
+                            </div>
+                            <div class="info-value" id="profileRole">Gestionnaire Principal</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-calendar-alt"></i>
+                                Date d'adhésion
+                            </div>
+                            <div class="info-value" id="profileJoinDate">15 Mars 2022</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-building"></i>
+                                Coopérative
+                            </div>
+                            <div class="info-value" id="profileCooperative">Coopérative Agricole Barone</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-id-badge"></i>
+                                Matricule
+                            </div>
+                            <div class="info-value" id="profileMatricule">GA-2022-001</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="profile-section">
+                    <h2 class="profile-section-title">
+                        <i class="fas fa-tractor"></i>
+                        Responsabilités
+                    </h2>
+                    
+                    <div class="profile-card">
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-leaf"></i>
+                                Parcelles gérées
+                            </div>
+                            <div class="info-value" id="profileParcelles">6 parcelles</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-ruler-combined"></i>
+                                Superficie totale
+                            </div>
+                            <div class="info-value" id="profileSuperficie">8.5 hectares</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-users"></i>
+                                Agriculteurs suivis
+                            </div>
+                            <div class="info-value" id="profileFarmers">6 agriculteurs</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-chart-line"></i>
+                                Performance moyenne
+                            </div>
+                            <div class="info-value" id="profilePerformance">72%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="profile-section">
+                <h2 class="profile-section-title">
+                    <i class="fas fa-cogs"></i>
+                    Paramètres du compte
+                </h2>
+                
+                <div class="profile-actions">
+                    <button class="map-btn" onclick="editProfile()">
+                        <i class="fas fa-edit"></i>
+                        Modifier le profil
+                    </button>
+                    
+                    <button class="map-btn secondary" onclick="changePassword()">
+                        <i class="fas fa-key"></i>
+                        Changer le mot de passe
+                    </button>
+                    
+                    <button class="map-btn" style="background: var(--warning);" onclick="exportProfileData()">
+                        <i class="fas fa-download"></i>
+                        Exporter mes données
+                    </button>
+                    
+                    <button class="map-btn" style="background: var(--danger);" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Déconnexion
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-        <!-- MODALE PANNEAU LATÉRAL -->
+    
+    <!-- MODALE PANNEAU LATÉRAL -->
     <div class="modal-overlay" id="modalOverlay"></div>
     
     <!-- PANEAU LATÉRAL POUR LES VALEURS NDVI -->
@@ -1603,8 +2474,7 @@
             <span class="btn-tooltip">Aide</span>
         </button>
     </div>
-
-    <!-- Leaflet JS -->
+        <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
     <script>
@@ -1791,11 +2661,318 @@
         let streetLayer = null;
         let satelliteLayer = null;
         let chartInstances = [];
+        let currentUser = null;
+
+        // ============================================
+        // GESTION DE LA CONNEXION
+        // ============================================
+        function initLogin() {
+            // Vérifier si l'utilisateur est déjà connecté
+            const savedUser = localStorage.getItem('smartagromap_user');
+            if (savedUser) {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    showApp();
+                    return;
+                } catch (e) {
+                    console.error("Erreur de parsing des données utilisateur:", e);
+                }
+            }
+            
+            // Sinon, afficher la page de connexion
+            showLogin();
+        }
+
+        function showLogin() {
+            document.getElementById('loginPage').style.display = 'flex';
+            document.querySelector('.main-content').style.display = 'none';
+            document.querySelector('.floating-buttons').style.display = 'none';
+            document.querySelector('.mobile-menu-btn').style.display = 'none';
+            
+            // Focus sur le premier champ
+            setTimeout(() => {
+                document.getElementById('username')?.focus();
+            }, 300);
+        }
+
+        function showApp() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.querySelector('.main-content').style.display = 'block';
+            document.querySelector('.floating-buttons').style.display = 'flex';
+            document.querySelector('.mobile-menu-btn').style.display = 'block';
+            
+            // Mettre à jour les infos utilisateur
+            updateUserInfo();
+            
+            // Afficher la page dashboard par défaut
+            showPage('dashboard');
+            
+            // Petite animation de bienvenue
+            setTimeout(() => {
+                if (currentUser) {
+                    console.log(`👋 Bienvenue ${currentUser.fullName} !`);
+                }
+            }, 500);
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const role = document.getElementById('role').value;
+            const remember = document.getElementById('remember').checked;
+            
+            // Simulation d'animation de chargement
+            const loginBtn = event.target.querySelector('.login-btn') || document.querySelector('.login-btn');
+            const originalText = loginBtn.innerHTML;
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion...';
+            loginBtn.disabled = true;
+            
+            // Simulation de vérification (en production, utiliser une API)
+            setTimeout(() => {
+                if (username && password && role) {
+                    // Données utilisateur simulées
+                    currentUser = {
+                        id: 1,
+                        username: username,
+                        fullName: "Ndiaye Aliou",
+                        email: "aliou.ndiaye@cooperative-barone.sn",
+                        phone: "+221 77 123 45 67",
+                        role: role,
+                        address: "Coopérative Barone, Kaffrine, Sénégal",
+                        joinDate: "15 Mars 2022",
+                        matricule: "GA-2022-001",
+                        cooperative: "Coopérative Agricole Barone",
+                        managedParcels: 6,
+                        totalArea: "8.5 ha",
+                        farmersCount: 6,
+                        performance: 72,
+                        lastLogin: new Date().toLocaleString('fr-FR')
+                    };
+                    
+                    // Sauvegarder dans localStorage si "Se souvenir de moi"
+                    if (remember) {
+                        localStorage.setItem('smartagromap_user', JSON.stringify(currentUser));
+                    } else {
+                        sessionStorage.setItem('smartagromap_user', JSON.stringify(currentUser));
+                    }
+                    
+                    // Afficher l'application
+                    showApp();
+                    
+                    // Afficher notification de bienvenue
+                    showNotification(`✅ Connexion réussie ! Bienvenue ${currentUser.fullName}`, 'success');
+                    
+                } else {
+                    // Réactiver le bouton
+                    loginBtn.innerHTML = originalText;
+                    loginBtn.disabled = false;
+                    
+                    // Afficher erreur
+                    showNotification('❌ Veuillez remplir tous les champs !', 'error');
+                    document.getElementById('username')?.focus();
+                }
+            }, 1500);
+        }
+
+        function getRoleName(role) {
+            const roles = {
+                'gestionnaire': 'Gestionnaire Coopérative',
+                'technicien': 'Technicien Agricole',
+                'admin': 'Administrateur'
+            };
+            return roles[role] || role;
+        }
+
+        function showForgotPassword() {
+            document.getElementById('forgotPasswordModal').style.display = 'block';
+        }
+
+        function closeForgotPassword() {
+            document.getElementById('forgotPasswordModal').style.display = 'none';
+        }
+
+        function showContactAdmin() {
+            alert("📞 CONTACT ADMINISTRATEUR\n\n" +
+                  "• Téléphone: +221 77 123 45 67\n" +
+                  "• Email: admin@cooperative-barone.sn\n" +
+                  "• Responsable: M. Saliou Ndiaye\n" +
+                  "• Horaires: Lundi-Vendredi 8h-17h");
+        }
+
+        // Fonction de notification
+        function showNotification(message, type = 'info') {
+            // Créer la notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 30px;
+                right: 30px;
+                padding: 20px 25px;
+                background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#F44336' : '#2196F3'};
+                color: white;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                z-index: 9999;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                max-width: 400px;
+                animation: slideInRight 0.3s ease-out;
+                border-left: 5px solid ${type === 'success' ? '#388E3C' : type === 'error' ? '#D32F2F' : '#1976D2'};
+            `;
+            
+            notification.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Supprimer après 5 secondes
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease-out';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 5000);
+        }
+
+        // ============================================
+        // GESTION DU PROFIL UTILISATEUR
+        // ============================================
+        function updateUserInfo() {
+            if (!currentUser) return;
+            
+            // Mettre à jour la sidebar
+            document.getElementById('userFullName').textContent = currentUser.fullName;
+            document.getElementById('userRole').textContent = getRoleName(currentUser.role);
+            document.getElementById('userParcelles').textContent = currentUser.managedParcels;
+            document.getElementById('userSuperficie').textContent = currentUser.totalArea;
+            
+            // Mettre à jour la page profil
+            document.getElementById('profileName').textContent = currentUser.fullName;
+            document.getElementById('profileEmail').textContent = currentUser.email;
+            document.getElementById('profilePhone').textContent = currentUser.phone;
+            document.getElementById('profileAddress').textContent = currentUser.address;
+            document.getElementById('profileRole').textContent = getRoleName(currentUser.role);
+            document.getElementById('profileJoinDate').textContent = currentUser.joinDate;
+            document.getElementById('profileCooperative').textContent = currentUser.cooperative;
+            document.getElementById('profileMatricule').textContent = currentUser.matricule;
+            document.getElementById('profileParcelles').textContent = `${currentUser.managedParcels} parcelles`;
+            document.getElementById('profileSuperficie').textContent = currentUser.totalArea;
+            document.getElementById('profileFarmers').textContent = `${currentUser.farmersCount} agriculteurs`;
+            document.getElementById('profilePerformance').textContent = `${currentUser.performance}%`;
+        }
+
+        function editProfile() {
+            showNotification("✏️ Mode édition du profil - Fonctionnalité à venir", 'info');
+            
+            // Simulation d'ouverture d'un formulaire d'édition
+            setTimeout(() => {
+                const newName = prompt("Entrez votre nouveau nom complet:", currentUser.fullName);
+                if (newName && newName.trim() !== '') {
+                    currentUser.fullName = newName;
+                    updateUserInfo();
+                    showNotification("✅ Nom mis à jour avec succès !", 'success');
+                    
+                    // Mettre à jour le stockage
+                    const savedUser = localStorage.getItem('smartagromap_user') || sessionStorage.getItem('smartagromap_user');
+                    if (savedUser) {
+                        const userData = JSON.parse(savedUser);
+                        userData.fullName = newName;
+                        if (localStorage.getItem('smartagromap_user')) {
+                            localStorage.setItem('smartagromap_user', JSON.stringify(userData));
+                        } else {
+                            sessionStorage.setItem('smartagromap_user', JSON.stringify(userData));
+                        }
+                    }
+                }
+            }, 300);
+        }
+
+        function changePassword() {
+            showNotification("🔐 Changement de mot de passe - Fonctionnalité à venir", 'info');
+            
+            // Simulation de changement de mot de passe
+            setTimeout(() => {
+                const oldPass = prompt("Entrez votre ancien mot de passe:");
+                if (oldPass) {
+                    const newPass = prompt("Entrez votre nouveau mot de passe:");
+                    const confirmPass = prompt("Confirmez votre nouveau mot de passe:");
+                    
+                    if (newPass && newPass === confirmPass) {
+                        showNotification("✅ Mot de passe changé avec succès !", 'success');
+                    } else {
+                        showNotification("❌ Les mots de passe ne correspondent pas", 'error');
+                    }
+                }
+            }, 300);
+        }
+
+        function exportProfileData() {
+            if (!currentUser) {
+                showNotification("❌ Vous devez être connecté", 'error');
+                return;
+            }
+            
+            showNotification("📦 Préparation de l'export de vos données...", 'info');
+            
+            setTimeout(() => {
+                const userData = {
+                    ...currentUser,
+                    exportDate: new Date().toLocaleString('fr-FR'),
+                    platform: "SmartAgroMap Kaffrine",
+                    version: "1.0.0",
+                    parcelles: parcelles.map(p => ({
+                        id: p.id,
+                        nom: p.nom,
+                        ndvi: p.ndvi,
+                        humidite: p.humidite,
+                        superficie: p.superficie,
+                        sante: p.sante
+                    }))
+                };
+                
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(userData, null, 2));
+                const downloadAnchor = document.createElement('a');
+                downloadAnchor.setAttribute("href", dataStr);
+                downloadAnchor.setAttribute("download", `smartagromap_profil_${currentUser.username}_${Date.now()}.json`);
+                document.body.appendChild(downloadAnchor);
+                downloadAnchor.click();
+                document.body.removeChild(downloadAnchor);
+                
+                showNotification("✅ Données exportées avec succès !", 'success');
+            }, 1000);
+        }
+
+        function logout() {
+            if (confirm("⚠️ Êtes-vous sûr de vouloir vous déconnecter ?\n\nVous devrez vous reconnecter pour accéder à la plateforme.")) {
+                currentUser = null;
+                localStorage.removeItem('smartagromap_user');
+                sessionStorage.removeItem('smartagromap_user');
+                showLogin();
+                showNotification("👋 Déconnexion réussie ! À bientôt sur SmartAgroMap.", 'info');
+            }
+        }
 
         // ============================================
         // FONCTIONS DE BASE
         // ============================================
         function showPage(pageId) {
+            // Vérifier si l'utilisateur est connecté pour accéder aux pages autres que login
+            if (!currentUser && pageId !== 'login') {
+                showLogin();
+                return;
+            }
+            
+            // Fermer les panneaux latéraux
+            fermerPanneauNDVI();
+            fermerPanneauDetails();
+            
+            // Changer de page
             document.querySelectorAll('.page-container').forEach(page => {
                 page.classList.remove('active');
             });
@@ -1804,14 +2981,17 @@
             if (page) {
                 page.classList.add('active');
                 
+                // Mettre à jour le menu actif
                 document.querySelectorAll('.nav-item').forEach(item => {
                     item.classList.remove('active');
                 });
                 const navItem = document.querySelector(`.nav-item[href="#${pageId}"]`);
                 if (navItem) navItem.classList.add('active');
                 
+                // Fermer la sidebar sur mobile
                 closeSidebar();
                 
+                // Initialiser les composants spécifiques à la page
                 setTimeout(() => {
                     if (pageId === 'carte-parcelles' && !map) {
                         initMap();
@@ -1822,6 +3002,9 @@
                     if (pageId === 'analytics') {
                         initCharts();
                         updateAdvice();
+                    }
+                    if (pageId === 'profil') {
+                        updateUserInfo();
                     }
                 }, 100);
             }
@@ -1856,6 +3039,8 @@
             satelliteLayer.addTo(map);
             ajouterParcellesSurCarte();
             ajouterLegende();
+            
+            showNotification("🗺️ Carte NDVI initialisée", 'info');
         }
 
         function ajouterParcellesSurCarte() {
@@ -1863,34 +3048,40 @@
                 const polygone = L.polygon(parcelle.geometry, {
                     color: parcelle.couleur,
                     fillColor: parcelle.couleur,
-                    fillOpacity: 0.5,
-                    weight: 2,
-                    opacity: 0.8
+                    fillOpacity: 0.6,
+                    weight: 3,
+                    opacity: 0.9
                 }).addTo(map);
                 
                 parcelleLayers[parcelle.id] = polygone;
                 
                 const popupContent = `
-                    <div style="min-width: 250px; padding: 15px;">
-                        <h3 style="margin: 0 0 10px 0; color: ${parcelle.couleur};">
+                    <div style="min-width: 280px; padding: 20px;">
+                        <h3 style="margin: 0 0 15px 0; color: ${parcelle.couleur}; font-size: 1.3rem; font-weight: 800;">
                             <i class="fas fa-tractor"></i> ${parcelle.nom}
                         </h3>
-                        <p style="margin: 0 0 8px 0; color: #666;">
-                            <strong>Propriétaire:</strong> ${parcelle.proprietaire}
-                        </p>
-                        <p style="margin: 0 0 8px 0; color: #666;">
-                            <strong>Superficie:</strong> ${parcelle.superficie}
-                        </p>
-                        <p style="margin: 0 0 15px 0; color: ${parcelle.couleur}; font-weight: 600;">
-                            <i class="fas fa-leaf"></i> État: ${parcelle.sante}
-                        </p>
-                        <div style="display: flex; gap: 10px;">
+                        <div style="margin-bottom: 15px;">
+                            <p style="margin: 0 0 10px 0; color: #666; font-size: 1rem;">
+                                <strong style="color: var(--dark);">Propriétaire:</strong> ${parcelle.proprietaire}
+                            </p>
+                            <p style="margin: 0 0 10px 0; color: #666; font-size: 1rem;">
+                                <strong style="color: var(--dark);">Superficie:</strong> ${parcelle.superficie}
+                            </p>
+                            <p style="margin: 0 0 15px 0; color: ${parcelle.couleur}; font-weight: 700; font-size: 1.1rem;">
+                                <i class="fas fa-leaf"></i> État: ${parcelle.sante}
+                            </p>
+                        </div>
+                        <div style="display: flex; gap: 15px;">
                             <button onclick="zoomSurParcelle(${parcelle.id})" 
-                                    style="flex: 1; padding: 8px; background: ${parcelle.couleur}; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                                    style="flex: 1; padding: 12px; background: ${parcelle.couleur}; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95rem; transition: all 0.3s;"
+                                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px ${parcelle.couleur}80'"
+                                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
                                 <i class="fas fa-search"></i> Zoom
                             </button>
                             <button onclick="afficherDetailsParcelle(${parcelle.id})" 
-                                    style="flex: 1; padding: 8px; background: #0288D1; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                                    style="flex: 1; padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95rem; transition: all 0.3s;"
+                                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(2, 136, 209, 0.3)'"
+                                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
                                 <i class="fas fa-info"></i> Détails
                             </button>
                         </div>
@@ -1906,21 +3097,21 @@
             legende.onAdd = function() {
                 const div = L.DomUtil.create('div', 'legend');
                 div.innerHTML = `
-                    <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); min-width: 180px; border: 1px solid #ddd;">
-                        <h4 style="margin: 0 0 12px 0; color: #2E7D32; font-size: 0.95rem; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                    <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); min-width: 220px; border: 1px solid #ddd; font-family: 'Segoe UI', sans-serif;">
+                        <h4 style="margin: 0 0 15px 0; color: var(--primary-dark); font-size: 1.1rem; font-weight: 800; border-bottom: 2px solid #eee; padding-bottom: 12px; display: flex; align-items: center; gap: 10px;">
                             <i class="fas fa-legend"></i> État NDVI
                         </h4>
-                        <div style="display: flex; align-items: center; margin-bottom: 8px;">
-                            <div style="width: 20px; height: 20px; background: #4CAF50; margin-right: 10px; border-radius: 3px; border: 1px solid white;"></div>
-                            <div style="font-size: 0.85rem; color: #666;">Bonne (> 0.110)</div>
+                        <div style="display: flex; align-items: center; margin-bottom: 12px; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                            <div style="width: 24px; height: 24px; background: #4CAF50; margin-right: 15px; border-radius: 4px; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.1);"></div>
+                            <div style="font-size: 0.95rem; color: #666; font-weight: 600;">Bonne (> 0.110)</div>
                         </div>
-                        <div style="display: flex; align-items: center; margin-bottom: 8px;">
-                            <div style="width: 20px; height: 20px; background: #FFC107; margin-right: 10px; border-radius: 3px; border: 1px solid white;"></div>
-                            <div style="font-size: 0.85rem; color: #666;">Moyenne (0.100-0.110)</div>
+                        <div style="display: flex; align-items: center; margin-bottom: 12px; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                            <div style="width: 24px; height: 24px; background: #FFC107; margin-right: 15px; border-radius: 4px; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.1);"></div>
+                            <div style="font-size: 0.95rem; color: #666; font-weight: 600;">Moyenne (0.100-0.110)</div>
                         </div>
-                        <div style="display: flex; align-items: center;">
-                            <div style="width: 20px; height: 20px; background: #F44336; margin-right: 10px; border-radius: 3px; border: 1px solid white;"></div>
-                            <div style="font-size: 0.85rem; color: #666;">Critique (< 0.100)</div>
+                        <div style="display: flex; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                            <div style="width: 24px; height: 24px; background: #F44336; margin-right: 15px; border-radius: 4px; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.1);"></div>
+                            <div style="font-size: 0.95rem; color: #666; font-weight: 600;">Critique (< 0.100)</div>
                         </div>
                     </div>
                 `;
@@ -1942,11 +3133,13 @@
                 L.polygon(parcelle.geometry, {
                     color: parcelle.couleur,
                     fillColor: parcelle.couleur,
-                    fillOpacity: 0.5,
-                    weight: 1
+                    fillOpacity: 0.6,
+                    weight: 2
                 }).addTo(miniMap).bindPopup(`
-                    <strong>${parcelle.nom}</strong><br>
-                    ${parcelle.proprietaire}
+                    <div style="padding: 10px;">
+                        <strong style="color: ${parcelle.couleur}; font-size: 1.1rem;">${parcelle.nom}</strong><br>
+                        <span style="color: #666;">${parcelle.proprietaire}</span>
+                    </div>
                 `);
             });
         }
@@ -1974,9 +3167,10 @@
                             parcelles.filter(p => p.sante === 'Critique').length
                         ],
                         backgroundColor: ['#4CAF50', '#FFC107', '#F44336'],
-                        borderWidth: 2,
+                        borderWidth: 3,
                         borderColor: 'white',
-                        hoverOffset: 15
+                        hoverOffset: 20,
+                        hoverBorderWidth: 4
                     }]
                 },
                 options: {
@@ -1986,23 +3180,32 @@
                         legend: {
                             position: 'bottom',
                             labels: {
-                                padding: 20,
-                                usePointStyle: true
+                                padding: 25,
+                                usePointStyle: true,
+                                font: {
+                                    size: 14,
+                                    weight: '600'
+                                }
                             }
                         },
                         tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const label = context.label || '';
-                                    const value = context.raw || 0;
-                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    const percentage = Math.round((value / total) * 100);
-                                    return `${label}: ${value} parcelles (${percentage}%)`;
-                                }
-                            }
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleFont: {
+                                size: 14,
+                                weight: '600'
+                            },
+                            bodyFont: {
+                                size: 13
+                            },
+                            padding: 12,
+                            cornerRadius: 8
                         }
                     },
-                    cutout: '60%'
+                    cutout: '65%',
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
                 }
             });
             chartInstances.push(ndviChart);
@@ -2017,17 +3220,18 @@
                         label: 'Valeur NDVI',
                         data: parcelles.map(p => p.ndvi),
                         backgroundColor: parcelles.map(p => {
-                            if (p.sante === 'Bonne') return 'rgba(76, 175, 80, 0.7)';
-                            if (p.sante === 'Moyenne') return 'rgba(255, 193, 7, 0.7)';
-                            return 'rgba(244, 67, 54, 0.7)';
+                            if (p.sante === 'Bonne') return 'rgba(76, 175, 80, 0.8)';
+                            if (p.sante === 'Moyenne') return 'rgba(255, 193, 7, 0.8)';
+                            return 'rgba(244, 67, 54, 0.8)';
                         }),
                         borderColor: parcelles.map(p => {
                             if (p.sante === 'Bonne') return '#4CAF50';
                             if (p.sante === 'Moyenne') return '#FFC107';
                             return '#F44336';
                         }),
-                        borderWidth: 2,
-                        borderRadius: 5
+                        borderWidth: 3,
+                        borderRadius: 8,
+                        borderSkipped: false
                     }]
                 },
                 options: {
@@ -2040,21 +3244,46 @@
                             title: {
                                 display: true,
                                 text: 'Valeur NDVI',
-                                font: { size: 14, weight: 'bold' }
+                                font: { size: 15, weight: '800' },
+                                padding: 10
                             },
                             grid: {
                                 color: 'rgba(0,0,0,0.05)'
+                            },
+                            ticks: {
+                                font: {
+                                    size: 13,
+                                    weight: '600'
+                                }
                             }
                         },
                         x: {
                             grid: {
                                 display: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 13,
+                                    weight: '600'
+                                }
                             }
                         }
                     },
                     plugins: {
-                        legend: { display: false },
+                        legend: { 
+                            display: false 
+                        },
                         tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleFont: {
+                                size: 14,
+                                weight: '600'
+                            },
+                            bodyFont: {
+                                size: 13
+                            },
+                            padding: 12,
+                            cornerRadius: 8,
                             callbacks: {
                                 label: function(context) {
                                     const parcelle = parcelles[context.dataIndex];
@@ -2067,6 +3296,10 @@
                                 }
                             }
                         }
+                    },
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeOutQuart'
                     }
                 }
             });
@@ -2083,29 +3316,43 @@
                             label: 'Parcelle 1 (Meilleure)',
                             data: historiqueNDVI["Parcelle 1"],
                             borderColor: '#4CAF50',
-                            backgroundColor: 'rgba(76, 175, 80, 0.1)',
-                            borderWidth: 3,
+                            backgroundColor: 'rgba(76, 175, 80, 0.15)',
+                            borderWidth: 4,
                             tension: 0.4,
-                            fill: true
+                            fill: true,
+                            pointBackgroundColor: '#4CAF50',
+                            pointBorderColor: 'white',
+                            pointBorderWidth: 2,
+                            pointRadius: 6,
+                            pointHoverRadius: 10
                         },
                         {
                             label: 'Parcelle 2 (Critique)',
                             data: historiqueNDVI["Parcelle 2"],
                             borderColor: '#F44336',
-                            backgroundColor: 'rgba(244, 67, 54, 0.1)',
-                            borderWidth: 3,
+                            backgroundColor: 'rgba(244, 67, 54, 0.15)',
+                            borderWidth: 4,
                             tension: 0.4,
-                            fill: true
+                            fill: true,
+                            pointBackgroundColor: '#F44336',
+                            pointBorderColor: 'white',
+                            pointBorderWidth: 2,
+                            pointRadius: 6,
+                            pointHoverRadius: 10
                         },
                         {
                             label: 'Moyenne Coopérative',
                             data: [0.102, 0.104, 0.105, 0.105, 0.106, 0.106, 0.106],
                             borderColor: '#0288D1',
-                            backgroundColor: 'rgba(2, 136, 209, 0.1)',
+                            backgroundColor: 'transparent',
                             borderWidth: 3,
                             tension: 0.4,
                             fill: false,
-                            borderDash: [5, 5]
+                            borderDash: [6, 6],
+                            pointBackgroundColor: '#0288D1',
+                            pointBorderColor: 'white',
+                            pointBorderWidth: 2,
+                            pointRadius: 5
                         }
                     ]
                 },
@@ -2120,20 +3367,34 @@
                             title: {
                                 display: true,
                                 text: 'Valeur NDVI',
-                                font: { size: 14, weight: 'bold' }
+                                font: { size: 15, weight: '800' },
+                                padding: 10
                             },
                             grid: {
                                 color: 'rgba(0,0,0,0.05)'
+                            },
+                            ticks: {
+                                font: {
+                                    size: 13,
+                                    weight: '600'
+                                }
                             }
                         },
                         x: {
                             title: {
                                 display: true,
                                 text: 'Date (Septembre 2024)',
-                                font: { size: 14, weight: 'bold' }
+                                font: { size: 15, weight: '800' },
+                                padding: 10
                             },
                             grid: {
                                 color: 'rgba(0,0,0,0.05)'
+                            },
+                            ticks: {
+                                font: {
+                                    size: 13,
+                                    weight: '600'
+                                }
                             }
                         }
                     },
@@ -2145,12 +3406,19 @@
                                     yMin: 0.11,
                                     yMax: 0.11,
                                     borderColor: '#4CAF50',
-                                    borderWidth: 2,
-                                    borderDash: [5, 5],
+                                    borderWidth: 3,
+                                    borderDash: [6, 6],
                                     label: {
                                         content: 'Seuil Bonne Santé',
                                         enabled: true,
-                                        position: 'end'
+                                        position: 'end',
+                                        backgroundColor: '#4CAF50',
+                                        color: 'white',
+                                        font: {
+                                            size: 12,
+                                            weight: '600'
+                                        },
+                                        padding: 6
                                     }
                                 },
                                 ligneCritique: {
@@ -2158,20 +3426,45 @@
                                     yMin: 0.10,
                                     yMax: 0.10,
                                     borderColor: '#F44336',
-                                    borderWidth: 2,
-                                    borderDash: [5, 5],
+                                    borderWidth: 3,
+                                    borderDash: [6, 6],
                                     label: {
                                         content: 'Seuil Critique',
                                         enabled: true,
-                                        position: 'start'
+                                        position: 'start',
+                                        backgroundColor: '#F44336',
+                                        color: 'white',
+                                        font: {
+                                            size: 12,
+                                            weight: '600'
+                                        },
+                                        padding: 6
                                     }
                                 }
                             }
                         },
                         tooltip: {
                             mode: 'index',
-                            intersect: false
+                            intersect: false,
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleFont: {
+                                size: 14,
+                                weight: '600'
+                            },
+                            bodyFont: {
+                                size: 13
+                            },
+                            padding: 12,
+                            cornerRadius: 8
                         }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeOutQuart'
                     }
                 },
                 plugins: [ChartAnnotation]
@@ -2188,9 +3481,9 @@
                         data: donneesCorrelation.map(d => ({ x: d.humidite, y: d.ndvi })),
                         backgroundColor: donneesCorrelation.map((d, i) => {
                             const parcelle = parcelles[i];
-                            if (parcelle.sante === 'Bonne') return 'rgba(76, 175, 80, 0.7)';
-                            if (parcelle.sante === 'Moyenne') return 'rgba(255, 193, 7, 0.7)';
-                            return 'rgba(244, 67, 54, 0.7)';
+                            if (parcelle.sante === 'Bonne') return 'rgba(76, 175, 80, 0.8)';
+                            if (parcelle.sante === 'Moyenne') return 'rgba(255, 193, 7, 0.8)';
+                            return 'rgba(244, 67, 54, 0.8)';
                         }),
                         borderColor: donneesCorrelation.map((d, i) => {
                             const parcelle = parcelles[i];
@@ -2198,9 +3491,9 @@
                             if (parcelle.sante === 'Moyenne') return '#FFC107';
                             return '#F44336';
                         }),
-                        borderWidth: 2,
-                        pointRadius: 8,
-                        pointHoverRadius: 12
+                        borderWidth: 3,
+                        pointRadius: 10,
+                        pointHoverRadius: 16
                     }]
                 },
                 options: {
@@ -2211,42 +3504,71 @@
                             title: {
                                 display: true,
                                 text: 'Humidité du sol (%)',
-                                font: { size: 14, weight: 'bold' }
+                                font: { size: 15, weight: '800' },
+                                padding: 10
                             },
                             min: 25,
                             max: 60,
                             grid: {
                                 color: 'rgba(0,0,0,0.05)'
+                            },
+                            ticks: {
+                                font: {
+                                    size: 13,
+                                    weight: '600'
+                                }
                             }
                         },
                         y: {
                             title: {
                                 display: true,
                                 text: 'Valeur NDVI',
-                                font: { size: 14, weight: 'bold' }
+                                font: { size: 15, weight: '800' },
+                                padding: 10
                             },
                             min: 0.095,
                             max: 0.12,
                             grid: {
                                 color: 'rgba(0,0,0,0.05)'
+                            },
+                            ticks: {
+                                font: {
+                                    size: 13,
+                                    weight: '600'
+                                }
                             }
                         }
                     },
                     plugins: {
                         tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleFont: {
+                                size: 14,
+                                weight: '600'
+                            },
+                            bodyFont: {
+                                size: 13
+                            },
+                            padding: 12,
+                            cornerRadius: 8,
                             callbacks: {
                                 label: function(context) {
                                     const point = context.raw;
                                     const parcelle = parcelles[context.dataIndex];
                                     return [
                                         `${parcelle.nom}`,
-                                        `NDVI: ${point.y}`,
+                                        `NDVI: ${point.y.toFixed(3)}`,
                                         `Humidité: ${point.x}%`,
-                                        `Rendement estimé: ${parcelle.rendement_estime} t/ha`
+                                        `Rendement estimé: ${parcelle.rendement_estime} t/ha`,
+                                        `Efficience eau: ${parcelle.efficience_eau}%`
                                     ];
                                 }
                             }
                         }
+                    },
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeOutQuart'
                     }
                 }
             });
@@ -2263,7 +3585,10 @@
             const content = document.getElementById('ndviSidebarContent');
             content.innerHTML = '';
             
-            parcelles.forEach(parcelle => {
+            // Trier par NDVI (du plus élevé au plus bas)
+            const parcellesTriees = [...parcelles].sort((a, b) => b.ndvi - a.ndvi);
+            
+            parcellesTriees.forEach(parcelle => {
                 let classe = 'parcelle-item';
                 if (parcelle.sante === 'Critique') classe += ' critical';
                 else if (parcelle.sante === 'Moyenne') classe += ' warning';
@@ -2271,18 +3596,21 @@
                 
                 content.innerHTML += `
                     <div class="${classe}" onclick="afficherDetailsParcelle(${parcelle.id})">
-                        <div class="parcelle-name">${parcelle.nom}</div>
+                        <div class="parcelle-name">
+                            <i class="fas fa-tractor" style="margin-right: 10px; color: ${parcelle.couleur};"></i>
+                            ${parcelle.nom}
+                        </div>
                         <div class="parcelle-owner">${parcelle.proprietaire}</div>
                         <div class="parcelle-details">
-                            <div class="ndvi-value" style="color: ${parcelle.couleur};">${parcelle.ndvi}</div>
+                            <div class="ndvi-value" style="color: ${parcelle.couleur}; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">${parcelle.ndvi}</div>
                             <button class="btn-details">
-                                <i class="fas fa-eye"></i> Voir
+                                <i class="fas fa-eye"></i> Détails
                             </button>
                         </div>
-                        <div style="margin-top: 10px; font-size: 0.85rem; color: #666;">
-                            <i class="fas fa-ruler"></i> ${parcelle.superficie} • 
-                            <i class="fas fa-tint"></i> ${parcelle.humidite}% • 
-                            <i class="fas fa-thermometer"></i> ${parcelle.temperature}°C
+                        <div style="margin-top: 15px; font-size: 0.95rem; color: #666; display: flex; gap: 15px; flex-wrap: wrap;">
+                            <span><i class="fas fa-ruler" style="color: var(--primary);"></i> ${parcelle.superficie}</span>
+                            <span><i class="fas fa-tint" style="color: var(--secondary);"></i> ${parcelle.humidite}%</span>
+                            <span><i class="fas fa-thermometer" style="color: #FF5722;"></i> ${parcelle.temperature}°C</span>
                         </div>
                     </div>
                 `;
@@ -2305,70 +3633,84 @@
             const conseils = genererConseils(parcelle);
             
             content.innerHTML = `
-                <div style="margin-bottom: 25px;">
-                    <h3 style="color: ${parcelle.couleur}; margin-bottom: 15px; font-size: 1.3rem;">
+                <div style="margin-bottom: 30px;">
+                    <h3 style="color: ${parcelle.couleur}; margin-bottom: 20px; font-size: 1.4rem; font-weight: 800; display: flex; align-items: center; gap: 15px;">
                         <i class="fas fa-tractor"></i> ${parcelle.nom}
                     </h3>
                     
-                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 25px; border-radius: 15px; margin-bottom: 25px; border-left: 5px solid ${parcelle.couleur}; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+                        <h4 style="color: var(--primary-dark); margin-bottom: 20px; font-size: 1.2rem; font-weight: 700;">
+                            <i class="fas fa-info-circle"></i> Informations Générales
+                        </h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
                             <div>
-                                <div style="color: #666; font-size: 0.9rem; margin-bottom: 5px;">Propriétaire</div>
-                                <div style="font-weight: 600;">${parcelle.proprietaire}</div>
+                                <div style="color: #666; font-size: 0.95rem; margin-bottom: 8px; font-weight: 600;">Propriétaire</div>
+                                <div style="font-weight: 800; color: var(--dark); font-size: 1.1rem;">${parcelle.proprietaire}</div>
                             </div>
                             <div>
-                                <div style="color: #666; font-size: 0.9rem; margin-bottom: 5px;">Village</div>
-                                <div style="font-weight: 600;">${parcelle.village}</div>
+                                <div style="color: #666; font-size: 0.95rem; margin-bottom: 8px; font-weight: 600;">Village</div>
+                                <div style="font-weight: 800; color: var(--dark); font-size: 1.1rem;">${parcelle.village}</div>
                             </div>
                         </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                             <div>
-                                <div style="color: #666; font-size: 0.9rem; margin-bottom: 5px;">Superficie</div>
-                                <div style="font-weight: 600;">${parcelle.superficie}</div>
+                                <div style="color: #666; font-size: 0.95rem; margin-bottom: 8px; font-weight: 600;">Superficie</div>
+                                <div style="font-weight: 800; color: var(--dark); font-size: 1.1rem;">${parcelle.superficie}</div>
                             </div>
                             <div>
-                                <div style="color: #666; font-size: 0.9rem; margin-bottom: 5px;">Culture</div>
-                                <div style="font-weight: 600;">${parcelle.culture}</div>
+                                <div style="color: #666; font-size: 0.95rem; margin-bottom: 8px; font-weight: 600;">Culture</div>
+                                <div style="font-weight: 800; color: var(--dark); font-size: 1.1rem;">${parcelle.culture}</div>
                             </div>
                         </div>
                     </div>
                     
-                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                        <h4 style="color: var(--primary-dark); margin-bottom: 15px; font-size: 1.1rem;">
+                    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 25px; border-radius: 15px; margin-bottom: 25px; border-left: 5px solid var(--primary); box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+                        <h4 style="color: var(--primary-dark); margin-bottom: 20px; font-size: 1.2rem; font-weight: 700;">
                             <i class="fas fa-chart-bar"></i> Données Techniques
                         </h4>
-                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
-                            <div style="text-align: center;">
-                                <div style="color: #666; font-size: 0.9rem; margin-bottom: 5px;">NDVI</div>
-                                <div style="font-size: 1.8rem; font-weight: 800; color: ${parcelle.couleur};">${parcelle.ndvi}</div>
-                                <div style="font-size: 0.85rem; color: ${parcelle.couleur};">${parcelle.sante}</div>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                            <div style="text-align: center; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                                <div style="color: #666; font-size: 0.95rem; margin-bottom: 10px; font-weight: 600;">NDVI</div>
+                                <div style="font-size: 2rem; font-weight: 900; color: ${parcelle.couleur}; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">${parcelle.ndvi}</div>
+                                <div style="font-size: 1rem; color: ${parcelle.couleur}; font-weight: 700; margin-top: 8px;">${parcelle.sante}</div>
                             </div>
-                            <div style="text-align: center;">
-                                <div style="color: #666; font-size: 0.9rem; margin-bottom: 5px;">Humidité</div>
-                                <div style="font-size: 1.8rem; font-weight: 800; color: #0288D1;">${parcelle.humidite}%</div>
+                            <div style="text-align: center; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                                <div style="color: #666; font-size: 0.95rem; margin-bottom: 10px; font-weight: 600;">Humidité</div>
+                                <div style="font-size: 2rem; font-weight: 900; color: #0288D1; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">${parcelle.humidite}%</div>
+                                <div style="font-size: 1rem; color: ${parcelle.humidite < 40 ? '#F44336' : parcelle.humidite < 50 ? '#FFC107' : '#4CAF50'}; font-weight: 700; margin-top: 8px;">
+                                    ${parcelle.humidite < 40 ? 'Faible' : parcelle.humidite < 50 ? 'Moyenne' : 'Optimale'}
+                                </div>
                             </div>
-                            <div style="text-align: center;">
-                                <div style="color: #666; font-size: 0.9rem; margin-bottom: 5px;">Température</div>
-                                <div style="font-size: 1.8rem; font-weight: 800; color: #FF5722;">${parcelle.temperature}°C</div>
+                            <div style="text-align: center; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                                <div style="color: #666; font-size: 0.95rem; margin-bottom: 10px; font-weight: 600;">Température</div>
+                                <div style="font-size: 2rem; font-weight: 900; color: #FF5722; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">${parcelle.temperature}°C</div>
+                                <div style="font-size: 1rem; color: ${parcelle.temperature > 34 ? '#F44336' : '#4CAF50'}; font-weight: 700; margin-top: 8px;">
+                                    ${parcelle.temperature > 34 ? 'Élevée' : 'Normale'}
+                                </div>
                             </div>
                         </div>
                     </div>
                     
-                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
-                        <h4 style="color: var(--primary-dark); margin-bottom: 15px; font-size: 1.1rem;">
+                    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 25px; border-radius: 15px; border-left: 5px solid var(--warning); box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+                        <h4 style="color: var(--primary-dark); margin-bottom: 20px; font-size: 1.2rem; font-weight: 700; display: flex; align-items: center; gap: 12px;">
                             <i class="fas fa-lightbulb"></i> Recommandations
                         </h4>
-                        <ul style="color: #666; line-height: 1.6; padding-left: 20px;">
-                            ${conseils.map(conseil => `<li>${conseil}</li>`).join('')}
+                        <ul style="color: #666; line-height: 1.8; padding-left: 0;">
+                            ${conseils.map((conseil, index) => `
+                                <li style="margin-bottom: 15px; padding-left: 30px; position: relative;">
+                                    <div style="position: absolute; left: 0; top: 0; width: 22px; height: 22px; background: ${index === 0 ? '#FFC107' : '#E0E0E0'}; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: ${index === 0 ? 'white' : '#666'}; font-weight: bold; font-size: 0.9rem;">${index + 1}</div>
+                                    ${conseil}
+                                </li>
+                            `).join('')}
                         </ul>
                     </div>
                 </div>
                 
-                <div style="display: flex; gap: 15px; margin-top: 20px;">
-                    <button class="map-btn" style="flex: 1;" onclick="zoomSurParcelle(${parcelle.id})">
+                <div style="display: flex; gap: 20px; margin-top: 30px;">
+                    <button class="map-btn" style="flex: 1; padding: 16px; font-size: 1.05rem; font-weight: 700;" onclick="zoomSurParcelle(${parcelle.id})">
                         <i class="fas fa-map-marker-alt"></i> Voir sur carte
                     </button>
-                    <button class="map-btn secondary" style="flex: 1;" onclick="fermerPanneauDetails()">
+                    <button class="map-btn secondary" style="flex: 1; padding: 16px; font-size: 1.05rem; font-weight: 700;" onclick="fermerPanneauDetails()">
                         <i class="fas fa-times"></i> Fermer
                     </button>
                 </div>
@@ -2390,41 +3732,41 @@
             
             // Analyse NDVI
             if (parcelle.ndvi < 0.10) {
-                conseils.push("🚨 IRRIGATION URGENTE : NDVI critique (< 0.100). Appliquer 25-30mm d'eau immédiatement");
-                conseils.push("💊 Fertilisation NPK recommandée : 100kg/ha d'engrais complet après irrigation");
+                conseils.push("🚨 <strong>IRRIGATION URGENTE</strong> : NDVI critique (< 0.100). Appliquer 25-30mm d'eau immédiatement");
+                conseils.push("💊 <strong>Fertilisation NPK recommandée</strong> : 100kg/ha d'engrais complet après irrigation");
             } else if (parcelle.ndvi < 0.11) {
-                conseils.push("💧 Augmenter irrigation de 20% : Actuellement à 15mm/jour, passer à 18mm/jour");
-                conseils.push("🔍 Surveillance rapprochée : Vérifier développement floral quotidiennement");
+                conseils.push("💧 <strong>Augmenter irrigation de 20%</strong> : Actuellement à 15mm/jour, passer à 18mm/jour");
+                conseils.push("🔍 <strong>Surveillance rapprochée</strong> : Vérifier développement floral quotidiennement");
             } else {
-                conseils.push("✅ Maintenir pratiques actuelles : Irrigation optimale à 15mm/jour");
-                conseils.push("📈 État excellent : Continuer surveillance hebdomadaire");
+                conseils.push("✅ <strong>Maintenir pratiques actuelles</strong> : Irrigation optimale à 15mm/jour");
+                conseils.push("📈 <strong>État excellent</strong> : Continuer surveillance hebdomadaire");
             }
             
             // Analyse humidité
             if (parcelle.humidite < 30) {
-                conseils.push("🔥 Stress hydrique extrême : Humidité à ${parcelle.humidite}% (< seuil critique de 35%)");
-                conseils.push("⏱️ Action immédiate : Irrigation dans les 24 heures maximum");
+                conseils.push(`🔥 <strong>Stress hydrique extrême</strong> : Humidité à ${parcelle.humidite}% (< seuil critique de 35%)`);
+                conseils.push("⏱️ <strong>Action immédiate</strong> : Irrigation dans les 24 heures maximum");
             } else if (parcelle.humidite < 45) {
-                conseils.push("⚠️ Humidité faible : ${parcelle.humidite}% - Augmenter fréquence d'irrigation");
-                conseils.push("💦 Programme recommandé : 2 irrigations/jour au lieu de 1");
+                conseils.push(`⚠️ <strong>Humidité faible</strong> : ${parcelle.humidite}% - Augmenter fréquence d'irrigation`);
+                conseils.push("💦 <strong>Programme recommandé</strong> : 2 irrigations/jour au lieu de 1");
             }
             
             // Analyse température
             if (parcelle.temperature > 34) {
-                conseils.push("🌡️ Stress thermique : Température ${parcelle.temperature}°C (> seuil de 34°C)");
-                conseils.push("🌳 Protection : Irriguer en fin de journée pour rafraîchir le sol");
+                conseils.push(`🌡️ <strong>Stress thermique</strong> : Température ${parcelle.temperature}°C (> seuil de 34°C)`);
+                conseils.push("🌳 <strong>Protection</strong> : Irriguer en fin de journée pour rafraîchir le sol");
             }
             
             // Rendement estimé
             if (parcelle.rendement_estime < 1.5) {
-                conseils.push(`📉 Rendement estimé bas : ${parcelle.rendement_estime} t/ha (objectif: 1.8 t/ha)`);
-                conseils.push("🌱 Fertilisation foliaire recommandée : Appliquer micro-éléments");
+                conseils.push(`📉 <strong>Rendement estimé bas</strong> : ${parcelle.rendement_estime} t/ha (objectif: 1.8 t/ha)`);
+                conseils.push("🌱 <strong>Fertilisation foliaire recommandée</strong> : Appliquer micro-éléments");
             }
             
             // Efficience eau
             if (parcelle.efficience_eau < 70) {
-                conseils.push(`💧 Efficience eau faible : ${parcelle.efficience_eau}% (cible: >75%)`);
-                conseils.push("🔄 Optimisation : Réviser système d'irrigation pour réduire pertes");
+                conseils.push(`💧 <strong>Efficience eau faible</strong> : ${parcelle.efficience_eau}% (cible: >75%)`);
+                conseils.push("🔄 <strong>Optimisation</strong> : Réviser système d'irrigation pour réduire pertes");
             }
             
             return conseils;
@@ -2465,62 +3807,56 @@
                 const conseilPrincipal = conseils[0] || "Aucune action urgente requise";
                 
                 container.innerHTML += `
-                    <div style="padding: 20px; background: #f8f9fa; border-radius: 10px; margin-bottom: 15px; border-left: 5px solid ${color};">
-                        <div style="display: flex; align-items: flex-start; gap: 15px;">
-                            <div style="color: ${color}; font-size: 1.5rem; margin-top: 5px;">
+                    <div style="padding: 25px; background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border-radius: 18px; margin-bottom: 20px; border-left: 6px solid ${color}; box-shadow: 0 8px 25px rgba(0,0,0,0.06); transition: all 0.3s; cursor: pointer;" onclick="afficherDetailsParcelle(${parcelle.id})">
+                        <div style="display: flex; align-items: flex-start; gap: 20px;">
+                            <div style="color: ${color}; font-size: 1.8rem; margin-top: 5px;">
                                 <i class="${icon}"></i>
                             </div>
                             <div style="flex: 1;">
-                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
                                     <div>
-                                        <div style="font-weight: 700; color: var(--primary-dark); font-size: 1.1rem; margin-bottom: 5px;">
+                                        <div style="font-weight: 900; color: var(--primary-dark); font-size: 1.2rem; margin-bottom: 8px;">
                                             ${parcelle.nom} - ${parcelle.proprietaire}
                                         </div>
-                                        <div style="display: flex; gap: 15px; font-size: 0.9rem; color: #666;">
+                                        <div style="display: flex; gap: 20px; font-size: 1rem; color: #666; flex-wrap: wrap;">
                                             <span><i class="fas fa-leaf"></i> NDVI: <strong>${parcelle.ndvi}</strong></span>
                                             <span><i class="fas fa-tint"></i> Humidité: <strong>${parcelle.humidite}%</strong></span>
                                             <span><i class="fas fa-thermometer-half"></i> Temp: <strong>${parcelle.temperature}°C</strong></span>
                                         </div>
                                     </div>
-                                    <div style="padding: 5px 12px; background: ${color}20; color: ${color}; border-radius: 20px; font-weight: 600; font-size: 0.9rem;">
+                                    <div style="padding: 8px 18px; background: ${color}25; color: ${color}; border-radius: 25px; font-weight: 800; font-size: 1rem; border: 2px solid ${color}50;">
                                         ${parcelle.sante.toUpperCase()}
                                     </div>
                                 </div>
                                 
-                                <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
-                                    <div style="font-weight: 600; color: ${color}; margin-bottom: 8px;">
+                                <div style="background: white; padding: 20px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #e0e0e0;">
+                                    <div style="font-weight: 800; color: ${color}; margin-bottom: 10px; font-size: 1.1rem; display: flex; align-items: center; gap: 10px;">
                                         <i class="fas fa-bullhorn"></i> Action Prioritaire
                                     </div>
-                                    <div style="color: #666; font-size: 0.95rem;">
+                                    <div style="color: #666; font-size: 1.05rem; line-height: 1.6;">
                                         ${conseilPrincipal}
                                     </div>
                                 </div>
                                 
-                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
-                                    <div style="text-align: center; padding: 10px; background: white; border-radius: 8px;">
-                                        <div style="color: #666; font-size: 0.85rem; margin-bottom: 5px;">Rendement estimé</div>
-                                        <div style="font-weight: 700; color: ${parcelle.rendement_estime < 1.5 ? '#F44336' : '#4CAF50'};">
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                                    <div style="text-align: center; padding: 15px; background: white; border-radius: 12px; border: 1px solid #e0e0e0; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                                        <div style="color: #666; font-size: 0.95rem; margin-bottom: 8px; font-weight: 600;">Rendement estimé</div>
+                                        <div style="font-weight: 900; color: ${parcelle.rendement_estime < 1.5 ? '#F44336' : '#4CAF50'}; font-size: 1.3rem;">
                                             ${parcelle.rendement_estime} t/ha
                                         </div>
                                     </div>
-                                    <div style="text-align: center; padding: 10px; background: white; border-radius: 8px;">
-                                        <div style="color: #666; font-size: 0.85rem; margin-bottom: 5px;">Efficience eau</div>
-                                        <div style="font-weight: 700; color: ${parcelle.efficience_eau < 70 ? '#FFC107' : '#4CAF50'};">
+                                    <div style="text-align: center; padding: 15px; background: white; border-radius: 12px; border: 1px solid #e0e0e0; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                                        <div style="color: #666; font-size: 0.95rem; margin-bottom: 8px; font-weight: 600;">Efficience eau</div>
+                                        <div style="font-weight: 900; color: ${parcelle.efficience_eau < 70 ? '#FFC107' : '#4CAF50'}; font-size: 1.3rem;">
                                             ${parcelle.efficience_eau}%
                                         </div>
                                     </div>
-                                    <div style="text-align: center; padding: 10px; background: white; border-radius: 8px;">
-                                        <div style="color: #666; font-size: 0.85rem; margin-bottom: 5px;">Superficie</div>
-                                        <div style="font-weight: 700; color: var(--primary-dark);">
+                                    <div style="text-align: center; padding: 15px; background: white; border-radius: 12px; border: 1px solid #e0e0e0; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                                        <div style="color: #666; font-size: 0.95rem; margin-bottom: 8px; font-weight: 600;">Superficie</div>
+                                        <div style="font-weight: 900; color: var(--primary-dark); font-size: 1.3rem;">
                                             ${parcelle.superficie}
                                         </div>
                                     </div>
-                                </div>
-                                
-                                <div style="margin-top: 15px;">
-                                    <button class="map-btn" style="width: 100%;" onclick="afficherDetailsParcelle(${parcelle.id})">
-                                        <i class="fas fa-list"></i> Voir toutes les recommandations
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -2535,6 +3871,7 @@
         function recentrerCarte() {
             if (map) {
                 map.setView([14.0485, -15.4615], 16);
+                showNotification("🗺️ Carte recentrée", 'info');
             }
         }
 
@@ -2544,13 +3881,15 @@
             
             const bounds = L.latLngBounds(parcelle.geometry);
             map.fitBounds(bounds, { 
-                padding: [50, 50],
+                padding: [60, 60],
                 maxZoom: 18
             });
             
             if (parcelleLayers[id]) {
                 parcelleLayers[id].openPopup();
             }
+            
+            showNotification(`🔍 Zoom sur ${parcelle.nom}`, 'info');
         }
 
         function afficherToutesParcelles() {
@@ -2562,9 +3901,11 @@
             });
             
             map.fitBounds(bounds, { 
-                padding: [50, 50],
+                padding: [60, 60],
                 maxZoom: 16
             });
+            
+            showNotification("👁️ Toutes les parcelles affichées", 'info');
         }
 
         function basculerSatellite() {
@@ -2574,10 +3915,12 @@
                 map.removeLayer(satelliteLayer);
                 streetLayer.addTo(map);
                 currentLayer = 'street';
+                showNotification("🗺️ Vue standard activée", 'info');
             } else {
                 map.removeLayer(streetLayer);
                 satelliteLayer.addTo(map);
                 currentLayer = 'satellite';
+                showNotification("🛰️ Vue satellite activée", 'info');
             }
         }
 
@@ -2588,6 +3931,8 @@
                 btn.classList.remove('active');
             });
             event.target.classList.add('active');
+            
+            showNotification(`📊 Couche ${couche} activée`, 'info');
         }
 
         function filtrerParcelles(filtre) {
@@ -2597,6 +3942,15 @@
             event.target.classList.add('active');
             
             updateTable(filtre);
+            
+            let message = '';
+            switch(filtre) {
+                case 'critique': message = '⚠️ Filtre critique activé'; break;
+                case 'moyen': message = '⚠️ Filtre moyen activé'; break;
+                case 'bon': message = '✅ Filtre bon activé'; break;
+                default: message = '📋 Toutes les parcelles affichées';
+            }
+            showNotification(message, 'info');
         }
 
         // ============================================
@@ -2635,19 +3989,19 @@
                                 parcelle.ndvi >= 0.10 ? 'ndvi-medium' : 'ndvi-poor';
                 
                 container.innerHTML += `
-                    <div class="table-row">
-                        <div class="parcel-icon">${parcelle.icone}</div>
+                    <div class="table-row" onclick="afficherDetailsParcelle(${parcelle.id})" style="cursor: pointer;">
+                        <div class="parcel-icon" style="font-size: 1.8rem;">${parcelle.icone}</div>
                         <div>
-                            <div style="font-weight: 600;">${parcelle.nom}</div>
-                            <div style="font-size: 0.85rem; color: #7f8c8d;">${parcelle.proprietaire}</div>
+                            <div style="font-weight: 800; font-size: 1.1rem;">${parcelle.nom}</div>
+                            <div style="font-size: 0.95rem; color: #7f8c8d; margin-top: 5px;">${parcelle.proprietaire}</div>
                         </div>
                         <div><span class="ndvi-badge ${ndviClass}">${parcelle.ndvi}</span></div>
-                        <div>${parcelle.humidite}%</div>
-                        <div>${parcelle.temperature}°C</div>
-                        <div style="color: ${parcelle.couleur}; font-weight: 600;">${parcelle.sante}</div>
+                        <div style="font-weight: 700; color: ${parcelle.humidite < 40 ? '#F44336' : parcelle.humidite < 50 ? '#FFC107' : '#4CAF50'};">${parcelle.humidite}%</div>
+                        <div style="font-weight: 700; color: ${parcelle.temperature > 34 ? '#FF5722' : '#0288D1'};">${parcelle.temperature}°C</div>
+                        <div style="color: ${parcelle.couleur}; font-weight: 800; font-size: 1rem;">${parcelle.sante}</div>
                         <div>
-                            <button class="action-btn" onclick="afficherDetailsParcelle(${parcelle.id})" title="Voir détails">
-                                <i class="fas fa-eye"></i>
+                            <button class="action-btn" onclick="event.stopPropagation(); afficherDetailsParcelle(${parcelle.id})" title="Voir détails">
+                                <i class="fas fa-eye"></i> Détails
                             </button>
                         </div>
                     </div>
@@ -2659,102 +4013,142 @@
         // AUTRES FONCTIONNALITÉS
         // ============================================
         function ouvrirStatistiques() {
-            // Simulation de statistiques avancées
             const stats = `
-                📊 STATISTIQUES DÉTAILLÉES
+                📊 <strong>STATISTIQUES DÉTAILLÉES</strong>
                 
-                🔍 Analyse Globale:
+                🔍 <strong>Analyse Globale:</strong>
                 • NDVI moyen: 0.106 (faible à moyen)
                 • Humidité moyenne: 43% (déficit modéré)
                 • Température moyenne: 32.2°C
                 
-                📈 Tendances:
+                📈 <strong>Tendances:</strong>
                 • Évolution NDVI 7 derniers jours: +0.8%
                 • Amélioration parcelles critiques: 15%
                 • Efficience irrigation: 72%
                 
-                🎯 Recommandations Stratégiques:
+                🎯 <strong>Recommandations Stratégiques:</strong>
                 1. Prioriser irrigation parcelle 2
                 2. Programme fertilisation parcelle 3
                 3. Surveillance rapprochée parcelles 1, 4, 6
                 
-                💡 Insights:
+                💡 <strong>Insights:</strong>
                 • Corrélation NDVI/Humidité: R² = 0.78
-                • Impact tem
-                pérature: -0.3% NDVI par °C > 34°C
+                • Impact température: -0.3% NDVI par °C > 34°C
                 • Potentiel amélioration rendement: +32%
             `;
             
-            alert(stats);
+            showNotification("📊 Statistiques détaillées affichées dans la console", 'info');
+            console.log(stats);
         }
 
         function ouvrirAide() {
-            alert("❓ GUIDE UTILISATION - SMARTAGROMAP\n\n🎯 FONCTIONNALITÉS PRINCIPALES:\n\n1. 📍 CARTE INTERACTIVE\n• Clic sur parcelle → popup info\n• Boutons couches → NDVI/Humidité/Temp\n• Bouton satellite → basculer vue\n\n2. 📊 ANALYTICS AVANCÉES\n• Graphiques en temps réel\n• Alertes prioritaires\n• Prévisions météo\n• Recommandations personnalisées\n\n3. 📱 NAVIGATION\n• Menu latéral → pages principales\n• Boutons flottants → accès rapide\n• Panneaux latéraux → détails NDVI\n\n💡 CONSEIL: Les valeurs NDVI sont cachées sur la carte et accessibles via le panneau latéral (bouton feuille)");
+            const help = `
+                ❓ <strong>GUIDE UTILISATION - SMARTAGROMAP</strong>
+                
+                🎯 <strong>FONCTIONNALITÉS PRINCIPALES:</strong>
+                
+                1. 📍 <strong>CARTE INTERACTIVE</strong>
+                • Clic sur parcelle → popup info
+                • Boutons couches → NDVI/Humidité/Temp
+                • Bouton satellite → basculer vue
+                
+                2. 📊 <strong>ANALYTICS AVANCÉES</strong>
+                • Graphiques en temps réel
+                • Alertes prioritaires
+                • Prévisions météo
+                • Recommandations personnalisées
+                
+                3. 📱 <strong>NAVIGATION</strong>
+                • Menu latéral → pages principales
+                • Boutons flottants → accès rapide
+                • Panneaux latéraux → détails NDVI
+                
+                💡 <strong>CONSEIL:</strong> Les valeurs NDVI sont accessibles via le panneau latéral (bouton feuille)
+            `;
+            
+            showNotification("📚 Guide d'utilisation affiché dans la console", 'info');
+            console.log(help);
         }
 
         // ============================================
         // FONCTIONS D'EXPORT
         // ============================================
         function exporterGeoJSON() {
-            const geoJSON = {
-                type: "FeatureCollection",
-                features: parcelles.map(p => ({
-                    type: "Feature",
-                    properties: {
-                        id: p.id,
-                        nom: p.nom,
-                        proprietaire: p.proprietaire,
-                        culture: p.culture,
-                        village: p.village,
-                        ndvi: p.ndvi,
-                        humidite: p.humidite,
-                        temperature: p.temperature,
-                        superficie: p.superficie,
-                        sante: p.sante,
-                        rendement_estime: p.rendement_estime,
-                        efficience_eau: p.efficience_eau
-                    },
-                    geometry: {
-                        type: "Polygon",
-                        coordinates: [p.geometry.map(coord => [coord[1], coord[0]])]
-                    }
-                }))
-            };
+            showNotification("🗺️ Export GeoJSON en cours...", 'info');
             
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(geoJSON, null, 2));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", "smartagromap_kaffrine.geojson");
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
-            
-            alert("✅ GeoJSON exporté avec succès !\n\nContient toutes les données des parcelles avec analyses complètes.");
+            setTimeout(() => {
+                const geoJSON = {
+                    type: "FeatureCollection",
+                    features: parcelles.map(p => ({
+                        type: "Feature",
+                        properties: {
+                            id: p.id,
+                            nom: p.nom,
+                            proprietaire: p.proprietaire,
+                            culture: p.culture,
+                            village: p.village,
+                            ndvi: p.ndvi,
+                            humidite: p.humidite,
+                            temperature: p.temperature,
+                            superficie: p.superficie,
+                            sante: p.sante,
+                            rendement_estime: p.rendement_estime,
+                            efficience_eau: p.efficience_eau
+                        },
+                        geometry: {
+                            type: "Polygon",
+                            coordinates: [p.geometry.map(coord => [coord[1], coord[0]])]
+                        }
+                    }))
+                };
+                
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(geoJSON, null, 2));
+                const downloadAnchor = document.createElement('a');
+                downloadAnchor.setAttribute("href", dataStr);
+                downloadAnchor.setAttribute("download", "smartagromap_kaffrine.geojson");
+                document.body.appendChild(downloadAnchor);
+                downloadAnchor.click();
+                downloadAnchor.remove();
+                
+                showNotification("✅ GeoJSON exporté avec succès !", 'success');
+            }, 1000);
         }
 
         function exporterCSV() {
-            let csv = "ID,Nom,Propriétaire,Culture,Village,NDVI,État,Humidité(%),Température(°C),Superficie,Rendement(t/ha),Efficience_Eau(%)\n";
-            parcelles.forEach(p => {
-                csv += `${p.id},${p.nom},${p.proprietaire},${p.culture},${p.village},${p.ndvi},${p.sante},${p.humidite},${p.temperature},${p.superficie},${p.rendement_estime},${p.efficience_eau}\n`;
-            });
+            showNotification("📊 Export CSV en cours...", 'info');
             
-            const dataStr = "data:text/csv;charset=utf-8," + encodeURIComponent(csv);
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", "smartagromap_analytics.csv");
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
-            
-            alert("✅ CSV exporté avec succès !\n\nFormat compatible avec Excel, Google Sheets et logiciels statistiques.");
+            setTimeout(() => {
+                let csv = "ID,Nom,Propriétaire,Culture,Village,NDVI,État,Humidité(%),Température(°C),Superficie,Rendement(t/ha),Efficience_Eau(%)\n";
+                parcelles.forEach(p => {
+                    csv += `${p.id},${p.nom},${p.proprietaire},${p.culture},${p.village},${p.ndvi},${p.sante},${p.humidite},${p.temperature},${p.superficie},${p.rendement_estime},${p.efficience_eau}\n`;
+                });
+                
+                const dataStr = "data:text/csv;charset=utf-8," + encodeURIComponent(csv);
+                const downloadAnchor = document.createElement('a');
+                downloadAnchor.setAttribute("href", dataStr);
+                downloadAnchor.setAttribute("download", "smartagromap_analytics.csv");
+                document.body.appendChild(downloadAnchor);
+                downloadAnchor.click();
+                downloadAnchor.remove();
+                
+                showNotification("✅ CSV exporté avec succès !", 'success');
+            }, 1000);
         }
 
         function exporterPDF() {
-            alert("📄 EXPORT PDF - FONCTIONNALITÉ PREMIUM\n\nUn rapport PDF complet serait généré avec:\n\n📋 Sommaire exécutif\n📊 Graphiques haute qualité\n📈 Analyses détaillées\n🎯 Recommandations stratégiques\n📅 Plan d'action par parcelle\n🌤️ Prévisions météo intégrées\n\n💡 À implémenter avec: jsPDF + html2canvas");
+            showNotification("📄 Génération du PDF en cours...", 'info');
+            
+            setTimeout(() => {
+                showNotification("✅ PDF généré avec succès ! (Fonctionnalité de démonstration)", 'success');
+            }, 2000);
         }
 
         function exporterKML() {
-            alert("🗺️ EXPORT KML - FONCTIONNALITÉ PREMIUM\n\nFichier KML généré pour:\n\n• Google Earth Pro\n• Google Maps\n• QGIS\n• ArcGIS\n• Logiciels SIG\n\n💡 Format idéal pour partage avec agronomes et décideurs.");
+            showNotification("🗺️ Génération du KML en cours...", 'info');
+            
+            setTimeout(() => {
+                showNotification("✅ KML généré avec succès ! (Fonctionnalité de démonstration)", 'success');
+            }, 2000);
         }
 
         function exporterPersonnalise() {
@@ -2762,33 +4156,30 @@
             const params = Array.from(document.getElementById('exportParams').selectedOptions).map(o => o.value);
             const format = document.getElementById('exportGraphFormat').value;
             
-            const message = `
-                📦 EXPORT PERSONNALISÉ CONFIGURÉ:
-                
-                📅 Période: ${periode}
-                📊 Paramètres: ${params.join(', ')}
-                🖼️ Format graphique: ${format}
-                
-                📋 Contenu inclus:
-                • Données parcelles complètes
-                • Historique NDVI 30 jours
-                • Analyses statistiques
-                • Graphiques haute résolution
-                • Recommandations agronomiques
-                
-                💾 Taille estimée: 2.5 MB
-                ⏱️ Temps de génération: 15-30 secondes
-                
-                ✅ Prêt à exporter !
-            `;
+            showNotification("⚙️ Préparation de l'export personnalisé...", 'info');
             
-            alert(message);
+            setTimeout(() => {
+                showNotification(`✅ Export personnalisé configuré !\n📅 Période: ${periode}\n📊 Paramètres: ${params.join(', ')}`, 'success');
+            }, 1500);
         }
 
         // ============================================
         // INITIALISATION
         // ============================================
         document.addEventListener('DOMContentLoaded', function() {
+            // Gestion du login
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', handleLogin);
+                
+                // Animation des champs
+                const inputs = document.querySelectorAll('.form-group input, .form-group select');
+                inputs.forEach((input, index) => {
+                    input.style.animationDelay = `${index * 100}ms`;
+                    input.style.animation = 'fadeIn 0.5s ease-out forwards';
+                });
+            }
+            
             // Menu mobile
             document.getElementById('mobileMenuBtn').addEventListener('click', toggleSidebar);
             document.getElementById('sidebarOverlay').addEventListener('click', closeSidebar);
@@ -2797,6 +4188,7 @@
             document.getElementById('modalOverlay').addEventListener('click', function() {
                 fermerPanneauNDVI();
                 fermerPanneauDetails();
+                closeForgotPassword();
             });
             
             // Fermer avec Échap
@@ -2804,12 +4196,10 @@
                 if (e.key === 'Escape') {
                     fermerPanneauNDVI();
                     fermerPanneauDetails();
+                    closeForgotPassword();
+                    closeSidebar();
                 }
             });
-            
-            // Initialiser les données
-            updateStats();
-            updateTable();
             
             // Ajuster hauteur sidebar
             const sidebar = document.getElementById('sidebar');
@@ -2818,11 +4208,36 @@
             // Redimensionnement
             window.addEventListener('resize', () => {
                 sidebar.style.height = window.innerHeight + 'px';
+                chartInstances.forEach(chart => {
+                    if (chart) chart.resize();
+                });
             });
             
-            console.log('🚀 SmartAgroMap Analytics initialisé !');
-            console.log('📊 Données analytiques chargées : 6 parcelles, historique 30 jours');
-            console.log('🎯 Recommandations générées pour chaque parcelle');
+            // Initialiser la connexion
+            initLogin();
+            
+            // Initialiser les autres données
+            updateStats();
+            updateTable();
+            
+            // Ajouter des styles d'animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideInRight {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOutRight {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            console.log('🚀 SmartAgroMap Analytics initialisé avec succès !');
+            console.log('📊 Données analytiques chargées : 6 parcelles');
+            console.log('🎯 Système de connexion intégré');
+            console.log('✨ Interface premium activée');
         });
     </script>
 </body>
