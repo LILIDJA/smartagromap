@@ -6396,7 +6396,7 @@
                 loginForm.addEventListener('submit', handleLogin);
                 
                 const inputs = document.querySelectorAll('.form-group input, .form-group select');
-                inputs.forEach((input, index)  {
+                inputs.forEach((input, index) => {
                     input.style.animationDelay = `${index * 100}ms`;
                     input.style.animation = 'fadeIn 0.5s ease-out forwards';
                 });
