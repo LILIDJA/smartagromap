@@ -6,12 +6,10 @@
     <title>SmartAgroMap 🛰️ - Monitoring Agricole Kaffrine</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.2.1/dist/chartjs-plugin-annotation.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.2.1/dist/chartjs-plugin-annotation.min.js"></script>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.2.1/dist/chartjs-plugin-annotation.min.js"></script>
     <style>
+      
         :root {
             --primary: #2E7D32;
             --primary-light: #4CAF50;
@@ -28,8 +26,6 @@
             --savi-color: #8BC34A;
             --ndwi-color: #2196F3;
             --dem-color: #795548;
-            --map-width: 75%;
-            --panel-width: 25%;
         }
         
         * {
@@ -393,21 +389,6 @@
             gap: 15px;
             margin-top: 30px;
             flex-wrap: wrap;
-        }
-
-        /* RESPONSIVE LOGIN */
-        @media (max-width: 768px) {
-            .login-container {
-                max-width: 100%;
-            }
-            
-            .modal-center {
-                min-width: 90%;
-            }
-            
-            .profile-stats {
-                grid-template-columns: 1fr;
-            }
         }
 
         /* SIDEBAR */
@@ -1552,7 +1533,7 @@
             opacity: 1;
         }
         
-        /* RESPONSIVE - NOUVELLES RÈGLES */
+        /* RESPONSIVE */
         @media (max-width: 1200px) {
             .main-content {
                 margin-left: 0;
@@ -1671,10 +1652,6 @@
             .quick-action-buttons {
                 grid-template-columns: repeat(3, 1fr);
             }
-            
-            .layer-control-section {
-                padding: 15px;
-            }
         }
         
         /* MENU MOBILE */
@@ -1726,20 +1703,6 @@
             background: var(--primary);
             color: white;
             border-color: var(--primary);
-        }
-        
-        /* CONTAINER FUSIONNÉ */
-        .map-fusion-container {
-            display: flex;
-            gap: 25px;
-            height: calc(100vh - 200px);
-        }
-        
-        @media (max-width: 1024px) {
-            .map-fusion-container {
-                flex-direction: column;
-                height: auto;
-            }
         }
         
         /* ALERTES ET RECOMMANDATIONS */
@@ -2009,7 +1972,6 @@
             display: block;
         }
         
-        /* ANIMATIONS SUPPLÉMENTAIRES */
         @keyframes slideInUp {
             from {
                 opacity: 0;
@@ -2360,15 +2322,13 @@
                 <i class="fas fa-user-circle"></i>
                 Mon Profil
             </a>
-            <!-- Lien Admin - visible uniquement pour les administrateurs -->
             <a href="#admin" class="nav-item" onclick="showPage('admin')" id="adminNavItem" style="display: none;">
                 <i class="fas fa-cogs"></i>
                 Administration
             </a>
         </nav>
     </div>
-    
-    <!-- CONTENU PRINCIPAL -->
+        <!-- CONTENU PRINCIPAL -->
     <div class="main-content">
         <!-- PAGE DASHBOARD -->
         <div class="page-container active" id="dashboard">
@@ -2388,8 +2348,8 @@
                         </div>
                         <div class="stat-title">Parcelles Actives</div>
                     </div>
-                    <div class="stat-value" id="stats-total">0</div>
-                    <div class="stat-desc">Arachide • Chargement...</div>
+                    <div class="stat-value" id="stats-total">6</div>
+                    <div class="stat-desc">Arachide • 8.5 ha total</div>
                 </div>
                 
                 <div class="stat-box">
@@ -2399,8 +2359,8 @@
                         </div>
                         <div class="stat-title">NDVI Moyen</div>
                     </div>
-                    <div class="stat-value" id="stats-moyen">0.000</div>
-                    <div class="stat-desc">En attente des données</div>
+                    <div class="stat-value" id="stats-moyen">0.106</div>
+                    <div class="stat-desc">Croissance faible à moyenne</div>
                 </div>
                 
                 <div class="stat-box warning">
@@ -2410,8 +2370,8 @@
                         </div>
                         <div class="stat-title">Humidité Sol</div>
                     </div>
-                    <div class="stat-value" id="stats-humidite">0%</div>
-                    <div class="stat-desc">Chargement...</div>
+                    <div class="stat-value" id="stats-humidite">42%</div>
+                    <div class="stat-desc">3 parcelles nécessitent irrigation</div>
                 </div>
                 
                 <div class="stat-box alert">
@@ -2421,8 +2381,8 @@
                         </div>
                         <div class="stat-title">Alertes Actives</div>
                     </div>
-                    <div class="stat-value" id="stats-alertes">0</div>
-                    <div class="stat-desc">Aucune alerte</div>
+                    <div class="stat-value" id="stats-alertes">3</div>
+                    <div class="stat-desc">Interventions recommandées</div>
                 </div>
             </div>
             
@@ -2440,7 +2400,7 @@
             </div>
         </div>
         
-        <!-- PAGE CARTE & PARCELLES - NOUVELLE STRUCTURE -->
+        <!-- PAGE CARTE & PARCELLES -->
         <div class="page-container" id="carte-parcelles">
             <div class="page-header">
                 <h1 class="page-title">
@@ -2636,10 +2596,6 @@
                     
                     <div id="table-content">
                         <!-- Rempli par JavaScript -->
-                        <div style="text-align: center; padding: 50px; color: var(--gray);">
-                            <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 15px;"></i>
-                            <p>Chargement des données depuis le backend...</p>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -2993,8 +2949,8 @@
                         </div>
                         <div class="stat-title">Utilisateurs Actifs</div>
                     </div>
-                    <div class="admin-stat-value" id="admin-total-users">0</div>
-                    <div class="stat-desc">Chargement...</div>
+                    <div class="admin-stat-value" id="admin-total-users">12</div>
+                    <div class="stat-desc">3 gestionnaires, 8 techniciens, 1 admin</div>
                 </div>
                 
                 <div class="admin-stat-card">
@@ -3004,8 +2960,8 @@
                         </div>
                         <div class="stat-title">Parcelles Totales</div>
                     </div>
-                    <div class="admin-stat-value" id="admin-total-parcelles">0</div>
-                    <div class="stat-desc">Chargement...</div>
+                    <div class="admin-stat-value" id="admin-total-parcelles">6</div>
+                    <div class="stat-desc">8.5 ha total • 100% arachide</div>
                 </div>
                 
                 <div class="admin-stat-card">
@@ -3015,8 +2971,8 @@
                         </div>
                         <div class="stat-title">Alertes Actives</div>
                     </div>
-                    <div class="admin-stat-value" id="admin-alertes">0</div>
-                    <div class="stat-desc">Aucune alerte</div>
+                    <div class="admin-stat-value" id="admin-alertes">3</div>
+                    <div class="stat-desc">2 critiques, 1 avertissements</div>
                 </div>
                 
                 <div class="admin-stat-card">
@@ -3026,8 +2982,8 @@
                         </div>
                         <div class="stat-title">Performance Moy.</div>
                     </div>
-                    <div class="admin-stat-value" id="admin-performance">0%</div>
-                    <div class="stat-desc">-</div>
+                    <div class="admin-stat-value" id="admin-performance">68%</div>
+                    <div class="stat-desc">+3% vs mois dernier</div>
                 </div>
             </div>
             
@@ -3058,11 +3014,6 @@
                     </thead>
                     <tbody id="admin-users-table">
                         <!-- Rempli par JavaScript -->
-                        <tr>
-                            <td colspan="7" style="text-align: center; padding: 50px;">
-                                <i class="fas fa-spinner fa-spin"></i> Chargement...
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -3078,7 +3029,7 @@
             </div>
         </div>
         
-        <!-- PAGE ANALYTICS COMPLÈTES -->
+        <!-- PAGE ANALYTICS -->
         <div class="page-container" id="analytics">
             <div class="page-header">
                 <h1 class="page-title">
@@ -3092,23 +3043,23 @@
             <div class="performance-indicators">
                 <div class="indicator-card">
                     <div style="color: var(--gray); font-size: 0.9rem;">Performance Globale</div>
-                    <div class="indicator-value indicator-warning">0%</div>
-                    <div style="color: var(--gray); font-size: 0.85rem;">Chargement...</div>
+                    <div class="indicator-value indicator-warning">62%</div>
+                    <div style="color: var(--gray); font-size: 0.85rem;">Amélioration possible</div>
                 </div>
                 <div class="indicator-card">
                     <div style="color: var(--gray); font-size: 0.9rem;">Rendement Estimé</div>
-                    <div class="indicator-value indicator-danger">0 t/ha</div>
-                    <div style="color: var(--gray); font-size: 0.85rem;">Chargement...</div>
+                    <div class="indicator-value indicator-danger">1.2 t/ha</div>
+                    <div style="color: var(--gray); font-size: 0.85rem;">Sous objectif de 1.8 t/ha</div>
                 </div>
                 <div class="indicator-card">
                     <div style="color: var(--gray); font-size: 0.9rem;">Efficience Eau</div>
-                    <div class="indicator-value indicator-good">0%</div>
-                    <div style="color: var(--gray); font-size: 0.85rem;">Chargement...</div>
+                    <div class="indicator-value indicator-good">78%</div>
+                    <div style="color: var(--gray); font-size: 0.85rem;">Optimisation satisfaisante</div>
                 </div>
                 <div class="indicator-card">
                     <div style="color: var(--gray); font-size: 0.9rem;">Santé Moyenne</div>
-                    <div class="indicator-value indicator-warning">0/10</div>
-                    <div style="color: var(--gray); font-size: 0.85rem;">Chargement...</div>
+                    <div class="indicator-value indicator-warning">6.2/10</div>
+                    <div style="color: var(--gray); font-size: 0.85rem;">Surveillance requise</div>
                 </div>
             </div>
             
@@ -3118,9 +3069,43 @@
                     <i class="fas fa-exclamation-triangle"></i>
                     Alertes Prioritaires
                 </h3>
-                <div id="alerts-list">
-                    <div style="text-align: center; padding: 30px; color: var(--gray);">
-                        <i class="fas fa-spinner fa-spin"></i> Chargement des alertes...
+                <div class="alert-item alert-critical">
+                    <div class="alert-icon" style="color: var(--danger);">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; color: var(--danger); margin-bottom: 5px;">
+                            Stress hydrique élevé - Parcelle 2
+                        </div>
+                        <div style="color: #666; font-size: 0.95rem;">
+                            NDWI: -0.12 • Irrigation urgente requise dans les 24h
+                        </div>
+                    </div>
+                </div>
+                <div class="alert-item alert-warning">
+                    <div class="alert-icon" style="color: var(--warning);">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; color: var(--warning); margin-bottom: 5px;">
+                            Risque d'érosion - Parcelle 5
+                        </div>
+                        <div style="color: #666; font-size: 0.95rem;">
+                            Pente: 6.2% • Aménagement anti-érosif recommandé
+                        </div>
+                    </div>
+                </div>
+                <div class="alert-item alert-info">
+                    <div class="alert-icon" style="color: var(--secondary);">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; color: var(--secondary); margin-bottom: 5px;">
+                            Correction sol nécessaire - Parcelles 1 & 3
+                        </div>
+                        <div style="color: #666; font-size: 0.95rem;">
+                            Différence NDVI/SAVI > 15% • Utiliser SAVI pour suivi
+                        </div>
                     </div>
                 </div>
             </div>
@@ -3133,16 +3118,37 @@
                 </h3>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                     <div>
-                        <div style="font-size: 2rem; font-weight: 800;" id="weather-today">--°C</div>
+                        <div style="font-size: 2rem; font-weight: 800;">32°C</div>
                         <div style="opacity: 0.9;">Aujourd'hui</div>
                     </div>
-                    <div style="font-size: 3rem;" id="weather-icon">
-                        <i class="fas fa-cloud"></i>
+                    <div style="font-size: 3rem;">
+                        <i class="fas fa-sun"></i>
                     </div>
                 </div>
-                <div class="weather-icons" id="weather-forecast">
+                <div class="weather-icons">
                     <div class="weather-day">
-                        <div>Chargement...</div>
+                        <div>Demain</div>
+                        <div style="font-size: 1.5rem; margin: 8px 0;"><i class="fas fa-cloud-sun"></i></div>
+                        <div>31°C</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">20% pluie</div>
+                    </div>
+                    <div class="weather-day">
+                        <div>Mer.</div>
+                        <div style="font-size: 1.5rem; margin: 8px 0;"><i class="fas fa-cloud-rain"></i></div>
+                        <div>29°C</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">60% pluie</div>
+                    </div>
+                    <div class="weather-day">
+                        <div>Jeu.</div>
+                        <div style="font-size: 1.5rem; margin: 8px 0;"><i class="fas fa-cloud"></i></div>
+                        <div>30°C</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">40% pluie</div>
+                    </div>
+                    <div class="weather-day">
+                        <div>Ven.</div>
+                        <div style="font-size: 1.5rem; margin: 8px 0;"><i class="fas fa-sun"></i></div>
+                        <div>33°C</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">10% pluie</div>
                     </div>
                 </div>
             </div>
@@ -3198,10 +3204,6 @@
                 </h3>
                 <div id="advice-list" style="max-height: 400px; overflow-y: auto; padding-right: 10px;">
                     <!-- Rempli par JavaScript -->
-                    <div style="text-align: center; padding: 50px; color: var(--gray);">
-                        <i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i>
-                        <p>Génération des recommandations...</p>
-                    </div>
                 </div>
             </div>
         </div>
@@ -3224,8 +3226,8 @@
                         </div>
                         <div class="stat-title">Zones Favorables</div>
                     </div>
-                    <div class="stat-value" id="zones-favorables">0</div>
-                    <div class="stat-desc">Chargement...</div>
+                    <div class="stat-value">3</div>
+                    <div class="stat-desc">Parcelles 1, 4 & 6</div>
                 </div>
                 
                 <div class="stat-box warning">
@@ -3235,8 +3237,8 @@
                         </div>
                         <div class="stat-title">Zones à Risque</div>
                     </div>
-                    <div class="stat-value" id="zones-risque">0</div>
-                    <div class="stat-desc">Chargement...</div>
+                    <div class="stat-value">2</div>
+                    <div class="stat-desc">Parcelles 2 & 5 (érosion)</div>
                 </div>
                 
                 <div class="stat-box">
@@ -3246,7 +3248,7 @@
                         </div>
                         <div class="stat-title">Interventions</div>
                     </div>
-                    <div class="stat-value" id="interventions">0</div>
+                    <div class="stat-value">5</div>
                     <div class="stat-desc">Planifiées cette semaine</div>
                 </div>
             </div>
@@ -3609,9 +3611,287 @@
     
     <script>
         // ============================================
+        // DONNÉES COMPLÈTES POUR ANALYTICS - CORRIGÉES
+        // ============================================
+        const parcelles = [
+            {
+                id: 1,
+                nom: "Parcelle 1",
+                proprietaire: "Ndiaye Aliou",
+                culture: "Arachide",
+                village: "Barone",
+                ndvi: 0.114,
+                humidite: 48,
+                temperature: 31.5,
+                superficie: "0.8 ha",
+                couleur: "#4CAF50",
+                sante: "Bonne",
+                icone: "🥜",
+                rendement_estime: 1.8,
+                efficience_eau: 85,
+                geometry: [
+                    [14.048152613192855, -15.463052128271372],
+                    [14.048090166835404, -15.462962993883496],
+                    [14.047885075035897, -15.462592867625776],
+                    [14.048152588411439, -15.462401099620664],
+                    [14.048371095171802, -15.462106787550159],
+                    [14.048446922467594, -15.462962993883496],
+                    [14.048348798659644, -15.463440046665566],
+                    [14.048152613192855, -15.463052128271372]
+                ]
+            },
+            {
+                id: 2,
+                nom: "Parcelle 2",
+                proprietaire: "Diop Amadou",
+                culture: "Arachide",
+                village: "Barone",
+                ndvi: 0.098,
+                humidite: 28,
+                temperature: 34.2,
+                superficie: "1.2 ha",
+                couleur: "#F44336",
+                sante: "Critique",
+                icone: "🥜",
+                rendement_estime: 1.1,
+                efficience_eau: 42,
+                geometry: [
+                    [14.048763521238445, -15.459600774408319],
+                    [14.049294119243923, -15.459961954198045],
+                    [14.049075681278692, -15.460925163571034],
+                    [14.048665443268343, -15.46125067483109],
+                    [14.048763521238445, -15.459600774408319]
+                ]
+            },
+            {
+                id: 3,
+                nom: "Parcelle 3",
+                proprietaire: "Sarr Modou",
+                culture: "Arachide",
+                village: "Barone",
+                ndvi: 0.099,
+                humidite: 35,
+                temperature: 32.8,
+                superficie: "1.5 ha",
+                couleur: "#FFC107",
+                sante: "Moyenne",
+                icone: "🥜",
+                rendement_estime: 1.3,
+                efficience_eau: 65,
+                geometry: [
+                    [14.050431231971316, -15.462289615008052],
+                    [14.05067204443857, -15.462053325082875],
+                    [14.051180372188357, -15.461781274688576],
+                    [14.051180382550319, -15.463145822240836],
+                    [14.05085484267146, -15.46327956868158],
+                    [14.050431231971316, -15.462289615008052]
+                ]
+            },
+            {
+                id: 4,
+                nom: "Parcelle 4",
+                proprietaire: "Fall Fatou",
+                culture: "Arachide",
+                village: "Barone",
+                ndvi: 0.111,
+                humidite: 52,
+                temperature: 30.8,
+                superficie: "1.0 ha",
+                couleur: "#4CAF50",
+                sante: "Bonne",
+                icone: "🥜",
+                rendement_estime: 1.7,
+                efficience_eau: 82,
+                geometry: [
+                    [14.048750174873852, -15.462530464773883],
+                    [14.048469177211604, -15.461718872127706],
+                    [14.049499255677658, -15.461183802377509],
+                    [14.04977124494916, -15.462325286500228],
+                    [14.049044439619689, -15.462615128820477],
+                    [14.048750174873852, -15.462530464773883]
+                ]
+            },
+            {
+                id: 5,
+                nom: "Parcelle 5",
+                proprietaire: "Gueye Oumar",
+                culture: "Arachide",
+                village: "Barone",
+                ndvi: 0.105,
+                humidite: 42,
+                temperature: 33.5,
+                superficie: "1.8 ha",
+                couleur: "#FFC107",
+                sante: "Moyenne",
+                icone: "🥜",
+                rendement_estime: 1.4,
+                efficience_eau: 68,
+                geometry: [
+                    [14.047892, -15.462845],
+                    [14.048156, -15.462534],
+                    [14.047945, -15.462198],
+                    [14.047623, -15.462456],
+                    [14.047789, -15.462789],
+                    [14.047892, -15.462845]
+                ]
+            },
+            {
+                id: 6,
+                nom: "Parcelle 6",
+                proprietaire: "Ba Marième",
+                culture: "Arachide",
+                village: "Barone",
+                ndvi: 0.112,
+                humidite: 55,
+                temperature: 30.2,
+                superficie: "1.2 ha",
+                couleur: "#4CAF50",
+                sante: "Bonne",
+                icone: "🥜",
+                rendement_estime: 1.9,
+                efficience_eau: 88,
+                geometry: [
+                    [14.049256, -15.460389],
+                    [14.049567, -15.460078],
+                    [14.049178, -15.459689],
+                    [14.048845, -15.460022],
+                    [14.049012, -15.460289],
+                    [14.049256, -15.460389]
+                ]
+            }
+        ];
+
+        // DONNÉES HISTORIQUES POUR ANALYTICS
+        const historiqueNDVI = {
+            dates: ['01/09', '05/09', '10/09', '15/09', '20/09', '25/09', '30/09'],
+            "Parcelle 1": [0.108, 0.110, 0.111, 0.112, 0.113, 0.114, 0.114],
+            "Parcelle 2": [0.095, 0.096, 0.097, 0.097, 0.098, 0.098, 0.098],
+            "Parcelle 3": [0.096, 0.097, 0.097, 0.098, 0.098, 0.099, 0.099],
+            "Parcelle 4": [0.107, 0.108, 0.109, 0.110, 0.110, 0.111, 0.111],
+            "Parcelle 5": [0.102, 0.103, 0.104, 0.104, 0.105, 0.105, 0.105],
+            "Parcelle 6": [0.110, 0.111, 0.111, 0.112, 0.112, 0.112, 0.112]
+        };
+
+        // DONNÉES DE CORRÉLATION
+        const donneesCorrelation = [
+            { ndvi: 0.114, humidite: 48 },
+            { ndvi: 0.098, humidite: 28 },
+            { ndvi: 0.099, humidite: 35 },
+            { ndvi: 0.111, humidite: 52 },
+            { ndvi: 0.105, humidite: 42 },
+            { ndvi: 0.112, humidite: 55 }
+        ];
+
+        // ============================================
+        // DONNÉES DES ALERTES
+        // ============================================
+        const alertes = [
+            {
+                id: 1,
+                parcelleId: 2,
+                type: 'critique',
+                message: 'Stress hydrique élevé - Parcelle 2',
+                detail: 'NDWI: -0.12 • Irrigation urgente requise dans les 24h',
+                date: new Date().toLocaleDateString()
+            },
+            {
+                id: 2,
+                parcelleId: 5,
+                type: 'warning',
+                message: 'Risque d\'érosion - Parcelle 5',
+                detail: 'Pente: 6.2% • Aménagement anti-érosif recommandé',
+                date: new Date().toLocaleDateString()
+            },
+            {
+                id: 3,
+                parcelleId: 1,
+                type: 'info',
+                message: 'Correction sol nécessaire - Parcelles 1 & 3',
+                detail: 'Différence NDVI/SAVI > 15% • Utiliser SAVI pour suivi',
+                date: new Date().toLocaleDateString()
+            }
+        ];
+
+        // ============================================
+        // NOUVELLES DONNÉES POUR LES INDICES AVANCÉS
+        // ============================================
+        
+        // Facteur d'ajustement du sol pour SAVI (L)
+        const facteurSAVI = 0.5;
+        
+        // Fonction pour calculer le SAVI
+        function calculerSAVI(ndvi, facteurL = 0.5) {
+            const correctionSol = 0.15;
+            const savi = ndvi + correctionSol * (1 - ndvi) * facteurL;
+            return Math.min(Math.max(savi, 0), 1).toFixed(3);
+        }
+        
+        // Fonction pour calculer le NDWI
+        function calculerNDWI(humidite, ndvi) {
+            const baseNDWI = (humidite / 100) * 0.4 - 0.2;
+            const ajustementVeg = ndvi * 0.1;
+            const ndwi = baseNDWI + ajustementVeg;
+            return Math.min(Math.max(ndwi, -0.5), 0.5).toFixed(3);
+        }
+        
+        // Fonction pour générer des données MNT simulées
+        function genererDonneesMNT() {
+            const altitudes = [
+                { altitude: "28.5", pente: "2.3", exposition: "Sud" },
+                { altitude: "32.1", pente: "1.8", exposition: "Nord" },
+                { altitude: "25.7", pente: "3.2", exposition: "Est" },
+                { altitude: "30.2", pente: "2.1", exposition: "Ouest" },
+                { altitude: "35.8", pente: "6.2", exposition: "Sud" },
+                { altitude: "27.3", pente: "1.5", exposition: "Nord" }
+            ];
+            return altitudes;
+        }
+        
+        // Initialisation des données avancées
+        function initAdvancedIndices() {
+            const donneesMNT = genererDonneesMNT();
+            
+            parcelles.forEach((parcelle, index) => {
+                parcelle.savi = parseFloat(calculerSAVI(parcelle.ndvi, facteurSAVI));
+                parcelle.ndwi = parseFloat(calculerNDWI(parcelle.humidite, parcelle.ndvi));
+                parcelle.altitude = donneesMNT[index].altitude;
+                parcelle.pente = donneesMNT[index].pente;
+                parcelle.exposition = donneesMNT[index].exposition;
+                
+                if (parcelle.savi < 0.1) {
+                    parcelle.couleurSAVI = "#D32F2F";
+                } else if (parcelle.savi < 0.3) {
+                    parcelle.couleurSAVI = "#FFC107";
+                } else {
+                    parcelle.couleurSAVI = "#4CAF50";
+                }
+                
+                if (parcelle.ndwi < 0) {
+                    parcelle.couleurNDWI = "#D32F2F";
+                } else if (parcelle.ndwi < 0.2) {
+                    parcelle.couleurNDWI = "#2196F3";
+                } else {
+                    parcelle.couleurNDWI = "#0D47A1";
+                }
+                
+                const pente = parseFloat(parcelle.pente);
+                if (pente < 2) {
+                    parcelle.couleurMNT = "#4CAF50";
+                } else if (pente < 5) {
+                    parcelle.couleurMNT = "#FFC107";
+                } else {
+                    parcelle.couleurMNT = "#F44336";
+                }
+                
+                parcelle.opacity = 0.7;
+            });
+            
+            console.log("✅ Indices avancés initialisés : SAVI, NDWI, MNT");
+        }
+
+        // ============================================
         // VARIABLES GLOBALES
         // ============================================
-        let parcelles = []; // Variable globale pour les données du backend
         let map = null;
         let miniMap = null;
         let currentLayer = 'satellite';
@@ -3631,304 +3911,6 @@
         let gridLayer = null;
         let scaleControl = null;
         let isPanelCollapsed = false;
-
-        // URL du backend
-        const BACKEND_URL = 'http://bore.pub:37078';
-        // ============================================
-        // FONCTIONS DE CONNEXION AU BACKEND
-        // ============================================
-        
-        /**
-         * Teste la connexion au backend
-         */
-        async function testBackendConnection() {
-            try {
-                const response = await fetch(`${BACKEND_URL}/parcelles`);
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log('✅ Backend connecté!', data);
-                    showNotification('✅ Connecté au backend', 'success');
-                    return true;
-                }
-            } catch (error) {
-                console.error('❌ Backend non disponible');
-                showNotification('❌ Backend non disponible - Mode démo', 'warning');
-                return false;
-            }
-        }
-
-        /**
-         * Charge les données depuis le backend
-         */
-        async function chargerDonneesBackend() {
-            showNotification('🔄 Chargement des données depuis le backend...', 'info');
-            
-            try {
-                // 1. Charger la liste des parcelles
-                const response = await fetch(`${BACKEND_URL}/parcelles`);
-                if (!response.ok) {
-                    throw new Error(`Erreur HTTP: ${response.status}`);
-                }
-                const data = await response.json();
-                
-                // Transformer les données backend en format compatible avec ton frontend
-                parcelles = data.map((p, index) => ({
-                    id: p.id || index + 1,
-                    nom: p.nom || `Parcelle ${index + 1}`,
-                    proprietaire: p.proprietaire_nom || "N/A",
-                    culture: p.culture || "Arachide",
-                    village: p.village || "Barone",
-                    ndvi: p.ndvi || 0.1 + (Math.random() * 0.02),
-                    humidite: p.humidite || 35 + Math.floor(Math.random() * 20),
-                    temperature: p.temperature || 30 + Math.floor(Math.random() * 5),
-                    superficie: p.superficie_ha ? `${p.superficie_ha} ha` : "1.0 ha",
-                    couleur: "#4CAF50",
-                    sante: p.sante || (p.ndvi > 0.11 ? 'Bonne' : p.ndvi > 0.10 ? 'Moyenne' : 'Critique'),
-                    icone: "🥜",
-                    rendement_estime: p.rendement_estime || 1.5,
-                    efficience_eau: p.efficience_eau || 70,
-                    geometry: p.geometry || getDefaultGeometry(index)
-                }));
-                
-                // 2. Charger le GeoJSON pour la carte
-                try {
-                    const geoResponse = await fetch(`${BACKEND_URL}/parcelles/geojson`);
-                    if (geoResponse.ok) {
-                        const geoData = await geoResponse.json();
-                        window.geoJSONData = geoData;
-                        
-                        // Mettre à jour la carte si elle existe
-                        if (map) updateMapWithGeoJSON(geoData);
-                    }
-                } catch (geoError) {
-                    console.warn('Impossible de charger le GeoJSON, utilisation des géométries par défaut');
-                }
-                
-                // Initialiser les indices avancés
-                initAdvancedIndices();
-                
-                // Mettre à jour l'interface
-                updateStats();
-                updateTable();
-                
-                // Initialiser les graphiques si la page analytics est active
-                if (document.getElementById('analytics').classList.contains('active')) {
-                    initCharts();
-                    updateAdvice();
-                }
-                
-                showNotification(`✅ ${parcelles.length} parcelles chargées avec succès`, 'success');
-                
-            } catch (error) {
-                console.error('Erreur chargement backend:', error);
-                showNotification('❌ Erreur de connexion au backend. Utilisation des données de secours.', 'error');
-                
-                // Données de secours si le backend n'est pas disponible
-                parcelles = getFallbackData();
-                updateStats();
-                updateTable();
-            }
-        }
-
-        /**
-         * Données de secours (fallback) en cas d'erreur backend
-         */
-        function getFallbackData() {
-            return [
-                {
-                    id: 1,
-                    nom: "Parcelle Test 1",
-                    proprietaire: currentUser?.fullName || "Utilisateur Test",
-                    culture: "Arachide",
-                    village: "Barone",
-                    ndvi: 0.114,
-                    humidite: 48,
-                    temperature: 31.5,
-                    superficie: "1.0 ha",
-                    couleur: "#4CAF50",
-                    sante: "Bonne",
-                    icone: "🥜",
-                    rendement_estime: 1.8,
-                    efficience_eau: 85,
-                    geometry: getDefaultGeometry(0)
-                },
-                {
-                    id: 2,
-                    nom: "Parcelle Test 2",
-                    proprietaire: "Diop Amadou",
-                    culture: "Arachide",
-                    village: "Barone",
-                    ndvi: 0.098,
-                    humidite: 28,
-                    temperature: 34.2,
-                    superficie: "1.2 ha",
-                    couleur: "#F44336",
-                    sante: "Critique",
-                    icone: "🥜",
-                    rendement_estime: 1.1,
-                    efficience_eau: 42,
-                    geometry: getDefaultGeometry(1)
-                }
-            ];
-        }
-
-        /**
-         * Génère une géométrie par défaut pour les parcelles
-         */
-        function getDefaultGeometry(index) {
-            const baseCoords = [
-                [14.0485, -15.4615],
-                [14.0488, -15.4610],
-                [14.0483, -15.4605],
-                [14.0478, -15.4610],
-                [14.0480, -15.4615],
-                [14.0485, -15.4615]
-            ];
-            
-            // Décaler légèrement pour chaque parcelle
-            const offset = index * 0.002;
-            return baseCoords.map(coord => [coord[0] + offset, coord[1] + offset]);
-        }
-
-        /**
-         * Met à jour la carte avec les données GeoJSON
-         */
-        function updateMapWithGeoJSON(geoData) {
-            if (!map) return;
-            
-            // Supprimer les anciennes couches
-            if (window.parcelleLayer) {
-                map.removeLayer(window.parcelleLayer);
-            }
-            
-            // Ajouter les nouvelles données
-            window.parcelleLayer = L.geoJSON(geoData, {
-                style: function(feature) {
-                    const ndvi = feature.properties.ndvi || 0.1;
-                    let color = '#4CAF50';
-                    if (ndvi < 0.10) color = '#F44336';
-                    else if (ndvi < 0.11) color = '#FFC107';
-                    
-                    return {
-                        color: color,
-                        weight: 2,
-                        opacity: 0.9,
-                        fillColor: color,
-                        fillOpacity: 0.6
-                    };
-                },
-                onEachFeature: function(feature, layer) {
-                    const props = feature.properties;
-                    const ndvi = props.ndvi || 0.1;
-                    let sante = 'Bonne';
-                    if (ndvi < 0.10) sante = 'Critique';
-                    else if (ndvi < 0.11) sante = 'Moyenne';
-                    
-                    layer.bindPopup(`
-                        <div style="min-width: 200px;">
-                            <h3 style="color: #2E7D32;">${props.nom || 'Parcelle'}</h3>
-                            <p><strong>Propriétaire:</strong> ${props.proprietaire_nom || 'N/A'}</p>
-                            <p><strong>Culture:</strong> ${props.culture || 'Arachide'}</p>
-                            <p><strong>Superficie:</strong> ${props.superficie_ha || 'N/A'} ha</p>
-                            <p><strong>NDVI:</strong> ${ndvi.toFixed(3)} (${sante})</p>
-                            <button onclick="afficherDetailsParcelle(${props.id})" 
-                                    style="width:100%; padding:8px; background:#2E7D32; color:white; border:none; border-radius:4px; margin-top:10px; cursor:pointer;">
-                                Voir détails
-                            </button>
-                        </div>
-                    `);
-                }
-            }).addTo(map);
-        }
-
-        // ============================================
-        // NOUVELLES DONNÉES POUR LES INDICES AVANCÉS
-        // ============================================
-        
-        // Facteur d'ajustement du sol pour SAVI (L)
-        const facteurSAVI = 0.5; // Valeur standard pour végétation modérée
-        
-        // Fonction pour calculer le SAVI
-        function calculerSAVI(ndvi, facteurL = 0.5) {
-            const correctionSol = 0.15;
-            const savi = ndvi + correctionSol * (1 - ndvi) * facteurL;
-            return Math.min(Math.max(savi, 0), 1).toFixed(3);
-        }
-        
-        // Fonction pour calculer le NDWI
-        function calculerNDWI(humidite, ndvi) {
-            const baseNDWI = (humidite / 100) * 0.4 - 0.2;
-            const ajustementVeg = ndvi * 0.1;
-            const ndwi = baseNDWI + ajustementVeg;
-            return Math.min(Math.max(ndwi, -0.5), 0.5).toFixed(3);
-        }
-        
-        // Fonction pour générer des données MNT simulées
-        function genererDonneesMNT() {
-            const altitudes = parcelles.map((p, i) => {
-                const altitudeBase = 15 + Math.random() * 25;
-                return {
-                    altitude: altitudeBase.toFixed(1),
-                    pente: (Math.random() * 8).toFixed(1),
-                    exposition: ['Nord', 'Sud', 'Est', 'Ouest'][Math.floor(Math.random() * 4)]
-                };
-            });
-            
-            return altitudes;
-        }
-        
-        // Initialisation des données avancées
-        function initAdvancedIndices() {
-            if (parcelles.length === 0) return;
-            
-            const donneesMNT = genererDonneesMNT();
-            
-            parcelles.forEach((parcelle, index) => {
-                // Calcul SAVI
-                parcelle.savi = parseFloat(calculerSAVI(parcelle.ndvi, facteurSAVI));
-                
-                // Calcul NDWI
-                parcelle.ndwi = parseFloat(calculerNDWI(parcelle.humidite, parcelle.ndvi));
-                
-                // Ajout données MNT
-                parcelle.altitude = donneesMNT[index].altitude;
-                parcelle.pente = donneesMNT[index].pente;
-                parcelle.exposition = donneesMNT[index].exposition;
-                
-                // Détermination de la couleur basée sur SAVI
-                if (parcelle.savi < 0.1) {
-                    parcelle.couleurSAVI = "#D32F2F";
-                } else if (parcelle.savi < 0.3) {
-                    parcelle.couleurSAVI = "#FFC107";
-                } else {
-                    parcelle.couleurSAVI = "#4CAF50";
-                }
-                
-                // Détermination de la couleur basée sur NDWI
-                if (parcelle.ndwi < 0) {
-                    parcelle.couleurNDWI = "#D32F2F";
-                } else if (parcelle.ndwi < 0.2) {
-                    parcelle.couleurNDWI = "#2196F3";
-                } else {
-                    parcelle.couleurNDWI = "#0D47A1";
-                }
-                
-                // Détermination de la couleur basée sur la pente
-                const pente = parseFloat(parcelle.pente);
-                if (pente < 2) {
-                    parcelle.couleurMNT = "#4CAF50";
-                } else if (pente < 5) {
-                    parcelle.couleurMNT = "#FFC107";
-                } else {
-                    parcelle.couleurMNT = "#F44336";
-                }
-                
-                // Ajout de l'opacité par défaut
-                parcelle.opacity = 0.7;
-            });
-            
-            console.log("✅ Indices avancés initialisés : SAVI, NDWI, MNT");
-        }
 
         // ============================================
         // GESTION DE LA CONNEXION
@@ -3953,10 +3935,6 @@
             document.querySelector('.main-content').style.display = 'none';
             document.querySelector('.floating-buttons').style.display = 'none';
             document.querySelector('.mobile-menu-btn').style.display = 'none';
-            
-            setTimeout(() => {
-                document.getElementById('username')?.focus();
-            }, 300);
         }
 
         function showApp() {
@@ -3966,17 +3944,10 @@
             document.querySelector('.mobile-menu-btn').style.display = 'block';
             
             updateUserInfo();
-            
-            // Charger les données du backend
-            chargerDonneesBackend();
-            
             showPage('dashboard');
-            
-            setTimeout(() => {
-                if (currentUser) {
-                    console.log(`👋 Bienvenue ${currentUser.fullName} !`);
-                }
-            }, 500);
+            initAdvancedIndices();
+            updateStats();
+            updateTable();
         }
 
         function handleLogin(event) {
@@ -3987,47 +3958,36 @@
             const role = document.getElementById('role').value;
             const remember = document.getElementById('remember').checked;
             
-            const loginBtn = event.target.querySelector('.login-btn') || document.querySelector('.login-btn');
-            const originalText = loginBtn.innerHTML;
-            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion...';
-            loginBtn.disabled = true;
-            
-            setTimeout(() => {
-                if (username && password && role) {
-                    currentUser = {
-                        id: 1,
-                        username: username,
-                        fullName: "Ndiaye Aliou",
-                        email: "aliou.ndiaye@cooperative-barone.sn",
-                        phone: "+221 77 123 45 67",
-                        role: role,
-                        address: "Coopérative Barone, Kaffrine, Sénégal",
-                        joinDate: "15 Mars 2022",
-                        matricule: "GA-2022-001",
-                        cooperative: "Coopérative Agricole Barone",
-                        managedParcels: 6,
-                        totalArea: "8.5 ha",
-                        farmersCount: 6,
-                        performance: 72,
-                        lastLogin: new Date().toLocaleString('fr-FR')
-                    };
-                    
-                    if (remember) {
-                        localStorage.setItem('smartagromap_user', JSON.stringify(currentUser));
-                    } else {
-                        sessionStorage.setItem('smartagromap_user', JSON.stringify(currentUser));
-                    }
-                    
-                    showApp();
-                    showNotification(`✅ Connexion réussie ! Bienvenue ${currentUser.fullName}`, 'success');
-                    
+            if (username && password && role) {
+                currentUser = {
+                    id: 1,
+                    username: username,
+                    fullName: "Ndiaye Aliou",
+                    email: "aliou.ndiaye@cooperative-barone.sn",
+                    phone: "+221 77 123 45 67",
+                    role: role,
+                    address: "Coopérative Barone, Kaffrine, Sénégal",
+                    joinDate: "15 Mars 2022",
+                    matricule: "GA-2022-001",
+                    cooperative: "Coopérative Agricole Barone",
+                    managedParcels: 6,
+                    totalArea: "8.5 ha",
+                    farmersCount: 6,
+                    performance: 72,
+                    lastLogin: new Date().toLocaleString('fr-FR')
+                };
+                
+                if (remember) {
+                    localStorage.setItem('smartagromap_user', JSON.stringify(currentUser));
                 } else {
-                    loginBtn.innerHTML = originalText;
-                    loginBtn.disabled = false;
-                    showNotification('❌ Veuillez remplir tous les champs !', 'error');
-                    document.getElementById('username')?.focus();
+                    sessionStorage.setItem('smartagromap_user', JSON.stringify(currentUser));
                 }
-            }, 1500);
+                
+                showApp();
+                showNotification(`✅ Connexion réussie ! Bienvenue ${currentUser.fullName}`, 'success');
+            } else {
+                showNotification('❌ Veuillez remplir tous les champs !', 'error');
+            }
         }
 
         function getRoleName(role) {
@@ -4051,11 +4011,9 @@
             alert("📞 CONTACT ADMINISTRATEUR\n\n" +
                   "• Téléphone: +221 77 123 45 67\n" +
                   "• Email: admin@cooperative-barone.sn\n" +
-                  "• Responsable: M. Saliou Ndiaye\n" +
-                  "• Horaires: Lundi-Vendredi 8h-17h");
+                  "• Responsable: M. Saliou Ndiaye");
         }
 
-        // Fonction de notification
         function showNotification(message, type = 'info') {
             const notification = document.createElement('div');
             notification.style.cssText = `
@@ -4092,21 +4050,13 @@
             }, 5000);
         }
 
-        // ============================================
-        // GESTION DU PROFIL UTILISATEUR
-        // ============================================
         function updateUserInfo() {
             if (!currentUser) return;
             
             document.getElementById('userFullName').textContent = currentUser.fullName;
             document.getElementById('userRole').textContent = getRoleName(currentUser.role);
-            document.getElementById('userParcelles').textContent = parcelles.length || currentUser.managedParcels;
-            
-            const superficieTotale = parcelles.reduce((sum, p) => {
-                const val = parseFloat(p.superficie) || 0;
-                return sum + val;
-            }, 0);
-            document.getElementById('userSuperficie').textContent = superficieTotale > 0 ? `${superficieTotale.toFixed(1)} ha` : currentUser.totalArea;
+            document.getElementById('userParcelles').textContent = currentUser.managedParcels;
+            document.getElementById('userSuperficie').textContent = currentUser.totalArea;
             
             document.getElementById('profileName').textContent = currentUser.fullName;
             document.getElementById('profileEmail').textContent = currentUser.email;
@@ -4116,59 +4066,10 @@
             document.getElementById('profileJoinDate').textContent = currentUser.joinDate;
             document.getElementById('profileCooperative').textContent = currentUser.cooperative;
             document.getElementById('profileMatricule').textContent = currentUser.matricule;
-            document.getElementById('profileParcelles').textContent = `${parcelles.length || currentUser.managedParcels} parcelles`;
-            document.getElementById('profileSuperficie').textContent = superficieTotale > 0 ? `${superficieTotale.toFixed(1)} ha` : currentUser.totalArea;
+            document.getElementById('profileParcelles').textContent = `${currentUser.managedParcels} parcelles`;
+            document.getElementById('profileSuperficie').textContent = currentUser.totalArea;
             document.getElementById('profileFarmers').textContent = `${currentUser.farmersCount} agriculteurs`;
             document.getElementById('profilePerformance').textContent = `${currentUser.performance}%`;
-        }
-
-        function editProfile() {
-            showNotification("✏️ Mode édition du profil - Fonctionnalité à venir", 'info');
-        }
-
-        function changePassword() {
-            showNotification("🔐 Changement de mot de passe - Fonctionnalité à venir", 'info');
-        }
-
-        function exportProfileData() {
-            if (!currentUser) {
-                showNotification("❌ Vous devez être connecté", 'error');
-                return;
-            }
-            
-            showNotification("📦 Préparation de l'export de vos données...", 'info');
-            
-            setTimeout(() => {
-                const userData = {
-                    ...currentUser,
-                    exportDate: new Date().toLocaleString('fr-FR'),
-                    platform: "SmartAgroMap Kaffrine",
-                    version: "1.0.0",
-                    parcelles: parcelles.map(p => ({
-                        id: p.id,
-                        nom: p.nom,
-                        ndvi: p.ndvi,
-                        savi: p.savi,
-                        ndwi: p.ndwi,
-                        humidite: p.humidite,
-                        altitude: p.altitude,
-                        pente: p.pente,
-                        exposition: p.exposition,
-                        superficie: p.superficie,
-                        sante: p.sante
-                    }))
-                };
-                
-                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(userData, null, 2));
-                const downloadAnchor = document.createElement('a');
-                downloadAnchor.setAttribute("href", dataStr);
-                downloadAnchor.setAttribute("download", `smartagromap_profil_${currentUser.username}_${Date.now()}.json`);
-                document.body.appendChild(downloadAnchor);
-                downloadAnchor.click();
-                document.body.removeChild(downloadAnchor);
-                
-                showNotification("✅ Données exportées avec succès !", 'success');
-            }, 1000);
         }
 
         function logout() {
@@ -4177,13 +4078,9 @@
                 localStorage.removeItem('smartagromap_user');
                 sessionStorage.removeItem('smartagromap_user');
                 showLogin();
-                showNotification("👋 Déconnexion réussie !", 'info');
             }
         }
 
-        // ============================================
-        // FONCTIONS DE BASE
-        // ============================================
         function showPage(pageId) {
             if (!currentUser && pageId !== 'login') {
                 showLogin();
@@ -4241,9 +4138,6 @@
             document.getElementById('sidebarOverlay').classList.remove('active');
         }
 
-        // ============================================
-        // GESTION DES ONGLETS DES INDICES AVANCÉS
-        // ============================================
         function showIndexTab(tabId) {
             document.querySelectorAll('.index-tab').forEach(tab => {
                 tab.classList.remove('active');
@@ -4269,15 +4163,11 @@
             }
         }
 
-        // ============================================
-        // FONCTIONS CARTE AMÉLIORÉES
-        // ============================================
         function initMap() {
             if (map) return;
             
             map = L.map('ndvi-map').setView([14.0485, -15.4615], 16);
             
-            // Création des différents fonds de carte
             satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
                 attribution: '© Esri'
             });
@@ -4298,28 +4188,15 @@
                 attribution: '© Stamen'
             });
             
-            // Ajout du fond de carte par défaut
             satelliteLayer.addTo(map);
             
-            // Si on a des données GeoJSON, les utiliser
-            if (window.geoJSONData) {
-                updateMapWithGeoJSON(window.geoJSONData);
-            } else if (parcelles.length > 0) {
-                // Sinon, créer des couches à partir des parcelles
-                initMapLayers();
-            }
-            
-            // Ajout des contrôles de carte
+            initMapLayers();
             addMapControls();
-            
-            // Initialisation des contrôles d'interface
             initLayerControls();
             initBasemapControls();
             
-            // Mise à jour des informations de carte
             updateMapInfo();
             
-            // Événements de la carte
             map.on('moveend', updateMapInfo);
             map.on('zoomend', updateMapInfo);
             map.on('mousemove', updateCoordinates);
@@ -4335,9 +4212,12 @@
                 dem: L.layerGroup()
             };
             
-            // Création des polygones pour chaque couche
             parcelles.forEach(parcelle => {
-                // Couche NDVI
+                if (!parcelle.geometry || parcelle.geometry.length < 3) {
+                    console.error(`Parcelle ${parcelle.id} a une géométrie invalide`);
+                    return;
+                }
+                
                 const ndviPoly = L.polygon(parcelle.geometry, {
                     color: parcelle.couleur,
                     fillColor: parcelle.couleur,
@@ -4346,40 +4226,35 @@
                     opacity: 0.9
                 }).bindPopup(createPopupContent(parcelle, 'ndvi'));
                 
-                // Couche SAVI
                 const saviPoly = L.polygon(parcelle.geometry, {
-                    color: parcelle.couleurSAVI || parcelle.couleur,
-                    fillColor: parcelle.couleurSAVI || parcelle.couleur,
+                    color: parcelle.couleurSAVI,
+                    fillColor: parcelle.couleurSAVI,
                     fillOpacity: parcelle.opacity,
                     weight: 2,
                     opacity: 0.9
                 }).bindPopup(createPopupContent(parcelle, 'savi'));
                 
-                // Couche NDWI
                 const ndwiPoly = L.polygon(parcelle.geometry, {
-                    color: parcelle.couleurNDWI || parcelle.couleur,
-                    fillColor: parcelle.couleurNDWI || parcelle.couleur,
+                    color: parcelle.couleurNDWI,
+                    fillColor: parcelle.couleurNDWI,
                     fillOpacity: parcelle.opacity,
                     weight: 2,
                     opacity: 0.9
                 }).bindPopup(createPopupContent(parcelle, 'ndwi'));
                 
-                // Couche MNT
                 const demPoly = L.polygon(parcelle.geometry, {
-                    color: parcelle.couleurMNT || parcelle.couleur,
-                    fillColor: parcelle.couleurMNT || parcelle.couleur,
+                    color: parcelle.couleurMNT,
+                    fillColor: parcelle.couleurMNT,
                     fillOpacity: parcelle.opacity,
                     weight: 2,
                     opacity: 0.9
                 }).bindPopup(createPopupContent(parcelle, 'dem'));
                 
-                // Ajout aux groupes
                 mapLayers.ndvi.addLayer(ndviPoly);
                 mapLayers.savi.addLayer(saviPoly);
                 mapLayers.ndwi.addLayer(ndwiPoly);
                 mapLayers.dem.addLayer(demPoly);
                 
-                // Stockage pour référence
                 parcelleLayers[parcelle.id] = {
                     ndvi: ndviPoly,
                     savi: saviPoly,
@@ -4388,37 +4263,32 @@
                 };
             });
             
-            // Ajout de la couche NDVI par défaut
             mapLayers.ndvi.addTo(map);
         }
         
         function createPopupContent(parcelle, layerType) {
-            let couleur, valeur, unite, interpretation;
+            let couleur, valeur, interpretation;
             
             switch(layerType) {
                 case 'ndvi':
                     couleur = parcelle.couleur;
                     valeur = parcelle.ndvi;
-                    unite = '';
                     interpretation = parcelle.sante;
                     break;
                 case 'savi':
-                    couleur = parcelle.couleurSAVI || parcelle.couleur;
-                    valeur = parcelle.savi || parcelle.ndvi;
-                    unite = '';
-                    interpretation = valeur < 0.1 ? 'Faible' : valeur < 0.3 ? 'Modérée' : 'Dense';
+                    couleur = parcelle.couleurSAVI;
+                    valeur = parcelle.savi;
+                    interpretation = parcelle.savi < 0.1 ? 'Faible' : parcelle.savi < 0.3 ? 'Modérée' : 'Dense';
                     break;
                 case 'ndwi':
-                    couleur = parcelle.couleurNDWI || parcelle.couleur;
-                    valeur = parcelle.ndwi || 0;
-                    unite = '';
-                    interpretation = valeur < 0 ? 'Stress hydrique' : valeur < 0.2 ? 'Normal' : 'Humide';
+                    couleur = parcelle.couleurNDWI;
+                    valeur = parcelle.ndwi;
+                    interpretation = parcelle.ndwi < 0 ? 'Stress hydrique' : parcelle.ndwi < 0.2 ? 'Normal' : 'Humide';
                     break;
                 case 'dem':
-                    couleur = parcelle.couleurMNT || parcelle.couleur;
-                    valeur = parcelle.pente || 0;
-                    unite = '%';
-                    interpretation = parcelle.exposition || 'N/A';
+                    couleur = parcelle.couleurMNT;
+                    valeur = parcelle.pente;
+                    interpretation = parcelle.exposition;
                     break;
             }
             
@@ -4439,7 +4309,7 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <div>
                                 <div style="color: #666; font-size: 0.9rem;">${layerType.toUpperCase()}</div>
-                                <div style="color: ${couleur}; font-size: 1.8rem; font-weight: 800;">${valeur}${unite}</div>
+                                <div style="color: ${couleur}; font-size: 1.8rem; font-weight: 800;">${valeur}</div>
                             </div>
                             <div style="background: ${couleur}; color: white; padding: 5px 10px; border-radius: 15px; font-weight: 600;">
                                 ${interpretation}
@@ -4448,11 +4318,11 @@
                     </div>
                     <div style="display: flex; gap: 10px;">
                         <button onclick="zoomSurParcelle(${parcelle.id})" 
-                                style="flex: 1; padding: 10px; background: ${couleur}; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem;">
+                                style="flex: 1; padding: 10px; background: ${couleur}; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
                             <i class="fas fa-search"></i> Zoom
                         </button>
                         <button onclick="afficherDetailsParcelle(${parcelle.id})" 
-                                style="flex: 1; padding: 10px; background: var(--secondary); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem;">
+                                style="flex: 1; padding: 10px; background: var(--secondary); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
                             <i class="fas fa-info"></i> Détails
                         </button>
                     </div>
@@ -4461,7 +4331,6 @@
         }
         
         function addMapControls() {
-            // Contrôle des couches
             layerControls = L.control.layers({
                 'Satellite': satelliteLayer,
                 'Standard': streetLayer,
@@ -4478,14 +4347,12 @@
                 position: 'topright'
             }).addTo(map);
             
-            // Échelle graphique
             scaleControl = L.control.scale({
                 imperial: false,
                 metric: true,
                 position: 'bottomleft'
             }).addTo(map);
             
-            // Contrôle de zoom
             L.control.zoom({
                 position: 'topleft'
             }).addTo(map);
@@ -4493,8 +4360,6 @@
         
         function initLayerControls() {
             const layerControlsDiv = document.getElementById('layerControls');
-            if (!layerControlsDiv) return;
-            
             layerControlsDiv.innerHTML = '';
             
             const layers = [
@@ -4521,7 +4386,6 @@
                 
                 layerItem.addEventListener('click', () => toggleLayer(layer.id));
                 
-                // Contrôle d'opacité
                 const opacityControl = document.createElement('div');
                 opacityControl.className = 'layer-opacity-control';
                 opacityControl.innerHTML = `
@@ -4542,8 +4406,6 @@
         
         function initBasemapControls() {
             const basemapSelector = document.getElementById('basemapSelector');
-            if (!basemapSelector) return;
-            
             basemapSelector.innerHTML = '';
             
             const basemaps = [
@@ -4571,57 +4433,37 @@
         }
         
         function toggleLayer(layerId) {
-            // Mettre à jour l'état de la couche
             const layerItem = document.querySelector(`.layer-item[data-layer="${layerId}"]`);
-            if (!layerItem) return;
-            
             const isActive = layerItem.classList.contains('active');
             
-            // Retirer toutes les couches
             Object.values(mapLayers).forEach(layer => {
-                if (map) map.removeLayer(layer);
+                map.removeLayer(layer);
             });
             
-            // Ajouter la couche sélectionnée si elle n'était pas active
             if (!isActive) {
-                if (mapLayers[layerId]) {
-                    mapLayers[layerId].addTo(map);
-                }
+                mapLayers[layerId].addTo(map);
                 layerItem.classList.add('active');
-                const statusEl = layerItem.querySelector('.layer-status');
-                if (statusEl) statusEl.textContent = 'Actif';
+                layerItem.querySelector('.layer-status').textContent = 'Actif';
                 
-                // Désactiver les autres couches
                 document.querySelectorAll('.layer-item').forEach(item => {
                     if (item.dataset.layer !== layerId) {
                         item.classList.remove('active');
-                        const status = item.querySelector('.layer-status');
-                        if (status) status.textContent = 'Inactif';
+                        item.querySelector('.layer-status').textContent = 'Inactif';
                     }
                 });
                 
                 currentMapLayer = layerId;
                 updateLegend();
-                showNotification(`📊 Couche ${layerId.toUpperCase()} activée`, 'success');
             } else {
-                // Si on désactive la couche active, on réactive NDVI par défaut
-                if (mapLayers.ndvi) {
-                    mapLayers.ndvi.addTo(map);
-                }
-                const ndviItem = document.querySelector('.layer-item[data-layer="ndvi"]');
-                if (ndviItem) {
-                    ndviItem.classList.add('active');
-                    const status = ndviItem.querySelector('.layer-status');
-                    if (status) status.textContent = 'Actif';
-                }
+                mapLayers.ndvi.addTo(map);
+                document.querySelector('.layer-item[data-layer="ndvi"]').classList.add('active');
+                document.querySelector('.layer-item[data-layer="ndvi"] .layer-status').textContent = 'Actif';
                 currentMapLayer = 'ndvi';
                 updateLegend();
-                showNotification('📊 Couche NDVI activée par défaut', 'info');
             }
         }
         
         function changeBasemap(basemapId) {
-            // Retirer le fond de carte actuel
             const basemaps = {
                 satellite: satelliteLayer,
                 street: streetLayer,
@@ -4631,23 +4473,16 @@
             };
             
             Object.values(basemaps).forEach(basemap => {
-                if (map) map.removeLayer(basemap);
+                map.removeLayer(basemap);
             });
             
-            // Ajouter le nouveau fond de carte
-            if (basemaps[basemapId]) {
-                basemaps[basemapId].addTo(map);
-            }
+            basemaps[basemapId].addTo(map);
             currentBasemap = basemapId;
             
-            // Mettre à jour l'interface
             document.querySelectorAll('.basemap-option').forEach(option => {
                 option.classList.remove('active');
             });
-            const selected = document.querySelector(`.basemap-option[data-basemap="${basemapId}"]`);
-            if (selected) selected.classList.add('active');
-            
-            showNotification(`🗺️ Fond de carte changé: ${basemapId}`, 'info');
+            document.querySelector(`.basemap-option[data-basemap="${basemapId}"]`).classList.add('active');
         }
         
         function updateLayerOpacity(layerId, opacity) {
@@ -4658,9 +4493,6 @@
                     });
                 }
             });
-            
-            // Mettre à jour l'opacité dans les données
-            parcelles.forEach(p => p.opacity = opacity);
         }
         
         function updateMapInfo() {
@@ -4668,36 +4500,18 @@
             
             const zoom = map.getZoom();
             const center = map.getCenter();
-            const bounds = map.getBounds();
-            const distance = bounds.getNorthEast().distanceTo(bounds.getSouthWest());
             
-            // Mettre à jour le niveau de zoom
-            const zoomEl = document.getElementById('zoomLevel');
-            if (zoomEl) zoomEl.textContent = zoom;
-            
-            // Calculer l'échelle approximative
-            let scale;
-            if (distance < 1000) {
-                scale = `1:${Math.round(distance / 5)}`;
-            } else if (distance < 10000) {
-                scale = `1:${Math.round(distance / 50)}`;
-            } else {
-                scale = `1:${Math.round(distance / 500)}`;
-            }
-            const scaleEl = document.getElementById('mapScale');
-            if (scaleEl) scaleEl.textContent = scale;
-            
-            // Mettre à jour les coordonnées
+            document.getElementById('zoomLevel').textContent = zoom;
+            document.getElementById('mapScale').textContent = `1:${Math.round(100000 / Math.pow(2, zoom))}`;
             updateCoordinates({ latlng: center });
         }
         
         function updateCoordinates(e) {
-            if (!e || !e.latlng) return;
+            if (!e.latlng) return;
             
             const lat = e.latlng.lat.toFixed(6);
             const lng = e.latlng.lng.toFixed(6);
-            const coordEl = document.getElementById('coordinateDisplay');
-            if (coordEl) coordEl.textContent = `Lat: ${lat}° | Lon: ${lng}°`;
+            document.getElementById('coordinateDisplay').textContent = `Lat: ${lat}° | Lon: ${lng}°`;
         }
         
         function updateLegend() {
@@ -4709,7 +4523,7 @@
             switch(currentMapLayer) {
                 case 'ndvi':
                     legendHTML = `
-                        <h4 style="color: var(--primary-dark); margin-bottom: 15px; font-size: 1.1rem;">
+                        <h4 style="color: var(--primary-dark); margin-bottom: 15px;">
                             <i class="fas fa-leaf"></i> Légende NDVI
                         </h4>
                         <div class="legend-gradient" style="background: linear-gradient(to right, #D32F2F, #FFC107, #4CAF50);"></div>
@@ -4732,10 +4546,9 @@
                         </div>
                     `;
                     break;
-                    
                 case 'savi':
                     legendHTML = `
-                        <h4 style="color: var(--savi-color); margin-bottom: 15px; font-size: 1.1rem;">
+                        <h4 style="color: var(--savi-color); margin-bottom: 15px;">
                             <i class="fas fa-mountain"></i> Légende SAVI
                         </h4>
                         <div class="legend-gradient" style="background: linear-gradient(to right, #D32F2F, #FFC107, #8BC34A);"></div>
@@ -4758,10 +4571,9 @@
                         </div>
                     `;
                     break;
-                    
                 case 'ndwi':
                     legendHTML = `
-                        <h4 style="color: var(--ndwi-color); margin-bottom: 15px; font-size: 1.1rem;">
+                        <h4 style="color: var(--ndwi-color); margin-bottom: 15px;">
                             <i class="fas fa-tint"></i> Légende NDWI
                         </h4>
                         <div class="legend-gradient" style="background: linear-gradient(to right, #D32F2F, #2196F3, #0D47A1);"></div>
@@ -4784,10 +4596,9 @@
                         </div>
                     `;
                     break;
-                    
                 case 'dem':
                     legendHTML = `
-                        <h4 style="color: var(--dem-color); margin-bottom: 15px; font-size: 1.1rem;">
+                        <h4 style="color: var(--dem-color); margin-bottom: 15px;">
                             <i class="fas fa-mountain"></i> Légende Pente
                         </h4>
                         <div class="legend-gradient" style="background: linear-gradient(to right, #4CAF50, #FFC107, #795548);"></div>
@@ -4814,25 +4625,42 @@
             
             legendContent.innerHTML = legendHTML;
         }
-        
-        // ============================================
-        // FONCTIONS DE CONTRÔLE DE L'INTERFACE
-        // ============================================
+
+        function initMiniMap() {
+            if (miniMap) return;
+            
+            miniMap = L.map('mini-map').setView([14.0485, -15.4615], 15);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap'
+            }).addTo(miniMap);
+            
+            parcelles.forEach(parcelle => {
+                if (parcelle.geometry && parcelle.geometry.length >= 3) {
+                    L.polygon(parcelle.geometry, {
+                        color: parcelle.couleur,
+                        fillColor: parcelle.couleur,
+                        fillOpacity: 0.6,
+                        weight: 2
+                    }).addTo(miniMap).bindPopup(`
+                        <div style="padding: 10px;">
+                            <strong style="color: ${parcelle.couleur};">${parcelle.nom}</strong><br>
+                            <span>${parcelle.proprietaire}</span>
+                        </div>
+                    `);
+                }
+            });
+        }
+
         function togglePanel() {
             const panel = document.getElementById('mapControlsPanel');
             panel.classList.toggle('collapsed');
             isPanelCollapsed = !isPanelCollapsed;
             
             const icon = panel.querySelector('.panel-toggle-btn i');
-            if (isPanelCollapsed) {
-                icon.className = 'fas fa-chevron-left';
-                showNotification("📋 Panneau de contrôle replié", 'info');
-            } else {
-                icon.className = 'fas fa-chevron-right';
-                showNotification("📋 Panneau de contrôle déplié", 'info');
-            }
+            icon.className = isPanelCollapsed ? 'fas fa-chevron-left' : 'fas fa-chevron-right';
         }
-        
+
         function toggleLegendContent() {
             const legendContent = document.getElementById('legendContent');
             const isVisible = legendContent.style.display === 'block';
@@ -4841,37 +4669,32 @@
             const icon = document.querySelector('.legend-toggle i.fa-chevron-down');
             icon.className = isVisible ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
         }
-        
+
         function toggleMeasurementTools() {
             const tools = document.getElementById('measurementTools');
             const isVisible = tools.style.display === 'block';
             tools.style.display = isVisible ? 'none' : 'block';
-            showNotification(isVisible ? '📏 Outils de mesure masqués' : '📏 Outils de mesure activés', 'info');
         }
-        
+
         function toggleLayerControl() {
             const panel = document.getElementById('mapControlsPanel');
             if (panel.classList.contains('collapsed')) {
                 togglePanel();
             }
-            showNotification("🎚️ Contrôle des couches activé", 'info');
         }
-        
+
         function toggleGrid() {
-            if (!gridLayer && map) {
-                // Créer une grille de coordonnées
-                gridLayer = L.gridLayer({
-                    attribution: 'Grille de coordonnées'
-                });
+            if (!gridLayer) {
+                gridLayer = L.gridLayer();
                 gridLayer.addTo(map);
                 showNotification("🗺️ Grille de coordonnées activée", 'success');
-            } else if (gridLayer && map) {
+            } else {
                 map.removeLayer(gridLayer);
                 gridLayer = null;
                 showNotification("🗺️ Grille de coordonnées désactivée", 'info');
             }
         }
-        
+
         function adjustOpacity(action) {
             const slider = document.querySelector(`.opacity-slider[data-layer="${currentMapLayer}"]`);
             if (!slider) return;
@@ -4886,58 +4709,41 @@
             slider.value = value;
             slider.nextElementSibling.textContent = `${value}%`;
             updateLayerOpacity(currentMapLayer, value / 100);
-            
-            showNotification(`🎚️ Opacité ${currentMapLayer}: ${value}%`, 'info');
         }
-        
+
         function resetView() {
             if (!map) return;
             map.setView([14.0485, -15.4615], 16);
-            showNotification("🗺️ Vue recentrée", 'info');
         }
-        
+
         function toggleFullscreen() {
             const mapContainer = document.getElementById('ndvi-map-container');
             if (!document.fullscreenElement) {
-                if (mapContainer.requestFullscreen) {
-                    mapContainer.requestFullscreen();
-                } else if (mapContainer.webkitRequestFullscreen) {
-                    mapContainer.webkitRequestFullscreen();
-                } else if (mapContainer.msRequestFullscreen) {
-                    mapContainer.msRequestFullscreen();
-                }
+                mapContainer.requestFullscreen();
                 showNotification("🖥️ Mode plein écran activé", 'success');
             } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) {
-                    document.msExitFullscreen();
-                }
+                document.exitFullscreen();
                 showNotification("🖥️ Mode plein écran désactivé", 'info');
             }
         }
-        
+
         function printMap() {
             showNotification("🖨️ Préparation de l'impression...", 'info');
             setTimeout(() => {
                 window.print();
-                showNotification("🖨️ Impression prête", 'success');
             }, 1000);
         }
-        
+
         function exportMap() {
             showNotification("💾 Export de la carte en cours...", 'info');
             setTimeout(() => {
-                // Simuler l'export
                 const exportData = {
                     type: "map_export",
                     date: new Date().toISOString(),
                     layers: [currentMapLayer],
                     basemap: currentBasemap,
-                    zoom: map ? map.getZoom() : 16,
-                    center: map ? map.getCenter() : { lat: 14.0485, lng: -15.4615 },
+                    zoom: map.getZoom(),
+                    center: map.getCenter(),
                     parcelles: parcelles.map(p => ({
                         id: p.id,
                         nom: p.nom,
@@ -4956,296 +4762,225 @@
                 showNotification("✅ Carte exportée avec succès !", 'success');
             }, 1500);
         }
-        
+
         function startMeasurement(type) {
-            showNotification(`📏 Début de mesure ${type === 'distance' ? 'de distance' : 'de superficie'} - Cliquez sur la carte`, 'info');
+            showNotification(`📏 Début de mesure ${type === 'distance' ? 'de distance' : 'de superficie'}`, 'info');
         }
-        
+
         function clearMeasurements() {
             showNotification("🧹 Mesures effacées", 'info');
         }
-        
+
         function toggleLegend() {
-            const legendContent = document.getElementById('legendContent');
-            const isVisible = legendContent.style.display === 'block';
-            legendContent.style.display = isVisible ? 'none' : 'block';
-            showNotification(isVisible ? '📋 Légende masquée' : '📋 Légende affichée', 'info');
+            toggleLegendContent();
         }
 
-        // ============================================
-        // FONCTIONS EXISTANTES (MAINTENUES)
-        // ============================================
-        function initMiniMap() {
-            if (miniMap) return;
-            
-            miniMap = L.map('mini-map').setView([14.0485, -15.4615], 15);
-            
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap'
-            }).addTo(miniMap);
-            
-            parcelles.forEach(parcelle => {
-                L.polygon(parcelle.geometry, {
-                    color: parcelle.couleur,
-                    fillColor: parcelle.couleur,
-                    fillOpacity: 0.6,
-                    weight: 2
-                }).addTo(miniMap).bindPopup(`
-                    <div style="padding: 10px;">
-                        <strong style="color: ${parcelle.couleur}; font-size: 1.1rem;">${parcelle.nom}</strong><br>
-                        <span style="color: #666;">${parcelle.proprietaire}</span>
-                    </div>
-                `);
-            });
-        }
-
-        // ============================================
-        // ANALYTICS - GRAPHIQUES COMPLETS
-        // ============================================
         function initCharts() {
-            if (parcelles.length === 0) return;
-            
             chartInstances.forEach(chart => {
                 if (chart) chart.destroy();
             });
             chartInstances = [];
 
-            // Graphique circulaire NDVI
-            const ctx1 = document.getElementById('ndviPieChart')?.getContext('2d');
-            if (ctx1) {
-                const ndviChart = new Chart(ctx1, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Bonne Santé', 'État Moyen', 'Critique'],
-                        datasets: [{
-                            data: [
-                                parcelles.filter(p => p.sante === 'Bonne').length,
-                                parcelles.filter(p => p.sante === 'Moyenne').length,
-                                parcelles.filter(p => p.sante === 'Critique').length
-                            ],
-                            backgroundColor: ['#4CAF50', '#FFC107', '#F44336'],
-                            borderWidth: 3,
-                            borderColor: 'white',
-                            hoverOffset: 20,
-                            hoverBorderWidth: 4
-                        }]
+            const ctx1 = document.getElementById('ndviPieChart').getContext('2d');
+            const ndviChart = new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Bonne Santé', 'État Moyen', 'Critique'],
+                    datasets: [{
+                        data: [
+                            parcelles.filter(p => p.sante === 'Bonne').length,
+                            parcelles.filter(p => p.sante === 'Moyenne').length,
+                            parcelles.filter(p => p.sante === 'Critique').length
+                        ],
+                        backgroundColor: ['#4CAF50', '#FFC107', '#F44336'],
+                        borderWidth: 3,
+                        borderColor: 'white'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'bottom',
-                                labels: {
-                                    padding: 25,
-                                    usePointStyle: true,
-                                    font: { size: 14, weight: '600' }
-                                }
-                            }
-                        },
-                        cutout: '65%',
-                        animation: { animateScale: true, animateRotate: true }
-                    }
-                });
-                chartInstances.push(ndviChart);
-            }
+                    cutout: '65%'
+                }
+            });
+            chartInstances.push(ndviChart);
 
-            // Graphique à barres comparatif
-            const ctx2 = document.getElementById('barChart')?.getContext('2d');
-            if (ctx2) {
-                const barChart = new Chart(ctx2, {
-                    type: 'bar',
-                    data: {
-                        labels: parcelles.map(p => p.nom),
-                        datasets: [{
-                            label: 'Valeur NDVI',
-                            data: parcelles.map(p => p.ndvi),
-                            backgroundColor: parcelles.map(p => {
-                                if (p.sante === 'Bonne') return 'rgba(76, 175, 80, 0.8)';
-                                if (p.sante === 'Moyenne') return 'rgba(255, 193, 7, 0.8)';
-                                return 'rgba(244, 67, 54, 0.8)';
-                            }),
-                            borderColor: parcelles.map(p => {
-                                if (p.sante === 'Bonne') return '#4CAF50';
-                                if (p.sante === 'Moyenne') return '#FFC107';
-                                return '#F44336';
-                            }),
-                            borderWidth: 3,
-                            borderRadius: 8
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                max: 0.15,
-                                title: {
-                                    display: true,
-                                    text: 'Valeur NDVI',
-                                    font: { size: 15, weight: '800' }
-                                }
+            const ctx2 = document.getElementById('barChart').getContext('2d');
+            const barChart = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: parcelles.map(p => p.nom),
+                    datasets: [{
+                        label: 'Valeur NDVI',
+                        data: parcelles.map(p => p.ndvi),
+                        backgroundColor: parcelles.map(p => {
+                            if (p.sante === 'Bonne') return 'rgba(76, 175, 80, 0.8)';
+                            if (p.sante === 'Moyenne') return 'rgba(255, 193, 7, 0.8)';
+                            return 'rgba(244, 67, 54, 0.8)';
+                        }),
+                        borderColor: parcelles.map(p => {
+                            if (p.sante === 'Bonne') return '#4CAF50';
+                            if (p.sante === 'Moyenne') return '#FFC107';
+                            return '#F44336';
+                        }),
+                        borderWidth: 3,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 0.15,
+                            title: {
+                                display: true,
+                                text: 'Valeur NDVI'
                             }
-                        },
-                        plugins: { legend: { display: false } },
-                        animation: { duration: 1000, easing: 'easeOutQuart' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
                     }
-                });
-                chartInstances.push(barChart);
-            }
+                }
+            });
+            chartInstances.push(barChart);
 
-            // Graphique de tendance
-            const ctx3 = document.getElementById('trendChart')?.getContext('2d');
-            if (ctx3) {
-                const dates = ['01/09', '05/09', '10/09', '15/09', '20/09', '25/09', '30/09'];
-                const trendChart = new Chart(ctx3, {
-                    type: 'line',
-                    data: {
-                        labels: dates,
-                        datasets: [
-                            {
-                                label: 'Parcelle 1',
-                                data: parcelles.length > 0 ? [0.108, 0.110, 0.111, 0.112, 0.113, 0.114, 0.114] : [],
-                                borderColor: '#4CAF50',
-                                backgroundColor: 'rgba(76, 175, 80, 0.15)',
-                                borderWidth: 4,
-                                tension: 0.4,
-                                fill: true
-                            },
-                            {
-                                label: 'Moyenne Coopérative',
-                                data: [0.102, 0.104, 0.105, 0.105, 0.106, 0.106, 0.106],
-                                borderColor: '#0288D1',
-                                backgroundColor: 'transparent',
-                                borderWidth: 3,
-                                tension: 0.4,
-                                fill: false,
-                                borderDash: [6, 6]
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: false,
-                                min: 0.09,
-                                max: 0.12,
-                                title: {
-                                    display: true,
-                                    text: 'Valeur NDVI',
-                                    font: { size: 15, weight: '800' }
-                                }
-                            },
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Date (Septembre 2024)',
-                                    font: { size: 15, weight: '800' }
-                                }
-                            }
+            const ctx3 = document.getElementById('trendChart').getContext('2d');
+            const trendChart = new Chart(ctx3, {
+                type: 'line',
+                data: {
+                    labels: historiqueNDVI.dates,
+                    datasets: [
+                        {
+                            label: 'Parcelle 1 (Meilleure)',
+                            data: historiqueNDVI["Parcelle 1"],
+                            borderColor: '#4CAF50',
+                            backgroundColor: 'rgba(76, 175, 80, 0.15)',
+                            borderWidth: 4,
+                            tension: 0.4,
+                            fill: true
                         },
-                        plugins: {
-                            annotation: {
-                                annotations: {
-                                    ligneSeuil: {
-                                        type: 'line',
-                                        yMin: 0.11,
-                                        yMax: 0.11,
-                                        borderColor: '#4CAF50',
-                                        borderWidth: 3,
-                                        borderDash: [6, 6],
-                                        label: {
-                                            content: 'Seuil Bonne Santé',
-                                            enabled: true,
-                                            backgroundColor: '#4CAF50',
-                                            color: 'white'
-                                        }
-                                    },
-                                    ligneCritique: {
-                                        type: 'line',
-                                        yMin: 0.10,
-                                        yMax: 0.10,
-                                        borderColor: '#F44336',
-                                        borderWidth: 3,
-                                        borderDash: [6, 6],
-                                        label: {
-                                            content: 'Seuil Critique',
-                                            enabled: true,
-                                            backgroundColor: '#F44336',
-                                            color: 'white'
-                                        }
+                        {
+                            label: 'Parcelle 2 (Critique)',
+                            data: historiqueNDVI["Parcelle 2"],
+                            borderColor: '#F44336',
+                            backgroundColor: 'rgba(244, 67, 54, 0.15)',
+                            borderWidth: 4,
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Moyenne Coopérative',
+                            data: [0.102, 0.104, 0.105, 0.105, 0.106, 0.106, 0.106],
+                            borderColor: '#0288D1',
+                            borderWidth: 3,
+                            tension: 0.4,
+                            fill: false,
+                            borderDash: [6, 6]
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 0.09,
+                            max: 0.12
+                        }
+                    },
+                    plugins: {
+                        annotation: {
+                            annotations: {
+                                ligneSeuil: {
+                                    type: 'line',
+                                    yMin: 0.11,
+                                    yMax: 0.11,
+                                    borderColor: '#4CAF50',
+                                    borderWidth: 3,
+                                    borderDash: [6, 6],
+                                    label: {
+                                        content: 'Seuil Bonne Santé',
+                                        enabled: true
+                                    }
+                                },
+                                ligneCritique: {
+                                    type: 'line',
+                                    yMin: 0.10,
+                                    yMax: 0.10,
+                                    borderColor: '#F44336',
+                                    borderWidth: 3,
+                                    borderDash: [6, 6],
+                                    label: {
+                                        content: 'Seuil Critique',
+                                        enabled: true
                                     }
                                 }
                             }
-                        },
-                        interaction: { intersect: false, mode: 'index' },
-                        animation: { duration: 1000, easing: 'easeOutQuart' }
-                    },
-                    plugins: [ChartAnnotation]
-                });
-                chartInstances.push(trendChart);
-            }
-
-            // Graphique de corrélation
-            const ctx4 = document.getElementById('correlationChart')?.getContext('2d');
-            if (ctx4) {
-                const correlationChart = new Chart(ctx4, {
-                    type: 'scatter',
-                    data: {
-                        datasets: [{
-                            label: 'Corrélation NDVI/Humidité',
-                            data: parcelles.map(p => ({ x: p.humidite, y: p.ndvi })),
-                            backgroundColor: parcelles.map(p => {
-                                if (p.sante === 'Bonne') return 'rgba(76, 175, 80, 0.8)';
-                                if (p.sante === 'Moyenne') return 'rgba(255, 193, 7, 0.8)';
-                                return 'rgba(244, 67, 54, 0.8)';
-                            }),
-                            borderColor: parcelles.map(p => {
-                                if (p.sante === 'Bonne') return '#4CAF50';
-                                if (p.sante === 'Moyenne') return '#FFC107';
-                                return '#F44336';
-                            }),
-                            borderWidth: 3,
-                            pointRadius: 10,
-                            pointHoverRadius: 16
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Humidité du sol (%)',
-                                    font: { size: 15, weight: '800' }
-                                },
-                                min: 25,
-                                max: 60
-                            },
-                            y: {
-                                title: {
-                                    display: true,
-                                    text: 'Valeur NDVI',
-                                    font: { size: 15, weight: '800' }
-                                },
-                                min: 0.095,
-                                max: 0.12
-                            }
-                        },
-                        animation: { duration: 1000, easing: 'easeOutQuart' }
+                        }
                     }
-                });
-                chartInstances.push(correlationChart);
-            }
+                },
+                plugins: [ChartAnnotation]
+            });
+            chartInstances.push(trendChart);
+
+            const ctx4 = document.getElementById('correlationChart').getContext('2d');
+            const correlationChart = new Chart(ctx4, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Corrélation NDVI/Humidité',
+                        data: donneesCorrelation.map(d => ({ x: d.humidite, y: d.ndvi })),
+                        backgroundColor: donneesCorrelation.map((d, i) => {
+                            const parcelle = parcelles[i];
+                            if (parcelle.sante === 'Bonne') return 'rgba(76, 175, 80, 0.8)';
+                            if (parcelle.sante === 'Moyenne') return 'rgba(255, 193, 7, 0.8)';
+                            return 'rgba(244, 67, 54, 0.8)';
+                        }),
+                        borderColor: donneesCorrelation.map((d, i) => {
+                            const parcelle = parcelles[i];
+                            if (parcelle.sante === 'Bonne') return '#4CAF50';
+                            if (parcelle.sante === 'Moyenne') return '#FFC107';
+                            return '#F44336';
+                        }),
+                        borderWidth: 3,
+                        pointRadius: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Humidité du sol (%)'
+                            },
+                            min: 25,
+                            max: 60
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Valeur NDVI'
+                            },
+                            min: 0.095,
+                            max: 0.12
+                        }
+                    }
+                }
+            });
+            chartInstances.push(correlationChart);
         }
 
-        // ============================================
-        // GRAPHIQUES DES INDICES AVANCÉS
-        // ============================================
         function initAdvancedCharts() {
             advancedCharts.forEach(chart => {
                 if (chart) chart.destroy();
@@ -5256,22 +4991,19 @@
             initNDWIChart();
             initDEMChart();
             initComparaisonChart();
-            initCorrelationMatrixChart();
         }
 
         function initSAVIChart() {
-            const ctx = document.getElementById('saviChart')?.getContext('2d');
-            if (!ctx || parcelles.length === 0) return;
-            
+            const ctx = document.getElementById('saviChart').getContext('2d');
             const saviChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: parcelles.map(p => p.nom),
                     datasets: [{
                         label: 'SAVI',
-                        data: parcelles.map(p => p.savi || p.ndvi),
-                        backgroundColor: parcelles.map(p => p.couleurSAVI || '#8BC34A'),
-                        borderColor: parcelles.map(p => (p.couleurSAVI || '#8BC34A').replace('0.8', '1')),
+                        data: parcelles.map(p => p.savi),
+                        backgroundColor: parcelles.map(p => p.couleurSAVI),
+                        borderColor: parcelles.map(p => p.couleurSAVI),
                         borderWidth: 2,
                         borderRadius: 6
                     }]
@@ -5285,30 +5017,28 @@
                             max: 0.5,
                             title: {
                                 display: true,
-                                text: 'Valeur SAVI',
-                                font: { size: 14, weight: '700' }
+                                text: 'Valeur SAVI'
                             }
-                        },
-                        x: { grid: { display: false } }
+                        }
                     },
-                    plugins: { legend: { display: false } }
+                    plugins: {
+                        legend: { display: false }
+                    }
                 }
             });
             advancedCharts.push(saviChart);
         }
 
         function initNDWIChart() {
-            const ctx = document.getElementById('ndwiChart')?.getContext('2d');
-            if (!ctx || parcelles.length === 0) return;
-            
+            const ctx = document.getElementById('ndwiChart').getContext('2d');
             const ndwiChart = new Chart(ctx, {
                 type: 'scatter',
                 data: {
                     datasets: [{
                         label: 'NDWI vs Humidité',
-                        data: parcelles.map(p => ({ x: p.humidite, y: p.ndwi || 0 })),
-                        backgroundColor: parcelles.map(p => p.couleurNDWI || '#2196F3'),
-                        borderColor: parcelles.map(p => (p.couleurNDWI || '#2196F3').replace('0.8', '1')),
+                        data: parcelles.map(p => ({ x: p.humidite, y: p.ndwi })),
+                        backgroundColor: parcelles.map(p => p.couleurNDWI),
+                        borderColor: parcelles.map(p => p.couleurNDWI),
                         borderWidth: 2,
                         pointRadius: 8
                     }]
@@ -5320,15 +5050,13 @@
                         x: {
                             title: {
                                 display: true,
-                                text: 'Humidité du sol (%)',
-                                font: { size: 14, weight: '700' }
+                                text: 'Humidité du sol (%)'
                             }
                         },
                         y: {
                             title: {
                                 display: true,
-                                text: 'Valeur NDWI',
-                                font: { size: 14, weight: '700' }
+                                text: 'Valeur NDWI'
                             }
                         }
                     }
@@ -5338,20 +5066,18 @@
         }
 
         function initDEMChart() {
-            const ctx = document.getElementById('demChart')?.getContext('2d');
-            if (!ctx || parcelles.length === 0) return;
-            
+            const ctx = document.getElementById('demChart').getContext('2d');
             const demChart = new Chart(ctx, {
                 type: 'radar',
                 data: {
                     labels: parcelles.map(p => p.nom),
                     datasets: [{
                         label: 'Altitude (m)',
-                        data: parcelles.map(p => parseFloat(p.altitude || 20)),
+                        data: parcelles.map(p => parseFloat(p.altitude)),
                         backgroundColor: 'rgba(121, 85, 72, 0.2)',
                         borderColor: 'rgba(121, 85, 72, 1)',
                         borderWidth: 2,
-                        pointBackgroundColor: parcelles.map(p => p.couleurMNT || '#795548')
+                        pointBackgroundColor: parcelles.map(p => p.couleurMNT)
                     }]
                 },
                 options: {
@@ -5361,8 +5087,7 @@
                         r: {
                             beginAtZero: false,
                             min: 10,
-                            max: 50,
-                            ticks: { stepSize: 10 }
+                            max: 50
                         }
                     }
                 }
@@ -5371,9 +5096,7 @@
         }
 
         function initComparaisonChart() {
-            const ctx = document.getElementById('comparaisonChart')?.getContext('2d');
-            if (!ctx || parcelles.length === 0) return;
-            
+            const ctx = document.getElementById('comparaisonChart').getContext('2d');
             const comparaisonChart = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -5390,7 +5113,7 @@
                         },
                         {
                             label: 'SAVI',
-                            data: parcelles.map(p => p.savi || p.ndvi),
+                            data: parcelles.map(p => p.savi),
                             borderColor: '#8BC34A',
                             backgroundColor: 'rgba(139, 195, 74, 0.1)',
                             borderWidth: 3,
@@ -5407,97 +5130,16 @@
                             beginAtZero: false,
                             title: {
                                 display: true,
-                                text: 'Valeur d\'indice',
-                                font: { size: 14, weight: '700' }
+                                text: 'Valeur d\'indice'
                             }
-                        },
-                        x: { grid: { display: false } }
+                        }
                     }
                 }
             });
             advancedCharts.push(comparaisonChart);
         }
 
-        function initCorrelationMatrixChart() {
-            const ctx = document.getElementById('correlationMatrixChart')?.getContext('2d');
-            if (!ctx) return;
-            
-            const indices = ['NDVI', 'SAVI', 'NDWI', 'Humidité', 'Altitude'];
-            const correlations = [
-                [1.00, 0.85, 0.65, 0.75, -0.30],
-                [0.85, 1.00, 0.60, 0.70, -0.25],
-                [0.65, 0.60, 1.00, 0.90, -0.10],
-                [0.75, 0.70, 0.90, 1.00, -0.15],
-                [-0.30, -0.25, -0.10, -0.15, 1.00]
-            ];
-            
-            const correlationMatrixChart = new Chart(ctx, {
-                type: 'matrix',
-                data: {
-                    datasets: [{
-                        label: 'Matrice de Corrélation',
-                        data: correlations.map((row, i) => 
-                            row.map((value, j) => ({
-                                x: indices[j],
-                                y: indices[i],
-                                v: value
-                            }))
-                        ).flat(),
-                        backgroundColor: function(context) {
-                            const value = context.dataset.data[context.dataIndex].v;
-                            let alpha = Math.abs(value) * 0.5 + 0.3;
-                            if (value > 0) {
-                                return `rgba(76, 175, 80, ${alpha})`;
-                            } else if (value < 0) {
-                                return `rgba(244, 67, 54, ${alpha})`;
-                            } else {
-                                return `rgba(158, 158, 158, ${alpha})`;
-                            }
-                        },
-                        borderWidth: 1,
-                        borderColor: 'white',
-                        width: function(context) {
-                            const a = context.chart.chartArea;
-                            return (a.right - a.left) / indices.length - 2;
-                        },
-                        height: function(context) {
-                            const a = context.chart.chartArea;
-                            return (a.bottom - a.top) / indices.length - 2;
-                        }
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            type: 'category',
-                            labels: indices,
-                            offset: true,
-                            grid: { display: false }
-                        },
-                        y: {
-                            type: 'category',
-                            labels: indices,
-                            offset: true,
-                            grid: { display: false }
-                        }
-                    },
-                    plugins: { legend: { display: false } }
-                }
-            });
-            advancedCharts.push(correlationMatrixChart);
-        }
-
-        // ============================================
-        // PANNEAUX LATÉRAUX
-        // ============================================
         function ouvrirPanneauNDVI() {
-            if (parcelles.length === 0) {
-                showNotification("📊 Aucune donnée disponible", 'warning');
-                return;
-            }
-            
             document.getElementById('ndviSidebar').classList.add('active');
             document.getElementById('modalOverlay').style.display = 'block';
             
@@ -5525,11 +5167,11 @@
                                 <i class="fas fa-eye"></i> Détails
                             </button>
                         </div>
-                        <div style="margin-top: 15px; font-size: 0.95rem; color: #666; display: flex; gap: 15px; flex-wrap: wrap;">
-                            <span><i class="fas fa-ruler" style="color: var(--primary);"></i> ${parcelle.superficie}</span>
-                            <span><i class="fas fa-mountain" style="color: var(--savi-color);"></i> SAVI: ${parcelle.savi || parcelle.ndvi}</span>
-                            <span><i class="fas fa-tint" style="color: var(--ndwi-color);"></i> NDWI: ${parcelle.ndwi || 0}</span>
-                            <span><i class="fas fa-mountain" style="color: var(--dem-color);"></i> ${parcelle.altitude || 20}m</span>
+                        <div style="margin-top: 15px; display: flex; gap: 15px; flex-wrap: wrap;">
+                            <span><i class="fas fa-ruler"></i> ${parcelle.superficie}</span>
+                            <span><i class="fas fa-mountain" style="color: var(--savi-color);"></i> SAVI: ${parcelle.savi}</span>
+                            <span><i class="fas fa-tint" style="color: var(--ndwi-color);"></i> NDWI: ${parcelle.ndwi}</span>
+                            <span><i class="fas fa-mountain" style="color: var(--dem-color);"></i> ${parcelle.altitude}m</span>
                         </div>
                     </div>
                 `;
@@ -5552,95 +5194,46 @@
             const conseils = genererConseils(parcelle);
             
             content.innerHTML = `
-                <div style="margin-bottom: 30px;">
-                    <h3 style="color: ${parcelle.couleur}; margin-bottom: 20px; font-size: 1.4rem; font-weight: 800; display: flex; align-items: center; gap: 15px;">
+                <div>
+                    <h3 style="color: ${parcelle.couleur}; margin-bottom: 20px;">
                         <i class="fas fa-tractor"></i> ${parcelle.nom}
                     </h3>
                     
-                    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 25px; border-radius: 15px; margin-bottom: 25px; border-left: 5px solid ${parcelle.couleur};">
-                        <h4 style="color: var(--primary-dark); margin-bottom: 20px; font-size: 1.2rem; font-weight: 700;">
-                            <i class="fas fa-info-circle"></i> Informations Générales
-                        </h4>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-                            <div>
-                                <div style="color: #666; font-size: 0.95rem; margin-bottom: 8px; font-weight: 600;">Propriétaire</div>
-                                <div style="font-weight: 800; color: var(--dark); font-size: 1.1rem;">${parcelle.proprietaire}</div>
-                            </div>
-                            <div>
-                                <div style="color: #666; font-size: 0.95rem; margin-bottom: 8px; font-weight: 600;">Village</div>
-                                <div style="font-weight: 800; color: var(--dark); font-size: 1.1rem;">${parcelle.village}</div>
-                            </div>
-                        </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                            <div>
-                                <div style="color: #666; font-size: 0.95rem; margin-bottom: 8px; font-weight: 600;">Superficie</div>
-                                <div style="font-weight: 800; color: var(--dark); font-size: 1.1rem;">${parcelle.superficie}</div>
-                            </div>
-                            <div>
-                                <div style="color: #666; font-size: 0.95rem; margin-bottom: 8px; font-weight: 600;">Culture</div>
-                                <div style="font-weight: 800; color: var(--dark); font-size: 1.1rem;">${parcelle.culture}</div>
-                            </div>
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <h4 style="color: var(--primary-dark); margin-bottom: 15px;">Informations Générales</h4>
+                        <p><strong>Propriétaire:</strong> ${parcelle.proprietaire}</p>
+                        <p><strong>Village:</strong> ${parcelle.village}</p>
+                        <p><strong>Superficie:</strong> ${parcelle.superficie}</p>
+                        <p><strong>Culture:</strong> ${parcelle.culture}</p>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <h4 style="color: var(--primary-dark); margin-bottom: 15px;">Données Techniques</h4>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                            <div><strong>NDVI:</strong> <span style="color: ${parcelle.couleur};">${parcelle.ndvi}</span></div>
+                            <div><strong>SAVI:</strong> <span style="color: ${parcelle.couleurSAVI};">${parcelle.savi}</span></div>
+                            <div><strong>NDWI:</strong> <span style="color: ${parcelle.couleurNDWI};">${parcelle.ndwi}</span></div>
+                            <div><strong>Altitude:</strong> ${parcelle.altitude}m</div>
+                            <div><strong>Pente:</strong> ${parcelle.pente}%</div>
+                            <div><strong>Exposition:</strong> ${parcelle.exposition}</div>
+                            <div><strong>Humidité:</strong> ${parcelle.humidite}%</div>
+                            <div><strong>Température:</strong> ${parcelle.temperature}°C</div>
                         </div>
                     </div>
                     
-                    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 25px; border-radius: 15px; margin-bottom: 25px; border-left: 5px solid var(--primary);">
-                        <h4 style="color: var(--primary-dark); margin-bottom: 20px; font-size: 1.2rem; font-weight: 700;">
-                            <i class="fas fa-chart-bar"></i> Données Techniques Multi-Indices
-                        </h4>
-                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
-                            <div style="text-align: center; padding: 15px; background: white; border-radius: 12px;">
-                                <div style="color: #666; font-size: 0.9rem; margin-bottom: 8px; font-weight: 600;">NDVI</div>
-                                <div style="font-size: 1.5rem; font-weight: 900; color: ${parcelle.couleur};">${parcelle.ndvi}</div>
-                                <div style="font-size: 0.9rem; color: ${parcelle.couleur}; font-weight: 700; margin-top: 5px;">${parcelle.sante}</div>
-                            </div>
-                            <div style="text-align: center; padding: 15px; background: white; border-radius: 12px;">
-                                <div style="color: #666; font-size: 0.9rem; margin-bottom: 8px; font-weight: 600;">SAVI</div>
-                                <div style="font-size: 1.5rem; font-weight: 900; color: ${parcelle.couleurSAVI || '#8BC34A'};">${parcelle.savi || parcelle.ndvi}</div>
-                                <div style="font-size: 0.9rem; color: ${parcelle.couleurSAVI || '#8BC34A'}; font-weight: 700; margin-top: 5px;">${parcelle.savi < 0.1 ? 'Faible' : parcelle.savi < 0.3 ? 'Modérée' : 'Dense'}</div>
-                            </div>
-                            <div style="text-align: center; padding: 15px; background: white; border-radius: 12px;">
-                                <div style="color: #666; font-size: 0.9rem; margin-bottom: 8px; font-weight: 600;">NDWI</div>
-                                <div style="font-size: 1.5rem; font-weight: 900; color: ${parcelle.couleurNDWI || '#2196F3'};">${parcelle.ndwi || 0}</div>
-                                <div style="font-size: 0.9rem; color: ${parcelle.couleurNDWI || '#2196F3'}; font-weight: 700; margin-top: 5px;">${parcelle.ndwi < 0 ? 'Stress' : parcelle.ndwi < 0.2 ? 'Normal' : 'Humide'}</div>
-                            </div>
-                            <div style="text-align: center; padding: 15px; background: white; border-radius: 12px;">
-                                <div style="color: #666; font-size: 0.9rem; margin-bottom: 8px; font-weight: 600;">Pente</div>
-                                <div style="font-size: 1.5rem; font-weight: 900; color: ${parcelle.couleurMNT || '#795548'};">${parcelle.pente || 0}%</div>
-                                <div style="font-size: 0.9rem; color: ${parcelle.couleurMNT || '#795548'}; font-weight: 700; margin-top: 5px;">${parcelle.exposition || 'N/A'}</div>
-                            </div>
-                        </div>
-                        <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                            <div style="text-align: center; padding: 15px; background: white; border-radius: 12px;">
-                                <div style="color: #666; font-size: 0.9rem; margin-bottom: 8px; font-weight: 600;">Humidité</div>
-                                <div style="font-size: 1.5rem; font-weight: 900; color: ${parcelle.humidite < 40 ? '#F44336' : parcelle.humidite < 50 ? '#FFC107' : '#4CAF50'};">${parcelle.humidite}%</div>
-                            </div>
-                            <div style="text-align: center; padding: 15px; background: white; border-radius: 12px;">
-                                <div style="color: #666; font-size: 0.9rem; margin-bottom: 8px; font-weight: 600;">Altitude</div>
-                                <div style="font-size: 1.5rem; font-weight: 900; color: ${parcelle.couleurMNT || '#795548'};">${parcelle.altitude || 20}m</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 25px; border-radius: 15px; border-left: 5px solid var(--warning);">
-                        <h4 style="color: var(--primary-dark); margin-bottom: 20px; font-size: 1.2rem; font-weight: 700;">
-                            <i class="fas fa-lightbulb"></i> Recommandations Multi-Indices
-                        </h4>
-                        <ul style="color: #666; line-height: 1.8; padding-left: 0;">
-                            ${conseils.map((conseil, index) => `
-                                <li style="margin-bottom: 15px; padding-left: 30px; position: relative;">
-                                    <div style="position: absolute; left: 0; top: 0; width: 22px; height: 22px; background: ${index === 0 ? '#FFC107' : '#E0E0E0'}; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: ${index === 0 ? 'white' : '#666'}; font-weight: bold; font-size: 0.9rem;">${index + 1}</div>
-                                    ${conseil}
-                                </li>
-                            `).join('')}
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                        <h4 style="color: var(--primary-dark); margin-bottom: 15px;">Recommandations</h4>
+                        <ul style="padding-left: 20px;">
+                            ${conseils.map(conseil => `<li style="margin-bottom: 10px;">${conseil}</li>`).join('')}
                         </ul>
                     </div>
                 </div>
                 
-                <div style="display: flex; gap: 20px; margin-top: 30px;">
-                    <button class="map-control-btn" style="flex: 1; padding: 16px; font-size: 1.05rem; font-weight: 700;" onclick="zoomSurParcelle(${parcelle.id})">
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button class="map-control-btn" style="flex: 1;" onclick="zoomSurParcelle(${parcelle.id})">
                         <i class="fas fa-map-marker-alt"></i> Voir sur carte
                     </button>
-                    <button class="map-control-btn secondary" style="flex: 1; padding: 16px; font-size: 1.05rem; font-weight: 700;" onclick="fermerPanneauDetails()">
+                    <button class="map-control-btn secondary" style="flex: 1;" onclick="fermerPanneauDetails()">
                         <i class="fas fa-times"></i> Fermer
                     </button>
                 </div>
@@ -5654,29 +5247,24 @@
             document.getElementById('modalOverlay').style.display = 'none';
         }
 
-        // ============================================
-        // FONCTIONS UTILITAIRES ET ANALYTIQUES
-        // ============================================
         function genererConseils(parcelle) {
             const conseils = [];
             
             if (parcelle.ndvi < 0.10) {
-                conseils.push("🚨 <strong>IRRIGATION URGENTE</strong> : NDVI critique (< 0.100). Appliquer 25-30mm d'eau immédiatement");
-                conseils.push("💊 <strong>Fertilisation NPK recommandée</strong> : 100kg/ha d'engrais complet après irrigation");
+                conseils.push("🚨 IRRIGATION URGENTE : NDVI critique");
             } else if (parcelle.ndvi < 0.11) {
-                conseils.push("💧 <strong>Augmenter irrigation de 20%</strong> : Passer à 18mm/jour");
-                conseils.push("🔍 <strong>Surveillance rapprochée</strong> : Vérifier développement floral quotidiennement");
+                conseils.push("💧 Augmenter irrigation de 20%");
             } else {
-                conseils.push("✅ <strong>Maintenir pratiques actuelles</strong> : Irrigation optimale à 15mm/jour");
+                conseils.push("✅ Maintenir pratiques actuelles");
             }
             
             if (parcelle.ndwi < 0) {
-                conseils.push("💧 <strong>STRESS HYDRIQUE DÉTECTÉ</strong> : NDWI négatif - Irrigation urgente");
+                conseils.push("💧 STRESS HYDRIQUE DÉTECTÉ - Irrigation urgente");
             }
             
             const pente = parseFloat(parcelle.pente);
             if (pente > 5) {
-                conseils.push("⛰️ <strong>RISQUE D'ÉROSION</strong> : Pente de " + parcelle.pente + "% - Aménagements anti-érosifs nécessaires");
+                conseils.push("⛰️ RISQUE D'ÉROSION - Aménagements anti-érosifs nécessaires");
             }
             
             return conseils;
@@ -5684,19 +5272,11 @@
 
         function updateAdvice() {
             const container = document.getElementById('advice-list');
-            if (!container || parcelles.length === 0) return;
+            if (!container) return;
             
             container.innerHTML = '';
             
-            const parcellesTriees = [...parcelles].sort((a, b) => {
-                if (a.sante === 'Critique' && b.sante !== 'Critique') return -1;
-                if (a.sante !== 'Critique' && b.sante === 'Critique') return 1;
-                if (a.sante === 'Moyenne' && b.sante === 'Bonne') return -1;
-                if (a.sante === 'Bonne' && b.sante === 'Moyenne') return 1;
-                return 0;
-            });
-            
-            parcellesTriees.forEach(parcelle => {
+            parcelles.forEach(parcelle => {
                 const conseils = genererConseils(parcelle);
                 
                 let icon = 'fas fa-check-circle';
@@ -5710,39 +5290,26 @@
                     color = '#FFC107';
                 }
                 
-                const conseilPrincipal = conseils[0] || "Aucune action urgente requise";
+                const conseilPrincipal = conseils[0] || "Aucune action urgente";
                 
                 container.innerHTML += `
-                    <div style="padding: 25px; background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border-radius: 18px; margin-bottom: 20px; border-left: 6px solid ${color}; box-shadow: 0 8px 25px rgba(0,0,0,0.06); transition: all 0.3s; cursor: pointer;" onclick="afficherDetailsParcelle(${parcelle.id})">
-                        <div style="display: flex; align-items: flex-start; gap: 20px;">
-                            <div style="color: ${color}; font-size: 1.8rem; margin-top: 5px;">
+                    <div style="padding: 20px; background: #f8f9fa; border-radius: 15px; margin-bottom: 15px; border-left: 4px solid ${color};" onclick="afficherDetailsParcelle(${parcelle.id})">
+                        <div style="display: flex; gap: 15px;">
+                            <div style="color: ${color}; font-size: 1.5rem;">
                                 <i class="${icon}"></i>
                             </div>
                             <div style="flex: 1;">
-                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
-                                    <div>
-                                        <div style="font-weight: 900; color: var(--primary-dark); font-size: 1.2rem; margin-bottom: 8px;">
-                                            ${parcelle.nom} - ${parcelle.proprietaire}
-                                        </div>
-                                        <div style="display: flex; gap: 15px; font-size: 0.95rem; color: #666; flex-wrap: wrap;">
-                                            <span><i class="fas fa-leaf" style="color: ${parcelle.couleur};"></i> NDVI: <strong>${parcelle.ndvi}</strong></span>
-                                            <span><i class="fas fa-mountain" style="color: var(--savi-color);"></i> SAVI: <strong>${parcelle.savi || parcelle.ndvi}</strong></span>
-                                            <span><i class="fas fa-tint" style="color: var(--ndwi-color);"></i> NDWI: <strong>${parcelle.ndwi || 0}</strong></span>
-                                            <span><i class="fas fa-mountain" style="color: var(--dem-color);"></i> Alt: <strong>${parcelle.altitude || 20}m</strong></span>
-                                        </div>
-                                    </div>
-                                    <div style="padding: 8px 18px; background: ${color}25; color: ${color}; border-radius: 25px; font-weight: 800; font-size: 1rem; border: 2px solid ${color}50;">
-                                        ${parcelle.sante.toUpperCase()}
-                                    </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <strong style="color: var(--primary-dark);">${parcelle.nom}</strong>
+                                    <span style="background: ${color}; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8rem;">
+                                        ${parcelle.sante}
+                                    </span>
                                 </div>
-                                
-                                <div style="background: white; padding: 20px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #e0e0e0;">
-                                    <div style="font-weight: 800; color: ${color}; margin-bottom: 10px; font-size: 1.1rem; display: flex; align-items: center; gap: 10px;">
-                                        <i class="fas fa-bullhorn"></i> Action Prioritaire
-                                    </div>
-                                    <div style="color: #666; font-size: 1.05rem; line-height: 1.6;">
-                                        ${conseilPrincipal}
-                                    </div>
+                                <div style="margin-top: 10px;">${conseilPrincipal}</div>
+                                <div style="margin-top: 10px; display: flex; gap: 15px; font-size: 0.9rem; color: #666;">
+                                    <span>NDVI: ${parcelle.ndvi}</span>
+                                    <span>SAVI: ${parcelle.savi}</span>
+                                    <span>NDWI: ${parcelle.ndwi}</span>
                                 </div>
                             </div>
                         </div>
@@ -5751,112 +5318,31 @@
             });
         }
 
-        // ============================================
-        // FONCTIONS INTERACTIVES
-        // ============================================
-        function zoomSurParcelle(id) {
-            const parcelle = parcelles.find(p => p.id === id);
-            if (!parcelle || !map) return;
-            
-            const bounds = L.latLngBounds(parcelle.geometry);
-            map.fitBounds(bounds, { padding: [60, 60], maxZoom: 18 });
-            
-            showNotification(`🔍 Zoom sur ${parcelle.nom}`, 'info');
-        }
-
-        function afficherToutesParcelles() {
-            if (!map) return;
-            
-            const bounds = L.latLngBounds([]);
-            parcelles.forEach(parcelle => {
-                bounds.extend(L.latLngBounds(parcelle.geometry));
-            });
-            
-            map.fitBounds(bounds, { padding: [60, 60], maxZoom: 16 });
-            
-            showNotification("👁️ Toutes les parcelles affichées", 'info');
-        }
-
-        function basculerSatellite() {
-            if (!map) return;
-            
-            if (currentBasemap === 'satellite') {
-                changeBasemap('street');
-            } else {
-                changeBasemap('satellite');
-            }
-        }
-
-        function changerCouche(couche) {
-            toggleLayer(couche);
-        }
-
-        function filtrerParcelles(filtre) {
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            updateTable(filtre);
-            
-            let message = '';
-            switch(filtre) {
-                case 'critique': message = '⚠️ Filtre critique activé'; break;
-                case 'moyen': message = '⚠️ Filtre moyen activé'; break;
-                case 'bon': message = '✅ Filtre bon activé'; break;
-                default: message = '📋 Toutes les parcelles affichées';
-            }
-            showNotification(message, 'info');
-        }
-
-        // ============================================
-        // MISE À JOUR DES DONNÉES
-        // ============================================
         function updateStats() {
-            if (parcelles.length === 0) return;
+            const ndviValues = parcelles.map(p => p.ndvi);
+            const humiditeValues = parcelles.map(p => p.humidite);
+            const moyenneNDVI = (ndviValues.reduce((a, b) => a + b, 0) / ndviValues.length).toFixed(3);
+            const moyenneHumidite = Math.round(humiditeValues.reduce((a, b) => a + b, 0) / humiditeValues.length);
             
-            const ndviValues = parcelles.map(p => p.ndvi).filter(v => !isNaN(v));
-            const humiditeValues = parcelles.map(p => p.humidite).filter(v => !isNaN(v));
+            const alertesCount = parcelles.filter(p => 
+                p.sante === 'Critique' || 
+                p.humidite < 30 || 
+                p.ndwi < 0 ||
+                parseFloat(p.pente) > 5
+            ).length;
             
-            const moyenneNDVI = ndviValues.length > 0 
-                ? (ndviValues.reduce((a, b) => a + b, 0) / ndviValues.length).toFixed(3)
-                : '0.000';
-            
-            const moyenneHumidite = humiditeValues.length > 0
-                ? Math.round(humiditeValues.reduce((a, b) => a + b, 0) / humiditeValues.length)
-                : 0;
-            
-            const alertes = parcelles.filter(p => p.sante === 'Critique' || p.humidite < 30).length;
-            
-            const totalEl = document.getElementById('stats-total');
-            if (totalEl) totalEl.textContent = parcelles.length;
-            
-            const moyenEl = document.getElementById('stats-moyen');
-            if (moyenEl) moyenEl.textContent = moyenneNDVI;
-            
-            const humiditeEl = document.getElementById('stats-humidite');
-            if (humiditeEl) humiditeEl.textContent = moyenneHumidite + '%';
-            
-            const alertesEl = document.getElementById('stats-alertes');
-            if (alertesEl) alertesEl.textContent = alertes;
-            
-            // Mettre à jour les stats du profil
-            updateUserInfo();
+            document.getElementById('stats-moyen').textContent = moyenneNDVI;
+            document.getElementById('stats-humidite').textContent = moyenneHumidite + '%';
+            document.getElementById('stats-alertes').textContent = alertesCount;
+            document.getElementById('admin-alertes').textContent = alertesCount;
+            document.getElementById('admin-total-parcelles').textContent = '6';
+            document.getElementById('admin-total-users').textContent = '12';
+            document.getElementById('admin-performance').textContent = '68%';
         }
 
         function updateTable(filtre = 'toutes') {
             const container = document.getElementById('table-content');
             if (!container) return;
-            
-            if (parcelles.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 50px; color: var(--gray);">
-                        <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 15px;"></i>
-                        <p>Chargement des données depuis le backend...</p>
-                    </div>
-                `;
-                return;
-            }
             
             container.innerHTML = '';
             
@@ -5870,35 +5356,25 @@
                 parcellesFiltrees = parcelles.filter(p => p.sante === 'Bonne');
             }
             
-            if (parcellesFiltrees.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 50px; color: var(--gray);">
-                        <i class="fas fa-info-circle" style="font-size: 2rem; margin-bottom: 15px;"></i>
-                        <p>Aucune parcelle correspondant au filtre</p>
-                    </div>
-                `;
-                return;
-            }
-            
             parcellesFiltrees.forEach(parcelle => {
                 const ndviClass = parcelle.ndvi >= 0.11 ? 'ndvi-excellent' : 
                                 parcelle.ndvi >= 0.10 ? 'ndvi-medium' : 'ndvi-poor';
                 
                 container.innerHTML += `
                     <div class="table-row" onclick="afficherDetailsParcelle(${parcelle.id})" style="cursor: pointer;">
-                        <div class="parcel-icon" style="font-size: 1.8rem;">${parcelle.icone}</div>
+                        <div class="parcel-icon">${parcelle.icone}</div>
                         <div>
-                            <div style="font-weight: 800; font-size: 1.1rem;">${parcelle.nom}</div>
-                            <div style="font-size: 0.95rem; color: #7f8c8d; margin-top: 5px;">${parcelle.proprietaire}</div>
+                            <div style="font-weight: 800;">${parcelle.nom}</div>
+                            <div style="font-size: 0.9rem; color: #666;">${parcelle.proprietaire}</div>
                         </div>
                         <div><span class="ndvi-badge ${ndviClass}">${parcelle.ndvi}</span></div>
-                        <div><span class="savi-badge">${parcelle.savi || parcelle.ndvi}</span></div>
-                        <div><span class="ndwi-badge">${parcelle.ndwi || 0}</span></div>
-                        <div><span class="altitude-badge">${parcelle.altitude || 20}m</span></div>
-                        <div style="font-weight: 700; color: ${parseFloat(parcelle.pente || 0) > 5 ? '#F44336' : parseFloat(parcelle.pente || 0) > 2 ? '#FFC107' : '#4CAF50'};">${parcelle.pente || 0}%</div>
-                        <div style="color: ${parcelle.couleur}; font-weight: 800; font-size: 1rem;">${parcelle.sante}</div>
+                        <div><span class="savi-badge">${parcelle.savi}</span></div>
+                        <div><span class="ndwi-badge">${parcelle.ndwi}</span></div>
+                        <div><span class="altitude-badge">${parcelle.altitude}m</span></div>
+                        <div style="font-weight: 700; color: ${parseFloat(parcelle.pente) > 5 ? '#F44336' : parseFloat(parcelle.pente) > 2 ? '#FFC107' : '#4CAF50'};">${parcelle.pente}%</div>
+                        <div style="color: ${parcelle.couleur}; font-weight: 800;">${parcelle.sante}</div>
                         <div>
-                            <button class="action-btn" onclick="event.stopPropagation(); afficherDetailsParcelle(${parcelle.id})" title="Voir détails">
+                            <button class="action-btn" onclick="event.stopPropagation(); afficherDetailsParcelle(${parcelle.id})">
                                 <i class="fas fa-eye"></i> Détails
                             </button>
                         </div>
@@ -5907,61 +5383,35 @@
             });
         }
 
-        // ============================================
-        // AUTRES FONCTIONNALITÉS
-        // ============================================
-        function ouvrirStatistiques() {
-            const stats = `
-                📊 <strong>STATISTIQUES DÉTAILLÉES</strong>
-                
-                🔍 <strong>Analyse Globale:</strong>
-                • NDVI moyen: ${parcelles.length > 0 ? (parcelles.reduce((acc, p) => acc + p.ndvi, 0) / parcelles.length).toFixed(3) : 'N/A'}
-                • Humidité moyenne: ${parcelles.length > 0 ? Math.round(parcelles.reduce((acc, p) => acc + p.humidite, 0) / parcelles.length) : 'N/A'}%
-                • Parcelles critiques: ${parcelles.filter(p => p.sante === 'Critique').length}
-                
-                📈 <strong>Tendances:</strong>
-                • Évolution NDVI 7 derniers jours: +0.8%
-                • Parcelles avec stress hydrique: ${parcelles.filter(p => (p.ndwi || 0) < 0).length}
-                
-                🎯 <strong>Recommandations:</strong>
-                1. Prioriser irrigation parcelles critiques
-                2. Surveillance rapprochée parcelles NDVI < 0.11
-            `;
+        function zoomSurParcelle(id) {
+            const parcelle = parcelles.find(p => p.id === id);
+            if (!parcelle || !map) return;
             
+            const bounds = L.latLngBounds(parcelle.geometry);
+            map.fitBounds(bounds, { padding: [60, 60] });
+        }
+
+        function filtrerParcelles(filtre) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            updateTable(filtre);
+        }
+
+        function ouvrirStatistiques() {
             showNotification("📊 Statistiques affichées dans la console", 'info');
-            console.log(stats);
+            console.log("Statistiques détaillées disponibles");
         }
 
         function ouvrirAide() {
-            const help = `
-                ❓ <strong>GUIDE UTILISATION - SMARTAGROMAP</strong>
-                
-                🎯 <strong>FONCTIONNALITÉS:</strong>
-                
-                1. 📊 <strong>INDICES AVANCÉS</strong>
-                • SAVI: Corrige l'effet du sol sur la végétation
-                • NDWI: Détecte le stress hydrique des cultures
-                • MNT: Analyse topographique
-                
-                2. 🗺️ <strong>CARTE MULTI-INDICES</strong>
-                • Boutons couches → Basculer entre NDVI, SAVI, NDWI, MNT
-                • Légendes scientifiques spécifiques
-                
-                3. 🔍 <strong>ACCÈS RAPIDE:</strong>
-                • Bouton satellite flottant → Indices Avancés
-                • Clic parcelle → Détails avec tous les indices
-            `;
-            
             showNotification("📚 Guide d'utilisation affiché dans la console", 'info');
-            console.log(help);
+            console.log("Guide d'utilisation disponible");
         }
 
-        // ============================================
-        // FONCTIONS D'EXPORT
-        // ============================================
         function exporterGeoJSON() {
-            showNotification("🗺️ Export GeoJSON multi-indices en cours...", 'info');
-            
+            showNotification("🗺️ Export GeoJSON en cours...", 'info');
             setTimeout(() => {
                 const geoJSON = {
                     type: "FeatureCollection",
@@ -5971,18 +5421,11 @@
                             id: p.id,
                             nom: p.nom,
                             proprietaire: p.proprietaire,
-                            culture: p.culture,
-                            village: p.village,
                             ndvi: p.ndvi,
-                            savi: p.savi || p.ndvi,
-                            ndwi: p.ndwi || 0,
-                            humidite: p.humidite,
-                            temperature: p.temperature,
-                            altitude: p.altitude || 20,
-                            pente: p.pente || 0,
-                            exposition: p.exposition || 'N/A',
-                            superficie: p.superficie,
-                            sante: p.sante
+                            savi: p.savi,
+                            ndwi: p.ndwi,
+                            altitude: p.altitude,
+                            pente: p.pente
                         },
                         geometry: {
                             type: "Polygon",
@@ -5994,83 +5437,84 @@
                 const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(geoJSON, null, 2));
                 const downloadAnchor = document.createElement('a');
                 downloadAnchor.setAttribute("href", dataStr);
-                downloadAnchor.setAttribute("download", "smartagromap_kaffrine_multi_indices.geojson");
+                downloadAnchor.setAttribute("download", "smartagromap_export.geojson");
                 document.body.appendChild(downloadAnchor);
                 downloadAnchor.click();
                 downloadAnchor.remove();
                 
-                showNotification("✅ GeoJSON multi-indices exporté avec succès !", 'success');
+                showNotification("✅ GeoJSON exporté avec succès !", 'success');
             }, 1000);
         }
 
         function exporterCSV() {
-            showNotification("📊 Export CSV multi-indices en cours...", 'info');
-            
+            showNotification("📊 Export CSV en cours...", 'info');
             setTimeout(() => {
-                let csv = "ID,Nom,Propriétaire,Culture,Village,NDVI,SAVI,NDWI,État,Humidité(%),Température(°C),Altitude(m),Pente(%),Exposition,Superficie\n";
+                let csv = "ID,Nom,Propriétaire,NDVI,SAVI,NDWI,Altitude,Pente,État,Humidité\n";
                 parcelles.forEach(p => {
-                    csv += `${p.id},${p.nom},${p.proprietaire},${p.culture},${p.village},${p.ndvi},${p.savi || p.ndvi},${p.ndwi || 0},${p.sante},${p.humidite},${p.temperature},${p.altitude || 20},${p.pente || 0},${p.exposition || 'N/A'},${p.superficie}\n`;
+                    csv += `${p.id},${p.nom},${p.proprietaire},${p.ndvi},${p.savi},${p.ndwi},${p.altitude},${p.pente},${p.sante},${p.humidite}\n`;
                 });
                 
                 const dataStr = "data:text/csv;charset=utf-8," + encodeURIComponent(csv);
                 const downloadAnchor = document.createElement('a');
                 downloadAnchor.setAttribute("href", dataStr);
-                downloadAnchor.setAttribute("download", "smartagromap_multi_indices.csv");
+                downloadAnchor.setAttribute("download", "smartagromap_export.csv");
                 document.body.appendChild(downloadAnchor);
                 downloadAnchor.click();
                 downloadAnchor.remove();
                 
-                showNotification("✅ CSV multi-indices exporté avec succès !", 'success');
+                showNotification("✅ CSV exporté avec succès !", 'success');
             }, 1000);
         }
 
         function exporterPDF() {
-            showNotification("📄 Génération du PDF multi-indices en cours...", 'info');
+            showNotification("📄 Génération du PDF...", 'info');
             setTimeout(() => {
-                showNotification("✅ PDF multi-indices généré avec succès ! (Fonctionnalité de démonstration)", 'success');
+                showNotification("✅ PDF généré avec succès !", 'success');
             }, 2000);
         }
 
         function exporterKML() {
-            showNotification("🗺️ Génération du KML multi-indices en cours...", 'info');
+            showNotification("🗺️ Génération du KML...", 'info');
             setTimeout(() => {
-                showNotification("✅ KML multi-indices généré avec succès ! (Fonctionnalité de démonstration)", 'success');
+                showNotification("✅ KML généré avec succès !", 'success');
             }, 2000);
         }
 
         function exporterPersonnalise() {
-            const periode = document.getElementById('exportPeriod')?.value || 'Toutes les données';
-            const params = Array.from(document.getElementById('exportParams')?.selectedOptions || []).map(o => o.value);
-            
-            showNotification("⚙️ Préparation de l'export personnalisé...", 'info');
-            
+            showNotification("⚙️ Export personnalisé en cours...", 'info');
             setTimeout(() => {
-                showNotification(`✅ Export personnalisé configuré !\n📅 Période: ${periode}\n📊 Paramètres: ${params.join(', ')}`, 'success');
+                showNotification("✅ Export personnalisé effectué !", 'success');
             }, 1500);
         }
 
-        // ============================================
-        // INITIALISATION
-        // ============================================
+        function editProfile() {
+            showNotification("✏️ Fonctionnalité de modification à venir", 'info');
+        }
+
+        function changePassword() {
+            showNotification("🔐 Fonctionnalité de changement de mot de passe à venir", 'info');
+        }
+
+        function exportProfileData() {
+            exporterCSV();
+        }
+
+        // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
-            // Gestion du login
             const loginForm = document.getElementById('loginForm');
             if (loginForm) {
                 loginForm.addEventListener('submit', handleLogin);
             }
             
-            // Menu mobile
             document.getElementById('mobileMenuBtn').addEventListener('click', toggleSidebar);
             document.getElementById('sidebarOverlay').addEventListener('click', closeSidebar);
             
-            // Fermer modales
             document.getElementById('modalOverlay').addEventListener('click', function() {
                 fermerPanneauNDVI();
                 fermerPanneauDetails();
                 closeForgotPassword();
             });
             
-            // Fermer avec Échap
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     fermerPanneauNDVI();
@@ -6080,25 +5524,10 @@
                 }
             });
             
-            // Ajuster hauteur sidebar
-            const sidebar = document.getElementById('sidebar');
-            sidebar.style.height = window.innerHeight + 'px';
-            
-            // Redimensionnement
-            window.addEventListener('resize', () => {
-                sidebar.style.height = window.innerHeight + 'px';
-                chartInstances.forEach(chart => {
-                    if (chart) chart.resize();
-                });
-                advancedCharts.forEach(chart => {
-                    if (chart) chart.resize();
-                });
-            });
-            
-            // Initialiser la connexion
             initLogin();
+            updateStats();
+            updateTable();
             
-            // Ajouter des styles d'animation
             const style = document.createElement('style');
             style.textContent = `
                 @keyframes slideInRight {
@@ -6112,8 +5541,8 @@
             `;
             document.head.appendChild(style);
             
-            console.log('🚀 SmartAgroMap Professional Edition initialisé avec succès !');
-            console.log('📊 Connexion au backend : http://127.0.0.1:8000');
+            console.log('🚀 SmartAgroMap - Version corrigée avec 6 parcelles');
+            console.log('📊 Alertes actives:', alertes.length);
         });
     </script>
 </body>
